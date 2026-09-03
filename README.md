@@ -10,7 +10,7 @@ Repositorio central para administrar el catalogo musical, reproducir archivos lo
 - Modulo SoundCloud separado, listo para recibir OAuth.
 - Automatizacion de portadas en modo `dry-run` por defecto.
 - Auditor de metadatos de SoundCloud completamente de solo lectura.
-- Respaldo versionado al USB `ADATA SC740`.
+- Coleccion WAV maestra y deduplicada en el USB `ADATA SC740`.
 
 ## Inicio rapido
 
@@ -28,7 +28,7 @@ Abre <http://127.0.0.1:4173>. Para importar musica, copia archivos a `storage/me
 apps/          servidor e interfaz del reproductor
 packages/      base de datos e integraciones externas
 automations/   tareas seguras y repetibles
-scripts/       diagnostico, inicializacion y respaldo
+scripts/       diagnostico, inicializacion y consolidacion
 storage/       datos locales no versionados
 inbox/         entradas pendientes, por ejemplo portadas
 reports/       resultados de auditorias y automatizaciones
@@ -37,6 +37,8 @@ tests/         pruebas automatizadas
 ```
 
 Consulta [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) y [docs/ROADMAP.md](docs/ROADMAP.md) antes de ampliar el sistema.
+
+La unica coleccion de respaldo musical aceptada por ahora es `MÚSICA/WAV_MASTER` en el USB. No se generan carpetas fechadas.
 
 ## Seguridad
 

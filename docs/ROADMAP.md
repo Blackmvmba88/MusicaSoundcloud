@@ -17,11 +17,11 @@
 - [x] SQLite y API del catalogo.
 - [x] Reproductor web inicial.
 - [x] Escaneo de biblioteca local.
-- [x] Respaldo al USB.
+- [x] Coleccion WAV maestra y deduplicada en el USB.
 
 ## Fase 3 — operacion
 
 - [ ] Editor de metadatos y letras.
 - [ ] Historial de cambios y restauracion.
 - [ ] Busqueda, filtros y playlists.
-- [ ] Respaldo programado y verificacion de integridad.
+- [ ] Verificacion programada de integridad de `WAV_MASTER` sin crear copias fechadas.

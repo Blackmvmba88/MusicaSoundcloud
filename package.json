@@ -14,7 +14,7 @@
     "soundcloud:match-suno": "node scripts/build-soundcloud-suno-match.mjs",
     "artwork:dry-run": "node automations/artwork-sync.mjs --dry-run",
     "test": "node --test",
-    "backup:usb": "node scripts/backup-to-usb.mjs"
+    "usb:consolidate-wav": "node scripts/consolidate-usb-wav.mjs"
   },
   "engines": {
     "node": ">=24"
