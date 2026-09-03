@@ -1,0 +1,15 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+storage/database/*.sqlite*
+storage/media/*
+storage/covers/*
+inbox/covers/*
+reports/*.json
+!storage/media/.gitkeep
+!storage/covers/.gitkeep
+!inbox/covers/.gitkeep
+!reports/.gitkeep
+

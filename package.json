@@ -1,0 +1,20 @@
+{
+  "name": "blackmamba-music-hub",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reproductor, catalogo local y automatizacion de portadas para SoundCloud.",
+  "scripts": {
+    "dev": "node --watch apps/server/src/server.mjs",
+    "start": "node apps/server/src/server.mjs",
+    "db:init": "node scripts/init-db.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "soundcloud:audit": "node scripts/audit-soundcloud.mjs",
+    "artwork:dry-run": "node automations/artwork-sync.mjs --dry-run",
+    "test": "node --test",
+    "backup:usb": "node scripts/backup-to-usb.mjs"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

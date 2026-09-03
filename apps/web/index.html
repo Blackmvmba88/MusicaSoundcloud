@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlackMamba Music Hub</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">BLACKMAMBA ARCHIVE</p>
+      <h1>Tu música, bajo tu control.</h1>
+      <p class="subtitle">Biblioteca local, reproducción y portadas de SoundCloud en un solo lugar.</p>
+      <button id="scan">Escanear biblioteca</button>
+    </header>
+    <section class="panel">
+      <div class="section-title"><h2>Biblioteca</h2><span id="status">Cargando…</span></div>
+      <div id="tracks" class="tracks"></div>
+    </section>
+  </main>
+  <footer class="player">
+    <div><strong id="now-title">Nada reproduciéndose</strong><small id="now-artist">Selecciona una pista</small></div>
+    <audio id="audio" controls></audio>
+  </footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
+
