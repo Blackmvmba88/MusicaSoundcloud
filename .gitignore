@@ -3,6 +3,7 @@
 .env.*
 !.env.example
 node_modules/
+outputs/**/node_modules
 *.inspect.ndjson
 outputs/**/preview-*.png
 storage/database/*.sqlite*
