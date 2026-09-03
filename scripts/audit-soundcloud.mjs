@@ -1,5 +1,6 @@
-import { existsSync, loadEnvFile, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { loadEnvFile } from 'node:process';
 import { openDatabase, upsertSoundCloudTrack } from '../packages/database/src/db.mjs';
 import { SoundCloudClient } from '../packages/soundcloud/src/client.mjs';
 
@@ -62,4 +63,3 @@ writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
 console.log(`Cuenta: ${me.username}`);
 console.log(`Pistas: ${report.summary.total}; incompletas: ${report.summary.incomplete}`);
 console.log(`Reporte: ${reportPath}`);
-
