@@ -3,6 +3,8 @@
 .env.*
 !.env.example
 node_modules/
+*.inspect.ndjson
+outputs/**/preview-*.png
 storage/database/*.sqlite*
 storage/media/*
 storage/covers/*
@@ -12,4 +14,3 @@ reports/*.json
 !storage/covers/.gitkeep
 !inbox/covers/.gitkeep
 !reports/.gitkeep
-

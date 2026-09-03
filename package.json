@@ -11,6 +11,7 @@
     "doctor": "node scripts/doctor.mjs",
     "soundcloud:authorize": "node scripts/authorize-soundcloud.mjs",
     "soundcloud:audit": "node scripts/audit-soundcloud.mjs",
+    "soundcloud:match-suno": "node scripts/build-soundcloud-suno-match.mjs",
     "artwork:dry-run": "node automations/artwork-sync.mjs --dry-run",
     "test": "node --test",
     "backup:usb": "node scripts/backup-to-usb.mjs"
