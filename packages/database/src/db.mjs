@@ -10,7 +10,27 @@ export function openDatabase(databasePath = defaultDatabasePath) {
   mkdirSync(dirname(databasePath), { recursive: true });
   const db = new DatabaseSync(databasePath);
   db.exec(readFileSync(resolve(here, 'schema.sql'), 'utf8'));
+  migrateTracks(db);
   return db;
+}
+
+function migrateTracks(db) {
+  const existing = new Set(db.prepare('PRAGMA table_info(tracks)').all().map((column) => column.name));
+  const columns = {
+    genre: 'TEXT',
+    tag_list: 'TEXT',
+    bpm: 'INTEGER',
+    release_date: 'TEXT',
+    description: 'TEXT',
+    lyrics: 'TEXT',
+    metadata_artist: 'TEXT',
+    soundcloud_artwork_url: 'TEXT',
+    soundcloud_snapshot: 'TEXT',
+    last_soundcloud_audit_at: 'TEXT',
+  };
+  for (const [name, type] of Object.entries(columns)) {
+    if (!existing.has(name)) db.exec(`ALTER TABLE tracks ADD COLUMN ${name} ${type}`);
+  }
 }
 
 export function listTracks(db) {

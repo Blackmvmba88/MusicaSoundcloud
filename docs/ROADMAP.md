@@ -2,9 +2,9 @@
 
 ## Prioridad 1 — completar el catalogo de SoundCloud
 
-- [ ] Autorizar la cuenta por OAuth.
-- [ ] Importar y auditar todas las pistas en modo lectura.
-- [ ] Detectar metadatos, portadas y descripciones/letras faltantes.
+- [x] Autorizar la cuenta por OAuth.
+- [x] Importar y auditar todas las pistas en modo lectura.
+- [x] Detectar metadatos, portadas y descripciones/letras faltantes.
 - [ ] Preparar propuestas revisables por pista.
 - [ ] Aplicar un canario y verificar el resultado remoto.
 - [ ] Completar el resto por lotes con reporte y reintentos.

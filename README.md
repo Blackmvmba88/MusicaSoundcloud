@@ -43,3 +43,5 @@ Consulta [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) y [docs/ROADMAP.md](docs/R
 Nunca guardes tokens en Git. Copia `.env.example` como `.env` cuando tengamos las credenciales y conserva el modo de simulacion hasta validar una sola pista.
 
 La prioridad operativa es `npm run soundcloud:audit`: crea un inventario de faltantes sin modificar SoundCloud. Las letras se administran localmente y se pueden incorporar a la descripcion, ya que la pista de SoundCloud no ofrece un campo de letras separado.
+
+La autorizacion inicial se realiza con `npm run soundcloud:authorize`; abre SoundCloud en el navegador y guarda los tokens solamente en el `.env` privado.
