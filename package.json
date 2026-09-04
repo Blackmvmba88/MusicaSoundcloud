@@ -9,6 +9,7 @@
     "start": "node apps/server/src/server.mjs",
     "db:init": "node scripts/init-db.mjs",
     "doctor": "node scripts/doctor.mjs",
+    "doctor:json": "node scripts/doctor.mjs --json",
     "soundcloud:authorize": "node scripts/authorize-soundcloud.mjs",
     "soundcloud:audit": "node scripts/audit-soundcloud.mjs",
     "soundcloud:match-suno": "node scripts/build-soundcloud-suno-match.mjs",

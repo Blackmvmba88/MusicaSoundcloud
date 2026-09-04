@@ -1,0 +1,11 @@
+FROM node:24-bookworm-slim
+
+WORKDIR /workspace
+
+COPY apps/player/package.json apps/player/package-lock.json ./apps/player/
+RUN npm ci --prefix apps/player
+
+COPY . .
+
+ENV CI=true
+CMD ["sh", "-c", "npm test && npm run check --prefix apps/player"]

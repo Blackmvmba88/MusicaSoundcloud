@@ -1,0 +1,16 @@
+.git
+.env
+.env.*
+!.env.example
+**/node_modules
+**/dist
+**/coverage
+**/release
+**/.bmmp-data
+storage/database/*.sqlite*
+storage/media/*
+storage/covers/*
+storage/sync/*
+*.wav
+*.mp3
+.DS_Store

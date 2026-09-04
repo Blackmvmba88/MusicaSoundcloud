@@ -1,24 +1,18 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, macOS, ARM64, blackmamba-music]
     timeout-minutes: 15
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
-      - name: Preparar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-          cache: npm
-          cache-dependency-path: apps/player/package-lock.json
+      - name: Verificar Node.js
+        run: node --version
 
       - name: Instalar reproductor
         run: npm ci --prefix apps/player
