@@ -12,8 +12,15 @@
     "soundcloud:authorize": "node scripts/authorize-soundcloud.mjs",
     "soundcloud:audit": "node scripts/audit-soundcloud.mjs",
     "soundcloud:match-suno": "node scripts/build-soundcloud-suno-match.mjs",
+    "suno:auto-upload:check": "node automations/suno-private-upload.mjs --once",
+    "suno:auto-upload:watch": "node automations/suno-private-upload.mjs --watch --apply",
+    "player:install": "npm --prefix apps/player ci",
+    "player:dev": "npm --prefix apps/player run dev",
+    "player:build": "npm --prefix apps/player run build",
+    "player:test": "npm --prefix apps/player test",
+    "player:desktop": "npm --prefix apps/player run desktop:dev",
     "artwork:dry-run": "node automations/artwork-sync.mjs --dry-run",
-    "test": "node --test",
+    "test": "node --test tests/*.test.mjs",
     "usb:consolidate-wav": "node scripts/consolidate-usb-wav.mjs"
   },
   "engines": {

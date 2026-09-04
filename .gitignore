@@ -9,9 +9,11 @@ outputs/**/preview-*.png
 storage/database/*.sqlite*
 storage/media/*
 storage/covers/*
+storage/sync/*
 inbox/covers/*
 reports/*.json
 !storage/media/.gitkeep
 !storage/covers/.gitkeep
+!storage/sync/.gitkeep
 !inbox/covers/.gitkeep
 !reports/.gitkeep

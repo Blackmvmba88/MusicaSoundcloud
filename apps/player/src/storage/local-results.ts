@@ -1,0 +1,8 @@
+import type { StoredResult } from '../rhythm/domain/result';
+const KEY='pulso.rhythm.results.v1',MAX=100;
+const isResult=(v:unknown):v is StoredResult=>{if(!v||typeof v!=='object')return false;const r=v as Partial<StoredResult>;return typeof r.score==='number'&&r.score>=0&&r.score<=500&&typeof r.exerciseId==='string'&&typeof r.levelId==='string'&&Array.isArray(r.evaluations)};
+export interface StorageReport{results:StoredResult[];confidence:number;evidence:string[];warnings:string[];fallbackReason?:string}
+export function readResults():StorageReport{try{const raw=localStorage.getItem(KEY);if(!raw)return{results:[],confidence:1,evidence:['Almacenamiento disponible'],warnings:[]};const parsed:unknown=JSON.parse(raw);if(!Array.isArray(parsed))throw new Error('Formato no reconocido');const results=parsed.filter(isResult);const dropped=parsed.length-results.length;return{results,confidence:dropped?0.8:1,evidence:[`${results.length} resultados válidos`],warnings:dropped?[`${dropped} registros corruptos ignorados`]:[]}}catch(error){return{results:[],confidence:.4,evidence:[],warnings:['No se pudo leer el historial'],fallbackReason:error instanceof Error?error.message:'Error desconocido'}}}
+export const loadResults=()=>readResults().results;
+export function saveResult(result:StoredResult){if(!isResult(result))return{ok:false,warning:'Resultado inválido'};try{localStorage.setItem(KEY,JSON.stringify([...loadResults(),result].slice(-MAX)));return{ok:true}}catch(error){return{ok:false,warning:error instanceof Error?error.message:'No se pudo guardar'}}}
+export function clearResults(){localStorage.removeItem(KEY)}

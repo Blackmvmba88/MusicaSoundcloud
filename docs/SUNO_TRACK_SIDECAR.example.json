@@ -1,0 +1,23 @@
+{
+  "id": "ID_DE_SUNO",
+  "title": "Título definitivo",
+  "sunoUrl": "https://suno.com/song/ID_DE_SUNO",
+  "artist": "Iyari Gomez",
+  "recordLabel": "BlackMamba RECORDS",
+  "genre": "género principal",
+  "style": "descripción musical",
+  "tags": "etiquetas separadas por espacios",
+  "lyrics": "Letra completa o vacío si es instrumental",
+  "instrumental": false,
+  "metadataStatus": "ready",
+  "coverStatus": "ready",
+  "coverPath": "./Título definitivo--ID_DE_SUNO-cover.png",
+  "coverAspectRatio": "1:1",
+  "coverInspirationUrl": "https://www.pinterest.com/pin/REFERENCIA",
+  "coverPrompt": "Dirección visual original inspirada en la referencia, sin copiarla",
+  "coverText": [
+    "Iyari Gomez",
+    "BlackMamba RECORDS"
+  ],
+  "soundcloudSharing": "private"
+}

@@ -1,0 +1,11 @@
+orden,titulo,archivo,formato,duracion_segundos,tamano_bytes,sample_rate_hz,canales,modificado,estado,originalidad,correlacion_audio,publicacion_anterior
+1,Tendo,/Users/blackmamba/Downloads/Tendo.wav,WAV PCM 16-bit,107.960,20742162,48000,2,2026-09-03 13:32:22,publicado_privado,nueva_sin_coincidencias,,
+2,Tu lugar,/Users/blackmamba/Downloads/Tu lugar.mp3,MP3,315.920,6934796,48000,2,2026-09-03 11:18:40,publicado_privado,nueva_sin_coincidencias,,
+3,Kingdom of the Low End-2,/Users/blackmamba/Downloads/Kingdom of the Low End-2.wav,WAV PCM 16-bit,192.320,36925612,48000,2,2026-09-03 07:54:23,eliminado_duplicado_privado,duplicado_audio,0.907602,https://soundcloud.com/iyari-c/kingdom-of-the-low-end-1
+4,Mauricio,/Users/blackmamba/Downloads/Mauricio.wav,WAV PCM 16-bit,167.360,32133292,48000,2,2026-09-03 07:45:24,eliminado_duplicado_privado,duplicado_audio_titulado_Rovelo,0.896865,https://soundcloud.com/iyari-c/mauricio
+5,Cry Tonight,/Users/blackmamba/Downloads/Cry Tonight.mp3,MP3,217.760,5204149,48000,2,2026-09-03 05:22:20,eliminado_duplicado_privado,duplicado_audio,0.883996,https://soundcloud.com/iyari-c/cry-tonight
+6,Kingdom of the Low End,/Users/blackmamba/Downloads/Kingdom of the Low End.wav,WAV PCM 16-bit,267.680,51394732,48000,2,2026-09-03 04:56:13,eliminado_duplicado_privado,duplicado_audio_titulado_Kingdom_of_the_Low_End_Dustin,0.919831,https://soundcloud.com/iyari-c/kingdom-of-the-low-end
+7,鼓点中的智慧-2,/Users/blackmamba/Downloads/鼓点中的智慧-2.wav,WAV PCM 16-bit,244.440,46932652,48000,2,2026-09-02 22:46:02,publicado_privado,nueva_sin_coincidencias,,
+8,鼓点中的智慧,/Users/blackmamba/Downloads/鼓点中的智慧.wav,WAV PCM 16-bit,240.720,46218412,48000,2,2026-09-02 20:47:27,publicado_privado,nueva_sin_coincidencias,,
+9,Noche Duranguense-2,/Users/blackmamba/Downloads/Noche Duranguense-2.wav,WAV PCM 16-bit,264.960,50872492,48000,2,2026-09-02 20:18:27,publicado_privado,nueva_sin_coincidencias,,
+10,Noche Duranguense,/Users/blackmamba/Downloads/Noche Duranguense.wav,WAV PCM 16-bit,253.120,48599212,48000,2,2026-09-02 20:18:12,publicado_privado,nueva_sin_coincidencias,,

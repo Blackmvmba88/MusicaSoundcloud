@@ -21,6 +21,8 @@
 
 ## Fase 3 — operacion
 
+- [x] Regla permanente: toda carga automática desde Suno llega privada a SoundCloud.
+- [ ] Activar el observador de canciones nuevas después de validar un canario privado.
 - [ ] Editor de metadatos y letras.
 - [ ] Historial de cambios y restauracion.
 - [ ] Busqueda, filtros y playlists.

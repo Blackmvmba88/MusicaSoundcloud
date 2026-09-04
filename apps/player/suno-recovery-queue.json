@@ -1,0 +1,2514 @@
+{
+  "generatedAt": "2026-07-13T08:10:39.292Z",
+  "summary": {
+    "total": 80,
+    "available": 28,
+    "instrumental": 23,
+    "not_exposed": 29,
+    "withArtwork": 80,
+    "needsVersionReview": 19
+  },
+  "confidence": 0.9,
+  "evidence": [
+    "/Users/blackmambarecords/Documents/Music 2/soundcloud-local-audit.json",
+    "/Users/blackmambarecords/Documents/Music 2/suno-library.json",
+    "Public Suno song metadata"
+  ],
+  "warnings": [
+    "El audio público es una previsualización MP3; no se presenta como WAV",
+    "El WAV requiere una descarga autenticada desde la cuenta de Suno"
+  ],
+  "fallbackReason": null,
+  "records": [
+    {
+      "soundcloudId": "2270553452",
+      "title": "### __“Centro de gravedad”__",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/centro-de-gravedad",
+      "soundcloudDurationSeconds": 188,
+      "selectedSuno": {
+        "id": "0f5ee088-93b1-428f-8b2a-d99913043a0e",
+        "title": "### **“Centro de gravedad”**",
+        "url": "https://suno.com/song/0f5ee088-93b1-428f-8b2a-d99913043a0e",
+        "version": "v5",
+        "durationSeconds": 188,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/0f5ee088-93b1-428f-8b2a-d99913043a0e.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_0f5ee088-93b1-428f-8b2a-d99913043a0e.jpeg",
+        "style": "psychedelic, sad, synth, female vocals, electronic",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/centro-de-gravedad",
+        "https://suno.com/song/0f5ee088-93b1-428f-8b2a-d99913043a0e",
+        "https://cdn2.suno.ai/image_large_0f5ee088-93b1-428f-8b2a-d99913043a0e.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2273619476",
+      "title": "__Ashley Ortega__",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/ashley-ortega",
+      "soundcloudDurationSeconds": 172,
+      "selectedSuno": {
+        "id": "035ae664-cfa2-4cc6-9fe5-e7090368c906",
+        "title": "**Ashley Ortega**",
+        "url": "https://suno.com/song/035ae664-cfa2-4cc6-9fe5-e7090368c906",
+        "version": "v5",
+        "durationSeconds": 172,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/035ae664-cfa2-4cc6-9fe5-e7090368c906.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_035ae664-cfa2-4cc6-9fe5-e7090368c906.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/ashley-ortega",
+        "https://suno.com/song/035ae664-cfa2-4cc6-9fe5-e7090368c906",
+        "https://cdn2.suno.ai/image_large_035ae664-cfa2-4cc6-9fe5-e7090368c906.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2259908210",
+      "title": "__Im Licht der Zeit",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/im-licht-der-zeit_8-1",
+      "soundcloudDurationSeconds": 141,
+      "selectedSuno": {
+        "id": "0a1b461f-365e-4e0f-a0cf-d83a8f24da10",
+        "title": "**Im Licht der Zeit**",
+        "url": "https://suno.com/song/0a1b461f-365e-4e0f-a0cf-d83a8f24da10",
+        "version": "v5",
+        "durationSeconds": 142,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/0a1b461f-365e-4e0f-a0cf-d83a8f24da10.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_0a1b461f-365e-4e0f-a0cf-d83a8f24da10.jpeg",
+        "style": "Future House / World Pop / EDM Tribal",
+        "hasVocal": false
+      },
+      "lyrics": "**Im Licht der Zeit**\\n\\n[Strophe 1]\\nIm Morgennebel steht mein Traum,\\nso still wie alter Lindenbaum,\\ndie Welt verweht, der Weg bleibt klar,\\nmein Herz weiß noch, was gestern war.\\n\\n[Strophe 2]\\nDie Schatten zieh’n durch gold’ne Flur,\\ndie Zeit vergisst, doch ich bleib nur,\\nein leiser Schritt, ein stilles Wort,\\ndie Seele trägt mich immerfort.\\n\\n[Refrain]\\nO Licht der Zeit, verlier mich nicht,\\nführ mich durch Nacht, führ mich ins Licht,\\nwas auch vergeht, was auch zerbricht,\\nmein Herz bleibt treu dem alten Lied.\\n\\n[Strophe 3]\\nDie Sterne ruh’n im dunklen See,\\nder Wind erzählt von fernem Weh,\\ndoch in der Stille find’ ich Ruh,\\nund geh den Weg, der führt zu dir.\\n\\n[Refrain]\\nO Licht der Zeit, verlier mich nicht,\\nführ mich durch Nacht, führ mich ins Licht,\\nwas auch vergeht, was auch zerbricht,\\nmein Herz bleibt treu dem alten Lied.\\n\\n[Schluss]\\nUnd wenn die Tage leiser geh’n,\\nwird meine Hoffnung weitersteh’n,\\nim Licht der Zeit, so klar, so weit,\\nbleibt meine Spur in Ewigkeit.\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/im-licht-der-zeit_8-1",
+        "https://suno.com/song/0a1b461f-365e-4e0f-a0cf-d83a8f24da10",
+        "https://cdn2.suno.ai/image_large_0a1b461f-365e-4e0f-a0cf-d83a8f24da10.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2281546721",
+      "title": "🎵 __Jessica__",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/jessica-2",
+      "soundcloudDurationSeconds": 216,
+      "selectedSuno": {
+        "id": "3bf0090e-8b14-42b2-9546-24b27154af1a",
+        "title": "🎵 **Jessica**",
+        "url": "https://suno.com/song/3bf0090e-8b14-42b2-9546-24b27154af1a",
+        "version": "v5",
+        "durationSeconds": 217,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/3bf0090e-8b14-42b2-9546-24b27154af1a.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_3bf0090e-8b14-42b2-9546-24b27154af1a.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/jessica-2",
+        "https://suno.com/song/3bf0090e-8b14-42b2-9546-24b27154af1a",
+        "https://cdn2.suno.ai/image_large_3bf0090e-8b14-42b2-9546-24b27154af1a.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2281546724",
+      "title": "🎵 __Jessica__",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/jessica_1-1",
+      "soundcloudDurationSeconds": 175,
+      "selectedSuno": {
+        "id": "1391cb23-1447-4ec1-be8c-b500ff5d642c",
+        "title": "🎵 **Jessica**",
+        "url": "https://suno.com/song/1391cb23-1447-4ec1-be8c-b500ff5d642c",
+        "version": "v5",
+        "durationSeconds": 175,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/1391cb23-1447-4ec1-be8c-b500ff5d642c.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_1391cb23-1447-4ec1-be8c-b500ff5d642c.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/jessica_1-1",
+        "https://suno.com/song/1391cb23-1447-4ec1-be8c-b500ff5d642c",
+        "https://cdn2.suno.ai/image_large_1391cb23-1447-4ec1-be8c-b500ff5d642c.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2252025941",
+      "title": "__Título_ Corrido de Yaneth Méndez__",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/titulo_corrido-de-yaneth-mendez-2",
+      "soundcloudDurationSeconds": 61,
+      "selectedSuno": {
+        "id": "0c7b0dfe-91aa-46d8-ac4d-ac2049255065",
+        "title": "**Título: Corrido de Yaneth Méndez**",
+        "url": "https://suno.com/song/0c7b0dfe-91aa-46d8-ac4d-ac2049255065",
+        "version": "v5",
+        "durationSeconds": 62,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/0c7b0dfe-91aa-46d8-ac4d-ac2049255065.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_0c7b0dfe-91aa-46d8-ac4d-ac2049255065.jpeg",
+        "style": "egyptrap",
+        "hasVocal": false
+      },
+      "lyrics": "**Título: Corrido de Yaneth Méndez**\\n\\nEn la ciudad se escucha su nombre,\\nYaneth Méndez le dicen la joven.\\nPaso seguro, mirada que rompe,\\nsabe muy bien lo que quiere y pa’ dónde.\\n\\nNo presume, pero la respetan,\\ncuando camina la calle se inquieta.\\nTrae la cabeza bien fría y derecha,\\ny una sonrisa que nadie interpreta.\\n\\nCon su perfume mueve la corriente,\\nella no sigue, ella va de frente.\\nSabe que el mundo le debe pendiente,\\nno se doblega, nunca es suficiente.\\n\\nDicen que tiene estilo elegante,\\nque no le falla jamás el talante.\\nY entre guitarras su nombre se expande,\\nporque en la vida nació pa’ ganarle.\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/titulo_corrido-de-yaneth-mendez-2",
+        "https://suno.com/song/0c7b0dfe-91aa-46d8-ac4d-ac2049255065",
+        "https://cdn2.suno.ai/image_large_0c7b0dfe-91aa-46d8-ac4d-ac2049255065.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2259896396",
+      "title": "__Tornasol Touch__",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/tornasol-touch-2",
+      "soundcloudDurationSeconds": 162,
+      "selectedSuno": {
+        "id": "50c2fb42-35a2-435e-8116-6d9d7485b745",
+        "title": "**Tornasol Touch**",
+        "url": "https://suno.com/song/50c2fb42-35a2-435e-8116-6d9d7485b745",
+        "version": "v5",
+        "durationSeconds": 162,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/50c2fb42-35a2-435e-8116-6d9d7485b745.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_50c2fb42-35a2-435e-8116-6d9d7485b745.jpeg",
+        "style": "neo-psychedelia reggae fusion with soft trap influence, lush female vocals dripping confidence and cosmic glamour, shimmering synths, deep bass, elegant rhythm, “Quantum Luxurious” — luxury as a state of mind, dripping gold and starlight, sensual and introspective vibe",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/tornasol-touch-2",
+        "https://suno.com/song/50c2fb42-35a2-435e-8116-6d9d7485b745",
+        "https://cdn2.suno.ai/image_large_50c2fb42-35a2-435e-8116-6d9d7485b745.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2255073155",
+      "title": "_Beyond the Orbit_",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/beyond-the-orbit",
+      "soundcloudDurationSeconds": 382,
+      "selectedSuno": {
+        "id": "7db5209d-3f84-42e2-b062-aca9afdd0434",
+        "title": "\"Beyond the Orbit\"",
+        "url": "https://suno.com/song/7db5209d-3f84-42e2-b062-aca9afdd0434",
+        "version": "v5.5",
+        "durationSeconds": 263,
+        "durationDeltaSeconds": 119,
+        "previewAudioUrl": "https://cdn1.suno.ai/7db5209d-3f84-42e2-b062-aca9afdd0434.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_7db5209d-3f84-42e2-b062-aca9afdd0434.jpeg",
+        "style": "The song fuses progressive and alternative metal with aggressive, syncopated riffs and abrupt time signature changes. Middle Eastern/Armenian scales color guitar leads and atmospheric passages, while percussive drumming alternates between pounding double-kick and folk-inspired rhythms. Dynamic shifts move from haunting, sparse verses to explosive, multi-layered choruses, featuring complex textures and angular bass lines. Distorted guitars intertwine with brief, dissonant oud or duduk flourishes for ethnic authenticity.",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/beyond-the-orbit",
+        "https://suno.com/song/7db5209d-3f84-42e2-b062-aca9afdd0434",
+        "https://cdn2.suno.ai/image_large_7db5209d-3f84-42e2-b062-aca9afdd0434.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 119s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2255076917",
+      "title": "_Beyond the Orbit_",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/beyond-the-orbit-1",
+      "soundcloudDurationSeconds": 230,
+      "selectedSuno": {
+        "id": "24f67ae1-dd44-4a46-851e-184da26a8eb4",
+        "title": "\"Beyond the Orbit\"",
+        "url": "https://suno.com/song/24f67ae1-dd44-4a46-851e-184da26a8eb4",
+        "version": "v5.5",
+        "durationSeconds": 240,
+        "durationDeltaSeconds": 10,
+        "previewAudioUrl": "https://cdn1.suno.ai/24f67ae1-dd44-4a46-851e-184da26a8eb4.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_24f67ae1-dd44-4a46-851e-184da26a8eb4.jpeg",
+        "style": "The song fuses progressive and alternative metal with aggressive, syncopated riffs and abrupt time signature changes. Middle Eastern/Armenian scales color guitar leads and atmospheric passages, while percussive drumming alternates between pounding double-kick and folk-inspired rhythms. Dynamic shifts move from haunting, sparse verses to explosive, multi-layered choruses, featuring complex textures and angular bass lines. Distorted guitars intertwine with brief, dissonant oud or duduk flourishes for ethnic authenticity.",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/beyond-the-orbit-1",
+        "https://suno.com/song/24f67ae1-dd44-4a46-851e-184da26a8eb4",
+        "https://cdn2.suno.ai/image_large_24f67ae1-dd44-4a46-851e-184da26a8eb4.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 10s; revisar versión antes de descargar",
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2257053590",
+      "title": "Alma Eterna (Remix)",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/alma-eterna-remix-1",
+      "soundcloudDurationSeconds": 190,
+      "selectedSuno": {
+        "id": "a93eee1c-a2e5-4959-8f95-f7dd9e439b20",
+        "title": "Alma Eterna (Remix)",
+        "url": "https://suno.com/song/a93eee1c-a2e5-4959-8f95-f7dd9e439b20",
+        "version": "v5",
+        "durationSeconds": 340,
+        "durationDeltaSeconds": 150,
+        "previewAudioUrl": "https://cdn1.suno.ai/a93eee1c-a2e5-4959-8f95-f7dd9e439b20.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_a93eee1c-a2e5-4959-8f95-f7dd9e439b20.jpeg",
+        "style": "Reggae + Dub Techno",
+        "hasVocal": false
+      },
+      "lyrics": "🎤 Letra\\n\\n(Verso 1 – voz suave, casi susurro)\\n🌌\\nEntre estrellas camino despacio,\\ntu reflejo me guía en el espacio.\\nCada nota es un lazo divino,\\nme sostiene en todo mi destino.\\n\\n(Coro – voces corales, atmosféricas)\\n✨\\nAlma eterna, luz infinita,\\neres la llama que nunca se quita.\\n🌍\\nAlma eterna, vibra bendita,\\neres la voz que siempre me habita.\\n\\n(Verso 2)\\nEn tus manos se encuentra la calma,\\nen tus ojos descansa mi alma.\\nEl silencio me lleva a tu canto,\\nun eterno abrazo en lo alto.\\n\\n(Coro – repetición, con armonías globales)\\n✨\\nAlma eterna, luz infinita,\\neres la llama que nunca se quita.\\n🌍\\nAlma eterna, vibra bendita,\\neres la voz que siempre me habita.",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/alma-eterna-remix-1",
+        "https://suno.com/song/a93eee1c-a2e5-4959-8f95-f7dd9e439b20",
+        "https://cdn2.suno.ai/image_large_a93eee1c-a2e5-4959-8f95-f7dd9e439b20.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 150s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2275804013",
+      "title": "ANdrey",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/andrey",
+      "soundcloudDurationSeconds": 246,
+      "selectedSuno": {
+        "id": "8e5a1d5d-3a86-4039-b652-bdb6d78c4beb",
+        "title": "ANdrey",
+        "url": "https://suno.com/song/8e5a1d5d-3a86-4039-b652-bdb6d78c4beb",
+        "version": "v5",
+        "durationSeconds": 246,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/8e5a1d5d-3a86-4039-b652-bdb6d78c4beb.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_8e5a1d5d-3a86-4039-b652-bdb6d78c4beb.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/andrey",
+        "https://suno.com/song/8e5a1d5d-3a86-4039-b652-bdb6d78c4beb",
+        "https://cdn2.suno.ai/image_large_8e5a1d5d-3a86-4039-b652-bdb6d78c4beb.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2255964650",
+      "title": "Arlem",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/arlem-1-1",
+      "soundcloudDurationSeconds": 284,
+      "selectedSuno": {
+        "id": "ea14e679-468f-4e72-b3f8-521256772b2c",
+        "title": "Arlem",
+        "url": "https://suno.com/song/ea14e679-468f-4e72-b3f8-521256772b2c",
+        "version": "v5",
+        "durationSeconds": 285,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/ea14e679-468f-4e72-b3f8-521256772b2c.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_ea14e679-468f-4e72-b3f8-521256772b2c.jpeg",
+        "style": null,
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/arlem-1-1",
+        "https://suno.com/song/ea14e679-468f-4e72-b3f8-521256772b2c",
+        "https://cdn2.suno.ai/image_large_ea14e679-468f-4e72-b3f8-521256772b2c.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2187396988",
+      "title": "Arlem",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/arlem-3",
+      "soundcloudDurationSeconds": 125,
+      "selectedSuno": {
+        "id": "25ea2dcc-7004-46f8-b278-1d4aea97cc6b",
+        "title": "Arlem",
+        "url": "https://suno.com/song/25ea2dcc-7004-46f8-b278-1d4aea97cc6b",
+        "version": "v5",
+        "durationSeconds": 212,
+        "durationDeltaSeconds": 87,
+        "previewAudioUrl": "https://cdn1.suno.ai/25ea2dcc-7004-46f8-b278-1d4aea97cc6b.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_25ea2dcc-7004-46f8-b278-1d4aea97cc6b.jpeg",
+        "style": "",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/arlem-3",
+        "https://suno.com/song/25ea2dcc-7004-46f8-b278-1d4aea97cc6b",
+        "https://cdn2.suno.ai/image_large_25ea2dcc-7004-46f8-b278-1d4aea97cc6b.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 87s; revisar versión antes de descargar",
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2273619770",
+      "title": "Ashley Ortega",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/ashley-ortega_3-1",
+      "soundcloudDurationSeconds": 192,
+      "selectedSuno": {
+        "id": "515bbc8d-264c-4efa-988b-93e9111ec82f",
+        "title": "**Ashley Ortega**",
+        "url": "https://suno.com/song/515bbc8d-264c-4efa-988b-93e9111ec82f",
+        "version": "v5",
+        "durationSeconds": 192,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/515bbc8d-264c-4efa-988b-93e9111ec82f.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_515bbc8d-264c-4efa-988b-93e9111ec82f.jpeg",
+        "style": "neo-psychedelia reggae fusion with soft trap influence, lush female vocals dripping confidence and cosmic glamour, shimmering synths, deep bass, elegant rhythm, “Quantum Luxurious” — luxury as a state of mind, dripping gold and starlight, sensual and introspective vibe",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/ashley-ortega_3-1",
+        "https://suno.com/song/515bbc8d-264c-4efa-988b-93e9111ec82f",
+        "https://cdn2.suno.ai/image_large_515bbc8d-264c-4efa-988b-93e9111ec82f.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2273619773",
+      "title": "Ashley Ortega",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/ashley-ortega-4",
+      "soundcloudDurationSeconds": 172,
+      "selectedSuno": {
+        "id": "035ae664-cfa2-4cc6-9fe5-e7090368c906",
+        "title": "**Ashley Ortega**",
+        "url": "https://suno.com/song/035ae664-cfa2-4cc6-9fe5-e7090368c906",
+        "version": "v5",
+        "durationSeconds": 172,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/035ae664-cfa2-4cc6-9fe5-e7090368c906.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_035ae664-cfa2-4cc6-9fe5-e7090368c906.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/ashley-ortega-4",
+        "https://suno.com/song/035ae664-cfa2-4cc6-9fe5-e7090368c906",
+        "https://cdn2.suno.ai/image_large_035ae664-cfa2-4cc6-9fe5-e7090368c906.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2273619779",
+      "title": "Ashley Ortega",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/ashley-ortega_1-3",
+      "soundcloudDurationSeconds": 156,
+      "selectedSuno": {
+        "id": "3f24d9af-67c3-4880-8ea7-46fd3876c6d7",
+        "title": "**Ashley Ortega**",
+        "url": "https://suno.com/song/3f24d9af-67c3-4880-8ea7-46fd3876c6d7",
+        "version": "v5",
+        "durationSeconds": 157,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/3f24d9af-67c3-4880-8ea7-46fd3876c6d7.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_3f24d9af-67c3-4880-8ea7-46fd3876c6d7.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/ashley-ortega_1-3",
+        "https://suno.com/song/3f24d9af-67c3-4880-8ea7-46fd3876c6d7",
+        "https://cdn2.suno.ai/image_large_3f24d9af-67c3-4880-8ea7-46fd3876c6d7.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2279452346",
+      "title": "Bailamos en el barrio",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/bailamos-en-el-barrio",
+      "soundcloudDurationSeconds": 151,
+      "selectedSuno": {
+        "id": "cd0b6201-0c5d-45c0-807b-ef305c9cbfe7",
+        "title": "Bailamos en el barrio",
+        "url": "https://suno.com/song/cd0b6201-0c5d-45c0-807b-ef305c9cbfe7",
+        "version": "v5",
+        "durationSeconds": 151,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/cd0b6201-0c5d-45c0-807b-ef305c9cbfe7.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_cd0b6201-0c5d-45c0-807b-ef305c9cbfe7.jpeg",
+        "style": "pop, Latin pop, mambo, trumpet-led, uptempo, Spanish language, mambo",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/bailamos-en-el-barrio",
+        "https://suno.com/song/cd0b6201-0c5d-45c0-807b-ef305c9cbfe7",
+        "https://cdn2.suno.ai/image_large_cd0b6201-0c5d-45c0-807b-ef305c9cbfe7.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2251755098",
+      "title": "Belinda",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/ii-sobre-frecuencias-que",
+      "soundcloudDurationSeconds": 159,
+      "selectedSuno": {
+        "id": "056cc28c-2896-4e68-86f4-2b99158c71cd",
+        "title": "Belinda",
+        "url": "https://suno.com/song/056cc28c-2896-4e68-86f4-2b99158c71cd",
+        "version": "v5",
+        "durationSeconds": 165,
+        "durationDeltaSeconds": 6,
+        "previewAudioUrl": "https://cdn1.suno.ai/056cc28c-2896-4e68-86f4-2b99158c71cd.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_056cc28c-2896-4e68-86f4-2b99158c71cd.jpeg",
+        "style": "Reggae clásico de los años 80 con influencias dancehall, ritmo relajado pero enérgico, bajo profundo y cálido, batería con patrón one-drop, guitarra rítmica con staccato, arreglos con teclados tipo órgano jamaicano y toques de sintetizador vintage, voces melódicas y expresivas con estilo caribeño, atmósfera festiva y positiva, mezcla con sensación analógica y reverb espacial",
+        "hasVocal": false
+      },
+      "lyrics": "**Título: “Belinda”**\\n\\nVerso 1\\nDesde el brillo de la tarde\\nhasta el eco de mi voz,\\nse detiene el calendario\\ncuando pasa cerca vos.\\n\\nPre-Coro\\nY no sé si tú lo notas,\\npero llevo este secreto\\nque se escapa en cada historia\\ny en el ritmo de mi pecho.\\n\\nCoro\\nBelinda, qué bonita coincidencia,\\nme encontraste sin defensa\\ny me cambiaste la intención.\\nBelinda, si supieras lo que siento,\\nte hago un verso en un momento\\ny te guardo en mi canción.\\n\\nVerso 2\\nEntre luces y silencios\\nnace algo sin planear,\\ncomo un mapa sin destino\\nque te quiere acompañar.\\n\\nPre-Coro\\nSi algún día lo preguntas,\\nno me guardo ni un detalle:\\nyo te miro y el invierno\\nse convierte en verano.\\n\\nCoro\\nBelinda, qué bonita coincidencia… (repite)\\n\\nPuente\\nY si un día el mundo pesa,\\nyo le quito gravedad;\\nno hace falta ser astronauta\\npa’ aprender a levitar.\\n\\nCoro final\\nBelinda, qué bonita coincidencia,\\nque te cruces en mi historia\\ny me cambies la canción.\\nBelinda, si te late la idea,\\nde dejar sonar el tiempo\\ny ver qué dice el corazón.\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/ii-sobre-frecuencias-que",
+        "https://suno.com/song/056cc28c-2896-4e68-86f4-2b99158c71cd",
+        "https://cdn2.suno.ai/image_large_056cc28c-2896-4e68-86f4-2b99158c71cd.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 6s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2257272968",
+      "title": "betty",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/betty-3-1",
+      "soundcloudDurationSeconds": 209,
+      "selectedSuno": {
+        "id": "3c5c3eb8-2779-423f-ba29-7d635b97e371",
+        "title": "betty",
+        "url": "https://suno.com/song/3c5c3eb8-2779-423f-ba29-7d635b97e371",
+        "version": null,
+        "durationSeconds": 212,
+        "durationDeltaSeconds": 3,
+        "previewAudioUrl": "https://cdn1.suno.ai/3c5c3eb8-2779-423f-ba29-7d635b97e371.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_3c5c3eb8-2779-423f-ba29-7d635b97e371.jpeg",
+        "style": "",
+        "hasVocal": false
+      },
+      "lyrics": "Betty, traigo una canción nacida del sol\\ncon ritmo suave y corazón en tambor.\\nLuz de vida, vibra que calma el dolor,\\ntu risa es brisa, tu mirada calor.\\nLate el bajo como el pulso del mar,\\ntu nombre flota y me invita a cantar.\\nSi el mundo pesa, tu voz me da paz,\\ncomo un faro encendido en la oscuridad.\\n**Coro:**\\nLuz de vida, ven y baila junto a mí,\\nsuave la marea, todo empieza aquí.\\nTu energía me hace revivir,\\nsol en la noche, motivo de latir.\\nNo es promesa de humo ni frase al pasar,\\nes melodía sincera queriendo abrazar.\\nQue esta canción te acompañe al andar,\\nluz de mi día, razón para vibrar.\\n**Coro**Coro:**\\nLuz :**\\nLuz de de vidavida, ven , ven y y baila baila junto junto a a mímí,\\nsuave ,\\nsuave la la maremareaa, todo , todo empieempieza za aquí.\\naquí.\\nTu Tu enerenerggía ía me me hace hace revirevivirvir,,\\nsol en la noche, motivo de latir. 🌿🎶",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/betty-3-1",
+        "https://suno.com/song/3c5c3eb8-2779-423f-ba29-7d635b97e371",
+        "https://cdn2.suno.ai/image_large_3c5c3eb8-2779-423f-ba29-7d635b97e371.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2257272965",
+      "title": "betty",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/betty-2-2",
+      "soundcloudDurationSeconds": 173,
+      "selectedSuno": {
+        "id": "3c5c3eb8-2779-423f-ba29-7d635b97e371",
+        "title": "betty",
+        "url": "https://suno.com/song/3c5c3eb8-2779-423f-ba29-7d635b97e371",
+        "version": null,
+        "durationSeconds": 212,
+        "durationDeltaSeconds": 39,
+        "previewAudioUrl": "https://cdn1.suno.ai/3c5c3eb8-2779-423f-ba29-7d635b97e371.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_3c5c3eb8-2779-423f-ba29-7d635b97e371.jpeg",
+        "style": "",
+        "hasVocal": false
+      },
+      "lyrics": "Betty, traigo una canción nacida del sol\\ncon ritmo suave y corazón en tambor.\\nLuz de vida, vibra que calma el dolor,\\ntu risa es brisa, tu mirada calor.\\nLate el bajo como el pulso del mar,\\ntu nombre flota y me invita a cantar.\\nSi el mundo pesa, tu voz me da paz,\\ncomo un faro encendido en la oscuridad.\\n**Coro:**\\nLuz de vida, ven y baila junto a mí,\\nsuave la marea, todo empieza aquí.\\nTu energía me hace revivir,\\nsol en la noche, motivo de latir.\\nNo es promesa de humo ni frase al pasar,\\nes melodía sincera queriendo abrazar.\\nQue esta canción te acompañe al andar,\\nluz de mi día, razón para vibrar.\\n**Coro**Coro:**\\nLuz :**\\nLuz de de vidavida, ven , ven y y baila baila junto junto a a mímí,\\nsuave ,\\nsuave la la maremareaa, todo , todo empieempieza za aquí.\\naquí.\\nTu Tu enerenerggía ía me me hace hace revirevivirvir,,\\nsol en la noche, motivo de latir. 🌿🎶",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/betty-2-2",
+        "https://suno.com/song/3c5c3eb8-2779-423f-ba29-7d635b97e371",
+        "https://cdn2.suno.ai/image_large_3c5c3eb8-2779-423f-ba29-7d635b97e371.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 39s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2271165236",
+      "title": "Bullet",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/bullet-1",
+      "soundcloudDurationSeconds": 145,
+      "selectedSuno": {
+        "id": "1d3f729c-bd9d-4002-aa82-8861c70de72e",
+        "title": "Bullet",
+        "url": "https://suno.com/song/1d3f729c-bd9d-4002-aa82-8861c70de72e",
+        "version": "v5",
+        "durationSeconds": 212,
+        "durationDeltaSeconds": 67,
+        "previewAudioUrl": "https://cdn1.suno.ai/1d3f729c-bd9d-4002-aa82-8861c70de72e.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_1d3f729c-bd9d-4002-aa82-8861c70de72e.jpeg",
+        "style": "Reggae clásico de los años 80 con influencias dancehall, ritmo relajado pero enérgico, bajo profundo y cálido, batería con patrón one-drop, guitarra rítmica con staccato, arreglos con teclados tipo órgano jamaicano y toques de sintetizador vintage, voces melódicas y expresivas con estilo caribeño, atmósfera festiva y positiva, mezcla con sensación analógica y reverb espacial",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/bullet-1",
+        "https://suno.com/song/1d3f729c-bd9d-4002-aa82-8861c70de72e",
+        "https://cdn2.suno.ai/image_large_1d3f729c-bd9d-4002-aa82-8861c70de72e.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 67s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2271165239",
+      "title": "Bullet",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/bullet-1-2",
+      "soundcloudDurationSeconds": 134,
+      "selectedSuno": {
+        "id": "1d3f729c-bd9d-4002-aa82-8861c70de72e",
+        "title": "Bullet",
+        "url": "https://suno.com/song/1d3f729c-bd9d-4002-aa82-8861c70de72e",
+        "version": "v5",
+        "durationSeconds": 212,
+        "durationDeltaSeconds": 78,
+        "previewAudioUrl": "https://cdn1.suno.ai/1d3f729c-bd9d-4002-aa82-8861c70de72e.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_1d3f729c-bd9d-4002-aa82-8861c70de72e.jpeg",
+        "style": "Reggae clásico de los años 80 con influencias dancehall, ritmo relajado pero enérgico, bajo profundo y cálido, batería con patrón one-drop, guitarra rítmica con staccato, arreglos con teclados tipo órgano jamaicano y toques de sintetizador vintage, voces melódicas y expresivas con estilo caribeño, atmósfera festiva y positiva, mezcla con sensación analógica y reverb espacial",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/bullet-1-2",
+        "https://suno.com/song/1d3f729c-bd9d-4002-aa82-8861c70de72e",
+        "https://cdn2.suno.ai/image_large_1d3f729c-bd9d-4002-aa82-8861c70de72e.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 78s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2267327048",
+      "title": "Bulletproof Heart",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/bulletproof-heart",
+      "soundcloudDurationSeconds": 146,
+      "selectedSuno": {
+        "id": "52e48e10-740a-49c8-857a-4e71691fe6b8",
+        "title": "Bulletproof Heart",
+        "url": "https://suno.com/song/52e48e10-740a-49c8-857a-4e71691fe6b8",
+        "version": "v5",
+        "durationSeconds": 147,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/52e48e10-740a-49c8-857a-4e71691fe6b8.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_52e48e10-740a-49c8-857a-4e71691fe6b8.jpeg",
+        "style": "The song opens with a laid-back bass groove and crisp ride cymbal, laying a cool jazz foundation. Punchy horns, muted trumpet, and brushed snare embody swing noir and spy jazz flavors. The arrangement fuses retro lounge funk with minimal big band textures, adding cascading vibraphone and staccato guitar riffs for a cinematic 60s crime feel. Sections alternate between tension-building, suspenseful breaks and smooth, sultry main themes, weaving a stylish, cinematic heist-jazz tapestry. modern Ultra-processed synthetic vocals, heavily autotuned and vocoded, futuristic and glossy, extreme vocal effects, layered harmonies, robotic and digital texture, studio-polished, cinematic production, wide stereo, lush reverb and delay, modern electronic vocal sound design house\\n, greek trap",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/bulletproof-heart",
+        "https://suno.com/song/52e48e10-740a-49c8-857a-4e71691fe6b8",
+        "https://cdn2.suno.ai/image_large_52e48e10-740a-49c8-857a-4e71691fe6b8.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2280161486",
+      "title": "Caffeine Dreams",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/caffeine-dreams",
+      "soundcloudDurationSeconds": 187,
+      "selectedSuno": {
+        "id": "f1a8aee9-8118-4e56-888f-71610b7be726",
+        "title": "CAFFEINE DREAMS ☕",
+        "url": "https://suno.com/song/f1a8aee9-8118-4e56-888f-71610b7be726",
+        "version": "v5.5",
+        "durationSeconds": 269,
+        "durationDeltaSeconds": 82,
+        "previewAudioUrl": "https://cdn1.suno.ai/f1a8aee9-8118-4e56-888f-71610b7be726.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_f1a8aee9-8118-4e56-888f-71610b7be726.jpeg",
+        "style": "house reggae dub dance",
+        "hasVocal": true
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/caffeine-dreams",
+        "https://suno.com/song/f1a8aee9-8118-4e56-888f-71610b7be726",
+        "https://cdn2.suno.ai/image_large_f1a8aee9-8118-4e56-888f-71610b7be726.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 82s; revisar versión antes de descargar",
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2255150945",
+      "title": "Fading Crowns",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/fading-crowns-1-1",
+      "soundcloudDurationSeconds": 247,
+      "selectedSuno": {
+        "id": "e8ba4a22-cf58-4f3e-8577-670d9b48ba40",
+        "title": "Fading Crowns",
+        "url": "https://suno.com/song/e8ba4a22-cf58-4f3e-8577-670d9b48ba40",
+        "version": "v5",
+        "durationSeconds": 247,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/e8ba4a22-cf58-4f3e-8577-670d9b48ba40.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_e8ba4a22-cf58-4f3e-8577-670d9b48ba40.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/fading-crowns-1-1",
+        "https://suno.com/song/e8ba4a22-cf58-4f3e-8577-670d9b48ba40",
+        "https://cdn2.suno.ai/image_large_e8ba4a22-cf58-4f3e-8577-670d9b48ba40.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2253377477",
+      "title": "Flor de madrugada",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/flor-de-madrugada-1",
+      "soundcloudDurationSeconds": 133,
+      "selectedSuno": {
+        "id": "2ff5e621-7a51-49c9-8fe4-8feaeca451d6",
+        "title": "Flor de madrugada…",
+        "url": "https://suno.com/song/2ff5e621-7a51-49c9-8fe4-8feaeca451d6",
+        "version": "v5",
+        "durationSeconds": 133,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/2ff5e621-7a51-49c9-8fe4-8feaeca451d6.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_2ff5e621-7a51-49c9-8fe4-8feaeca451d6.jpeg",
+        "style": null,
+        "hasVocal": false
+      },
+      "lyrics": "Flor de madrugada…\\nla fuerza le nace antes del sol\\ny no se cansa.\\n\\nVioleta como cielo de noche,\\niluminando la ciudad sin quererlo,\\ncon esa energía que levanta el día\\nantes de que el día exista.\\n\\nSaca brillo del sudor\\ny constancia de la nada,\\ncomo si el tiempo la buscara a ella\\ny no al revés.\\n\\nSiempre en movimiento,\\nsiempre bonita,\\nsiempre encendida 💫\\n\\n**CORO:**\\nBaila suave la mañana,\\nbaila fuerte la intención,\\ncorazón que va sin prisa\\npero nunca sin razón.\\n\\n**CORO (respuesta):**\\nLuz que sube con la brisa,\\ncomo canto sin motor,\\ncaminito que se enciende\\ncuando late el corazón.\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/flor-de-madrugada-1",
+        "https://suno.com/song/2ff5e621-7a51-49c9-8fe4-8feaeca451d6",
+        "https://cdn2.suno.ai/image_large_2ff5e621-7a51-49c9-8fe4-8feaeca451d6.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2253370283",
+      "title": "Flor de madrugada",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/flor-de-madrugada",
+      "soundcloudDurationSeconds": 133,
+      "selectedSuno": {
+        "id": "2ff5e621-7a51-49c9-8fe4-8feaeca451d6",
+        "title": "Flor de madrugada…",
+        "url": "https://suno.com/song/2ff5e621-7a51-49c9-8fe4-8feaeca451d6",
+        "version": "v5",
+        "durationSeconds": 133,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/2ff5e621-7a51-49c9-8fe4-8feaeca451d6.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_2ff5e621-7a51-49c9-8fe4-8feaeca451d6.jpeg",
+        "style": null,
+        "hasVocal": false
+      },
+      "lyrics": "Flor de madrugada…\\nla fuerza le nace antes del sol\\ny no se cansa.\\n\\nVioleta como cielo de noche,\\niluminando la ciudad sin quererlo,\\ncon esa energía que levanta el día\\nantes de que el día exista.\\n\\nSaca brillo del sudor\\ny constancia de la nada,\\ncomo si el tiempo la buscara a ella\\ny no al revés.\\n\\nSiempre en movimiento,\\nsiempre bonita,\\nsiempre encendida 💫\\n\\n**CORO:**\\nBaila suave la mañana,\\nbaila fuerte la intención,\\ncorazón que va sin prisa\\npero nunca sin razón.\\n\\n**CORO (respuesta):**\\nLuz que sube con la brisa,\\ncomo canto sin motor,\\ncaminito que se enciende\\ncuando late el corazón.\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/flor-de-madrugada",
+        "https://suno.com/song/2ff5e621-7a51-49c9-8fe4-8feaeca451d6",
+        "https://cdn2.suno.ai/image_large_2ff5e621-7a51-49c9-8fe4-8feaeca451d6.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2251838792",
+      "title": "Gigi",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/gigi-4",
+      "soundcloudDurationSeconds": 201,
+      "selectedSuno": {
+        "id": "5a960a21-1bd8-4a25-a978-c8ff5f39e951",
+        "title": "gigi",
+        "url": "https://suno.com/song/5a960a21-1bd8-4a25-a978-c8ff5f39e951",
+        "version": "v5",
+        "durationSeconds": 201,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/5a960a21-1bd8-4a25-a978-c8ff5f39e951.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_5a960a21-1bd8-4a25-a978-c8ff5f39e951.jpeg",
+        "style": "Reggae clásico de los años 80 con influencias dancehall, ritmo relajado pero enérgico, bajo profundo y cálido, batería con patrón one-drop, guitarra rítmica con staccato, arreglos con teclados tipo órgano jamaicano y toques de sintetizador vintage, voces melódicas y expresivas con estilo caribeño, atmósfera festiva y positiva, mezcla con sensación analógica y reverb espacial",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/gigi-4",
+        "https://suno.com/song/5a960a21-1bd8-4a25-a978-c8ff5f39e951",
+        "https://cdn2.suno.ai/image_large_5a960a21-1bd8-4a25-a978-c8ff5f39e951.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2251838786",
+      "title": "Gigi",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/gigi-1-3",
+      "soundcloudDurationSeconds": 206,
+      "selectedSuno": {
+        "id": "9a1768aa-7068-4e8b-b526-9e3d5ab49099",
+        "title": "gigi",
+        "url": "https://suno.com/song/9a1768aa-7068-4e8b-b526-9e3d5ab49099",
+        "version": "v5",
+        "durationSeconds": 206,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/9a1768aa-7068-4e8b-b526-9e3d5ab49099.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_9a1768aa-7068-4e8b-b526-9e3d5ab49099.jpeg",
+        "style": "Reggae clásico de los años 80 con influencias dancehall, ritmo relajado pero enérgico, bajo profundo y cálido, batería con patrón one-drop, guitarra rítmica con staccato, arreglos con teclados tipo órgano jamaicano y toques de sintetizador vintage, voces melódicas y expresivas con estilo caribeño, atmósfera festiva y positiva, mezcla con sensación analógica y reverb espacial",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/gigi-1-3",
+        "https://suno.com/song/9a1768aa-7068-4e8b-b526-9e3d5ab49099",
+        "https://cdn2.suno.ai/image_large_9a1768aa-7068-4e8b-b526-9e3d5ab49099.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2251838789",
+      "title": "Gigi",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/gigi-3-1",
+      "soundcloudDurationSeconds": 184,
+      "selectedSuno": {
+        "id": "20735621-327b-41ab-b119-8dc2cb5a25ac",
+        "title": "gigi",
+        "url": "https://suno.com/song/20735621-327b-41ab-b119-8dc2cb5a25ac",
+        "version": "v5",
+        "durationSeconds": 174,
+        "durationDeltaSeconds": 10,
+        "previewAudioUrl": "https://cdn1.suno.ai/20735621-327b-41ab-b119-8dc2cb5a25ac.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_20735621-327b-41ab-b119-8dc2cb5a25ac.jpeg",
+        "style": "Future House / World Pop / EDM Tribal",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/gigi-3-1",
+        "https://suno.com/song/20735621-327b-41ab-b119-8dc2cb5a25ac",
+        "https://cdn2.suno.ai/image_large_20735621-327b-41ab-b119-8dc2cb5a25ac.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 10s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2255024852",
+      "title": "Habibi la ila, habibi la ila",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/habibi-la-ila-habibi-la-ila",
+      "soundcloudDurationSeconds": 109,
+      "selectedSuno": {
+        "id": "2b5c6c49-7f86-4c7e-afb9-5701894de12a",
+        "title": "Habibi la ila, habibi la ila",
+        "url": "https://suno.com/song/2b5c6c49-7f86-4c7e-afb9-5701894de12a",
+        "version": "v5",
+        "durationSeconds": 110,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/2b5c6c49-7f86-4c7e-afb9-5701894de12a.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_2b5c6c49-7f86-4c7e-afb9-5701894de12a.jpeg",
+        "style": "Gnawa, bereber, árabe-andalusí, incluso ecos otomanos.\\ntechno dub mantra, bass",
+        "hasVocal": null
+      },
+      "lyrics": "Habibi la ila, habibi la ila\\nYallah yallah, brilla la luna\\nHabibi la ila, habibi la ila\\nGnawa el fuego, danza la tribu\\n\\nHabibi la ila, habibi la ila\\nYallah yallah, viento del desierto\\nHabibi la ila, habibi la ila\\nBass en el alma, trance en el pecho\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/habibi-la-ila-habibi-la-ila",
+        "https://suno.com/song/2b5c6c49-7f86-4c7e-afb9-5701894de12a",
+        "https://cdn2.suno.ai/image_large_2b5c6c49-7f86-4c7e-afb9-5701894de12a.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2253294182",
+      "title": "Hiram",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/hiram",
+      "soundcloudDurationSeconds": 118,
+      "selectedSuno": {
+        "id": "0c012ba3-63e6-4293-8664-d381eb7ed229",
+        "title": "hiram",
+        "url": "https://suno.com/song/0c012ba3-63e6-4293-8664-d381eb7ed229",
+        "version": "v5",
+        "durationSeconds": 118,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/0c012ba3-63e6-4293-8664-d381eb7ed229.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_0c012ba3-63e6-4293-8664-d381eb7ed229.jpeg",
+        "style": "Reggae clásico de los años 80 con influencias dancehall, ritmo relajado pero enérgico, bajo profundo y cálido, batería con patrón one-drop, guitarra rítmica con staccato, arreglos con teclados tipo órgano jamaicano y toques de sintetizador vintage, voces melódicas y expresivas con estilo caribeño, atmósfera festiva y positiva, mezcla con sensación analógica y reverb espacial",
+        "hasVocal": null
+      },
+      "lyrics": "**Título:** *Hiram en las Alturas (Moto Mix 2.0)*\\n\\n**Verso 1**\\nHiram ruge lento por la calle principal,\\ndicen que el sol se inclina pa’ mirarlo pasar.\\nTrae en los bolsillos mapas que no existen,\\ny un plan secreto pa’ domar lo triste.\\n\\n**Pre-Coro**\\nY cuando sube la noche al balcón,\\nél prende estrellas con su control.\\n\\n**Coro**\\nHiram, dueño del acelerador,\\nen buenas rutas, buen paisaje y mejor motor.\\nHiram, rodando con calor,\\nbuenos amigos, buenos brindis y buen humor.\\n\\n**Verso 2**\\nSe ríe del tiempo y del reloj digital,\\nle pone “turbo” al lunes laboral.\\nDicen que es mito, cuento o refrán,\\npero yo lo vi rodando en el huracán.\\n\\n**Pre-Coro**\\nY cuando sube la noche al balcón,\\nél prende estrellas con su control.\\n\\n**Coro final**\\nHiram, dueño del acelerador,\\nen buenas rutas, buen paisaje y mejor motor.\\nHiram, rodando con calor,\\nbuenos amigos, buenos brindis y buen humor.\\n\\n**Outro**\\nSi el cielo pierde color,\\nél le pinta un renglón…\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/hiram",
+        "https://suno.com/song/0c012ba3-63e6-4293-8664-d381eb7ed229",
+        "https://cdn2.suno.ai/image_large_0c012ba3-63e6-4293-8664-d381eb7ed229.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2259904607",
+      "title": "im Licht der Zeit",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/im-licht-der-zeit_1-2",
+      "soundcloudDurationSeconds": 177,
+      "selectedSuno": {
+        "id": "20120afd-c1d8-4822-bd44-a78ff064b0d1",
+        "title": "**Im Licht der Zeit**",
+        "url": "https://suno.com/song/20120afd-c1d8-4822-bd44-a78ff064b0d1",
+        "version": "v5",
+        "durationSeconds": 177,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/20120afd-c1d8-4822-bd44-a78ff064b0d1.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_20120afd-c1d8-4822-bd44-a78ff064b0d1.jpeg",
+        "style": "neo-psychedelia reggae fusion with soft trap influence, lush female vocals dripping confidence and cosmic glamour, shimmering synths, deep bass, elegant rhythm, “Quantum Luxurious” — luxury as a state of mind, dripping gold and starlight, sensual and introspective vibe",
+        "hasVocal": null
+      },
+      "lyrics": "**Im Licht der Zeit**\\n\\n[Strophe 1]\\nIm Morgennebel steht mein Traum,\\nso still wie alter Lindenbaum,\\ndie Welt verweht, der Weg bleibt klar,\\nmein Herz weiß noch, was gestern war.\\n\\n[Strophe 2]\\nDie Schatten zieh’n durch gold’ne Flur,\\ndie Zeit vergisst, doch ich bleib nur,\\nein leiser Schritt, ein stilles Wort,\\ndie Seele trägt mich immerfort.\\n\\n[Refrain]\\nO Licht der Zeit, verlier mich nicht,\\nführ mich durch Nacht, führ mich ins Licht,\\nwas auch vergeht, was auch zerbricht,\\nmein Herz bleibt treu dem alten Lied.\\n\\n[Strophe 3]\\nDie Sterne ruh’n im dunklen See,\\nder Wind erzählt von fernem Weh,\\ndoch in der Stille find’ ich Ruh,\\nund geh den Weg, der führt zu dir.\\n\\n[Refrain]\\nO Licht der Zeit, verlier mich nicht,\\nführ mich durch Nacht, führ mich ins Licht,\\nwas auch vergeht, was auch zerbricht,\\nmein Herz bleibt treu dem alten Lied.\\n\\n[Schluss]\\nUnd wenn die Tage leiser geh’n,\\nwird meine Hoffnung weitersteh’n,\\nim Licht der Zeit, so klar, so weit,\\nbleibt meine Spur in Ewigkeit.\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/im-licht-der-zeit_1-2",
+        "https://suno.com/song/20120afd-c1d8-4822-bd44-a78ff064b0d1",
+        "https://cdn2.suno.ai/image_large_20120afd-c1d8-4822-bd44-a78ff064b0d1.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2259904610",
+      "title": "im Licht der Zeit",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/im-licht-der-zeit-1",
+      "soundcloudDurationSeconds": 127,
+      "selectedSuno": {
+        "id": "e545353a-e451-4c36-a929-9519f5b6ef2a",
+        "title": "**Im Licht der Zeit**",
+        "url": "https://suno.com/song/e545353a-e451-4c36-a929-9519f5b6ef2a",
+        "version": "v5",
+        "durationSeconds": 127,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/e545353a-e451-4c36-a929-9519f5b6ef2a.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_e545353a-e451-4c36-a929-9519f5b6ef2a.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": false
+      },
+      "lyrics": "**Im Licht der Zeit**\\n\\n[Strophe 1]\\nIm Morgennebel steht mein Traum,\\nso still wie alter Lindenbaum,\\ndie Welt verweht, der Weg bleibt klar,\\nmein Herz weiß noch, was gestern war.\\n\\n[Strophe 2]\\nDie Schatten zieh’n durch gold’ne Flur,\\ndie Zeit vergisst, doch ich bleib nur,\\nein leiser Schritt, ein stilles Wort,\\ndie Seele trägt mich immerfort.\\n\\n[Refrain]\\nO Licht der Zeit, verlier mich nicht,\\nführ mich durch Nacht, führ mich ins Licht,\\nwas auch vergeht, was auch zerbricht,\\nmein Herz bleibt treu dem alten Lied.\\n\\n[Strophe 3]\\nDie Sterne ruh’n im dunklen See,\\nder Wind erzählt von fernem Weh,\\ndoch in der Stille find’ ich Ruh,\\nund geh den Weg, der führt zu dir.\\n\\n[Refrain]\\nO Licht der Zeit, verlier mich nicht,\\nführ mich durch Nacht, führ mich ins Licht,\\nwas auch vergeht, was auch zerbricht,\\nmein Herz bleibt treu dem alten Lied.\\n\\n[Schluss]\\nUnd wenn die Tage leiser geh’n,\\nwird meine Hoffnung weitersteh’n,\\nim Licht der Zeit, so klar, so weit,\\nbleibt meine Spur in Ewigkeit.\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/im-licht-der-zeit-1",
+        "https://suno.com/song/e545353a-e451-4c36-a929-9519f5b6ef2a",
+        "https://cdn2.suno.ai/image_large_e545353a-e451-4c36-a929-9519f5b6ef2a.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2256629729",
+      "title": "Ivan",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/ivan",
+      "soundcloudDurationSeconds": 270,
+      "selectedSuno": {
+        "id": "8384b063-28e7-4f60-8748-0d3e01b6673c",
+        "title": "ivan",
+        "url": "https://suno.com/song/8384b063-28e7-4f60-8748-0d3e01b6673c",
+        "version": "v5",
+        "durationSeconds": 58,
+        "durationDeltaSeconds": 212,
+        "previewAudioUrl": "https://cdn1.suno.ai/8384b063-28e7-4f60-8748-0d3e01b6673c.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_8384b063-28e7-4f60-8748-0d3e01b6673c.jpeg",
+        "style": "rap trompetas",
+        "hasVocal": true
+      },
+      "lyrics": "cumento ya cerrado coherente\\nsolo falta anclarlo en el presente\\naquí tienes una sección once alineada con el rigor físico\\nútil como checkpoint científico y honesto respeto a lo que no se ha hecho todavía\\ncapacidades implementadas\\nvalidación en curso\\ndeliberadamente no implementado\\n\\n[Outro]\\n(Eso, eso ya suena a rap, bro)[Intro]\\n(¿Cómo lo vas a estudiar?)\\n(La parte que quieras, tú, tú léela nada más)\\n\\n[Verse]\\nCon el documento ya cerrado coherente\\nsolo falta anclarlo en el presente\\naquí tienes una sección once alineada con el rigor físico\\nútil como checkpoint científico y honesto respeto a lo que no se ha hecho todavía\\ncapacidades implementadas\\nvalidación en curso\\ndeliberadamente no implementado\\n\\n[Outro]\\n(Eso, eso ya suena a rap, bro)",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/ivan",
+        "https://suno.com/song/8384b063-28e7-4f60-8748-0d3e01b6673c",
+        "https://cdn2.suno.ai/image_large_8384b063-28e7-4f60-8748-0d3e01b6673c.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 212s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2274581060",
+      "title": "Ivet M",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/ivet-m-1-1",
+      "soundcloudDurationSeconds": 228,
+      "selectedSuno": {
+        "id": "95418383-7f33-4789-ac2b-a07b00fad08a",
+        "title": "Ivet M",
+        "url": "https://suno.com/song/95418383-7f33-4789-ac2b-a07b00fad08a",
+        "version": "v5",
+        "durationSeconds": 228,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/95418383-7f33-4789-ac2b-a07b00fad08a.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_95418383-7f33-4789-ac2b-a07b00fad08a.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/ivet-m-1-1",
+        "https://suno.com/song/95418383-7f33-4789-ac2b-a07b00fad08a",
+        "https://cdn2.suno.ai/image_large_95418383-7f33-4789-ac2b-a07b00fad08a.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2274581057",
+      "title": "Ivet M",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/ivet-m-2",
+      "soundcloudDurationSeconds": 228,
+      "selectedSuno": {
+        "id": "95418383-7f33-4789-ac2b-a07b00fad08a",
+        "title": "Ivet M",
+        "url": "https://suno.com/song/95418383-7f33-4789-ac2b-a07b00fad08a",
+        "version": "v5",
+        "durationSeconds": 228,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/95418383-7f33-4789-ac2b-a07b00fad08a.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_95418383-7f33-4789-ac2b-a07b00fad08a.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/ivet-m-2",
+        "https://suno.com/song/95418383-7f33-4789-ac2b-a07b00fad08a",
+        "https://cdn2.suno.ai/image_large_95418383-7f33-4789-ac2b-a07b00fad08a.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2281514411",
+      "title": "🏍️ Jesús Aparicio",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/jes-s-aparicio",
+      "soundcloudDurationSeconds": 193,
+      "selectedSuno": {
+        "id": "31aa2bf7-9f13-4f45-bebf-8a99da176207",
+        "title": "🏍️ Jesús Aparicio",
+        "url": "https://suno.com/song/31aa2bf7-9f13-4f45-bebf-8a99da176207",
+        "version": "v5",
+        "durationSeconds": 194,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/31aa2bf7-9f13-4f45-bebf-8a99da176207.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_31aa2bf7-9f13-4f45-bebf-8a99da176207.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/jes-s-aparicio",
+        "https://suno.com/song/31aa2bf7-9f13-4f45-bebf-8a99da176207",
+        "https://cdn2.suno.ai/image_large_31aa2bf7-9f13-4f45-bebf-8a99da176207.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2281578080",
+      "title": "🏍️ Jesús Aparicio",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/jes-s-aparicio-1",
+      "soundcloudDurationSeconds": 183,
+      "selectedSuno": {
+        "id": "825f32e4-5856-4484-9187-1e2bfd741a66",
+        "title": "🏍️ Jesús Aparicio",
+        "url": "https://suno.com/song/825f32e4-5856-4484-9187-1e2bfd741a66",
+        "version": "v5",
+        "durationSeconds": 184,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/825f32e4-5856-4484-9187-1e2bfd741a66.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_825f32e4-5856-4484-9187-1e2bfd741a66.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/jes-s-aparicio-1",
+        "https://suno.com/song/825f32e4-5856-4484-9187-1e2bfd741a66",
+        "https://cdn2.suno.ai/image_large_825f32e4-5856-4484-9187-1e2bfd741a66.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2255958692",
+      "title": "Karla GOMEZ",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/karla-gomez-3",
+      "soundcloudDurationSeconds": 205,
+      "selectedSuno": {
+        "id": "8f8e9d3a-858b-4ac5-ba5c-7bea40c37470",
+        "title": "Karla GOMEZ",
+        "url": "https://suno.com/song/8f8e9d3a-858b-4ac5-ba5c-7bea40c37470",
+        "version": "v5",
+        "durationSeconds": 205,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/8f8e9d3a-858b-4ac5-ba5c-7bea40c37470.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_8f8e9d3a-858b-4ac5-ba5c-7bea40c37470.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/karla-gomez-3",
+        "https://suno.com/song/8f8e9d3a-858b-4ac5-ba5c-7bea40c37470",
+        "https://cdn2.suno.ai/image_large_8f8e9d3a-858b-4ac5-ba5c-7bea40c37470.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2255956859",
+      "title": "Karla GOMEZ",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/karla-gomez-2",
+      "soundcloudDurationSeconds": 202,
+      "selectedSuno": {
+        "id": "e7cd5173-6058-47c9-bb2b-975d59ab8c38",
+        "title": "Karla GOMEZ",
+        "url": "https://suno.com/song/e7cd5173-6058-47c9-bb2b-975d59ab8c38",
+        "version": "v5",
+        "durationSeconds": 203,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/e7cd5173-6058-47c9-bb2b-975d59ab8c38.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_e7cd5173-6058-47c9-bb2b-975d59ab8c38.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/karla-gomez-2",
+        "https://suno.com/song/e7cd5173-6058-47c9-bb2b-975d59ab8c38",
+        "https://cdn2.suno.ai/image_large_e7cd5173-6058-47c9-bb2b-975d59ab8c38.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2252541695",
+      "title": "Liz Medina",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/liz-medina",
+      "soundcloudDurationSeconds": 153,
+      "selectedSuno": {
+        "id": "e428bc64-6aa9-4f9e-8954-3a15ef84a5b7",
+        "title": "Liz medina",
+        "url": "https://suno.com/song/e428bc64-6aa9-4f9e-8954-3a15ef84a5b7",
+        "version": "v5",
+        "durationSeconds": 154,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/e428bc64-6aa9-4f9e-8954-3a15ef84a5b7.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_e428bc64-6aa9-4f9e-8954-3a15ef84a5b7.jpeg",
+        "style": "reggae tech dub",
+        "hasVocal": null
+      },
+      "lyrics": "Letra\\n\\nPrimera estrofa\\nFlorece lento cuando sale\\nel sol por Cuautitlán,\\ncamina como si el viento\\nle copiara el plan.\\n\\nPre-coro\\nNo mira atrás,\\nla vida es jardín y tormenta,\\npero en su piel\\ntodo el clima se conecta.\\n\\nCoro\\nLiz Medina, estación que domina,\\nprimavera con relámpago en retina.\\nCafé temprano, corazón sin rutina,\\ncuando pasa deja pétalos en la esquina.\\n\\nPost-Coro\\nY nadie la reemplaza,\\nporque incluso en su casa\\nlleva un verano guardado\\ndebajo del alma.\\n\\nSegunda estrofa\\nTiene la risa que rompe la prisa,\\nla mirada que nunca avisa.\\nSi el día pesa, ella aterriza,\\ny el mundo se suaviza.\\n\\nCoro final\\nLiz Medina, estación que domina,\\ncuando mira se deshiela la neblina.\\nNo se copia, ella firma la línea,\\nla más rojita del condado… bien divina.",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/liz-medina",
+        "https://suno.com/song/e428bc64-6aa9-4f9e-8954-3a15ef84a5b7",
+        "https://cdn2.suno.ai/image_large_e428bc64-6aa9-4f9e-8954-3a15ef84a5b7.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2251800968",
+      "title": "Michelle camina con ritmo de luna",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/michelle-camina-con-ritmo-de-luna-2",
+      "soundcloudDurationSeconds": 174,
+      "selectedSuno": {
+        "id": "3c8e27db-40c2-43c0-b9b0-f8cad412d173",
+        "title": "Michelle camina con ritmo de luna",
+        "url": "https://suno.com/song/3c8e27db-40c2-43c0-b9b0-f8cad412d173",
+        "version": "v5",
+        "durationSeconds": 175,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/3c8e27db-40c2-43c0-b9b0-f8cad412d173.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_3c8e27db-40c2-43c0-b9b0-f8cad412d173.jpeg",
+        "style": "dub",
+        "hasVocal": false
+      },
+      "lyrics": "Michelle camina con ritmo de luna\\nlleva en la piel la brisa y la espuma\\ncuando sonríe sube la marea\\ny la ciudad entera se balancea\\n\\nCoro:\\nMichelle… tú vibras como el sol en la ventana\\nMichelle… tú haces que la vida suene liviana\\nMichelle… cuando tu mirada prende el fuego\\ntodo se vuelve reggae en este juego\\n\\nViento y percusión en la mañana\\nguitarra skank, mar y sabana\\npasos que dibujan melodías\\ny la noche se rinde a tu energía\\n\\nCoro:\\nMichelle… tú vibras como el sol en la ventana\\nMichelle… tú haces que la vida suene liviana\\nMichelle… cuando tu mirada prende el fuego\\ntodo se vuelve reggae en este juego\\n\\nPuente:\\nNo hay prisa, no hay tormenta que nos quite la calma\\nsi tú estás aquí, todo encuentra su palma\\nlate el corazón con compás sincopado\\ny el futuro llega descalzo y dorado\\n\\nFinal:\\nMichelle, Michelle, luz de verano\\nel reggae te sigue como un hermano\\ny si el mundo gira para otro lado\\ntu ritmo lo trae de vuelta a lo sagrado",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/michelle-camina-con-ritmo-de-luna-2",
+        "https://suno.com/song/3c8e27db-40c2-43c0-b9b0-f8cad412d173",
+        "https://cdn2.suno.ai/image_large_3c8e27db-40c2-43c0-b9b0-f8cad412d173.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2243371841",
+      "title": "“Montserrat Alexandra”",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/montserrat-alexandra-2",
+      "soundcloudDurationSeconds": 184,
+      "selectedSuno": {
+        "id": "2f4f2996-6ca7-4544-ab28-7258d5b6de6e",
+        "title": "“Montserrat Alexandra”",
+        "url": "https://suno.com/song/2f4f2996-6ca7-4544-ab28-7258d5b6de6e",
+        "version": "v5",
+        "durationSeconds": 185,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/2f4f2996-6ca7-4544-ab28-7258d5b6de6e.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_2f4f2996-6ca7-4544-ab28-7258d5b6de6e.jpeg",
+        "style": "neo-psychedelia reggae fusion with soft trap influence, lush female vocals dripping confidence and cosmic glamour, shimmering synths, deep bass, elegant rhythm, “Quantum Luxurious” — luxury as a state of mind, dripping gold and starlight, sensual and introspective vibe",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/montserrat-alexandra-2",
+        "https://suno.com/song/2f4f2996-6ca7-4544-ab28-7258d5b6de6e",
+        "https://cdn2.suno.ai/image_large_2f4f2996-6ca7-4544-ab28-7258d5b6de6e.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2207585051",
+      "title": "Neon Butterflies",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/neon-butterflies",
+      "soundcloudDurationSeconds": 282,
+      "selectedSuno": {
+        "id": "aa2cc964-ba56-4901-aa0a-edd6516be5ec",
+        "title": "Neon Butterflies",
+        "url": "https://suno.com/song/aa2cc964-ba56-4901-aa0a-edd6516be5ec",
+        "version": "v5.5",
+        "durationSeconds": 259,
+        "durationDeltaSeconds": 23,
+        "previewAudioUrl": "https://cdn1.suno.ai/aa2cc964-ba56-4901-aa0a-edd6516be5ec.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_aa2cc964-ba56-4901-aa0a-edd6516be5ec.jpeg",
+        "style": "Psychedelic rock, cosmic guitars, swirling analog synths, dreamy atmosphere, hypnotic grooves, vintage tape saturation, trippy reverb, experimental soundscapes, emotional electric guitar solos, ethereal vocals, mind-bending transitions, cinematic psychedelic journey, floating melodies, warm analog textures, spacey echoes, surreal sonic atmosphere, deep bass pulse, progressive arrangements, hallucinogenic vibes, retro-futuristic energy, immersive stereo sound",
+        "hasVocal": null
+      },
+      "lyrics": "[Verse]\\nNeon butterflies in the midnight glow\\nWings of light\\nThey dance so slow\\nElectric whispers in the air\\nI reach out\\nBut they're never there\\n\\n[Prechorus]\\nFlicker\\nShimmer\\nFade\\nRepeat\\nHeartbeats lost in the city's beat\\n\\n[Chorus]\\nNeon butterflies\\nThey fly\\nThey fly\\nThrough the cracks in the purple sky\\nChasing shadows\\nChasing dreams\\nNothing's ever quite what it seems\\n\\n[Verse 2]\\nThe sidewalk hums\\nA quiet song\\nStreetlights blink where I don't belong\\nI hear their call\\nA distant hum\\nBut by the time I run\\nThey're gone\\n\\n[Bridge]\\nGlowing wings that never land\\nSlip through my fingers like desert sand\\nA moment close\\nThen far away\\nForever night\\nForever gray\\n\\n[Chorus]\\nNeon butterflies\\nThey fly\\nThey fly\\nThrough the cracks in the purple sky\\nChasing shadows\\nChasing dreams\\nNothing's ever quite what it seems",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/neon-butterflies",
+        "https://suno.com/song/aa2cc964-ba56-4901-aa0a-edd6516be5ec",
+        "https://cdn2.suno.ai/image_large_aa2cc964-ba56-4901-aa0a-edd6516be5ec.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 23s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2254843277",
+      "title": "Oceano",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/oceano",
+      "soundcloudDurationSeconds": 231,
+      "selectedSuno": {
+        "id": "ff81f81d-2f37-4868-89e0-0dd2603b5c3e",
+        "title": "Oceano",
+        "url": "https://suno.com/song/ff81f81d-2f37-4868-89e0-0dd2603b5c3e",
+        "version": "v5",
+        "durationSeconds": 231,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/ff81f81d-2f37-4868-89e0-0dd2603b5c3e.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_ff81f81d-2f37-4868-89e0-0dd2603b5c3e.jpeg",
+        "style": "Future House / World Pop / EDM Tribal",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/oceano",
+        "https://suno.com/song/ff81f81d-2f37-4868-89e0-0dd2603b5c3e",
+        "https://cdn2.suno.ai/image_large_ff81f81d-2f37-4868-89e0-0dd2603b5c3e.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2259921065",
+      "title": "Oceano x TIEMPO DE GUERRA (Mashup)",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/oceano-x-tiempo-de-guerra-mashup-2",
+      "soundcloudDurationSeconds": 226,
+      "selectedSuno": {
+        "id": "dbb65c0c-b831-4377-aedc-37186788df18",
+        "title": "Oceano x TIEMPO DE GUERRA (Mashup)",
+        "url": "https://suno.com/song/dbb65c0c-b831-4377-aedc-37186788df18",
+        "version": "v5",
+        "durationSeconds": 227,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/dbb65c0c-b831-4377-aedc-37186788df18.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_dbb65c0c-b831-4377-aedc-37186788df18.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/oceano-x-tiempo-de-guerra-mashup-2",
+        "https://suno.com/song/dbb65c0c-b831-4377-aedc-37186788df18",
+        "https://cdn2.suno.ai/image_large_dbb65c0c-b831-4377-aedc-37186788df18.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2259921062",
+      "title": "Oceano x TIEMPO DE GUERRA (Mashup)",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/oceano-x-tiempo-de-guerra-mashup-1-1",
+      "soundcloudDurationSeconds": 227,
+      "selectedSuno": {
+        "id": "dbb65c0c-b831-4377-aedc-37186788df18",
+        "title": "Oceano x TIEMPO DE GUERRA (Mashup)",
+        "url": "https://suno.com/song/dbb65c0c-b831-4377-aedc-37186788df18",
+        "version": "v5",
+        "durationSeconds": 227,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/dbb65c0c-b831-4377-aedc-37186788df18.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_dbb65c0c-b831-4377-aedc-37186788df18.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/oceano-x-tiempo-de-guerra-mashup-1-1",
+        "https://suno.com/song/dbb65c0c-b831-4377-aedc-37186788df18",
+        "https://cdn2.suno.ai/image_large_dbb65c0c-b831-4377-aedc-37186788df18.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2252506622",
+      "title": "OLA — “Lumine”_",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/ola-lumine-2",
+      "soundcloudDurationSeconds": 205,
+      "selectedSuno": {
+        "id": "414fe3b6-b7c2-45b8-8af4-91e4aa39f163",
+        "title": "OLA — “Lumine”*",
+        "url": "https://suno.com/song/414fe3b6-b7c2-45b8-8af4-91e4aa39f163",
+        "version": "v5",
+        "durationSeconds": 205,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/414fe3b6-b7c2-45b8-8af4-91e4aa39f163.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_414fe3b6-b7c2-45b8-8af4-91e4aa39f163.jpeg",
+        "style": "reggae, TECHNO, PSY, DUB",
+        "hasVocal": false
+      },
+      "lyrics": "OLA — “Lumine”*\\n\\nBrillan las luces de la ciudad,\\npero la noche no sabe igual.\\nDesde que vi tu caminar,\\nalgo en mi mente quiso volar.\\n\\nRen, tú no sabes lo que causas,\\ncuando tu risa se desborda,\\ncuando hablas lento y pausas,\\nel mundo gira y nada estorba.\\n\\n*Estribillo*\\nLumine,\\ncomo un trazo sobre un lienzo que revive.\\nLumine,\\ncualquier ruta se ilumina si decides.\\nNo te pido más que un día de tu aire,\\nsi te vas igual, está bien, no pasa nadie.\\nLumine…\\n\\nNo sé si el viento te contó,\\nque en silencio te compuse dos,\\nuna rola y un pensamiento,\\nque van siguiendo tu voz.\\n\\nRen, no pretendo ser destino,\\nni bandera ni camino,\\nsolo un verso clandestino,\\nque te piensa sin ruido.\\n\\n*Estribillo*\\nLumine…\\ncomo un trazo sobre un lienzo que revive.\\nLumine…\\ncualquier ruta se ilumina si decides.\\nNo te pido más que un día de tu aire,\\nsi te vas igual, está bien, no pasa nadie.\\nLumine…",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/ola-lumine-2",
+        "https://suno.com/song/414fe3b6-b7c2-45b8-8af4-91e4aa39f163",
+        "https://cdn2.suno.ai/image_large_414fe3b6-b7c2-45b8-8af4-91e4aa39f163.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2257522151",
+      "title": "Omeya Ra",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/omeya-ra-1-1",
+      "soundcloudDurationSeconds": 247,
+      "selectedSuno": {
+        "id": "168097de-d93a-428e-93d9-0f176c09eef4",
+        "title": "Omeya Ra",
+        "url": "https://suno.com/song/168097de-d93a-428e-93d9-0f176c09eef4",
+        "version": "v5",
+        "durationSeconds": 247,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/168097de-d93a-428e-93d9-0f176c09eef4.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_168097de-d93a-428e-93d9-0f176c09eef4.jpeg",
+        "style": "Progressive psytrance with organic African tribal percussion, deep rolling bassline, hypnotic 4/4 kick, layered hand drums and shakers, call-and-response tribal chants, warm analog synth pads, subtle acid leads, ceremonial and mystical atmosphere, mid-tempo groove, not too aggressive, earthy and ritualistic vibe\\n",
+        "hasVocal": null
+      },
+      "lyrics": "[Intro]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma (hey!)\\n\\n[Chorus]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma\\nHeya no\\nHeya no (oh-hey!)\\nKora shai\\nKora shai\\nHeya no\\nHeya no\\nKora shai\\nKora shai\\n\\n[Verse 1]\\nHands up high\\nDust on our feet\\nCircle of fire\\nWe all repeat\\nCall in the dark\\nAnswer in light\\nName after name\\nWakes in the night\\n\\n[Chorus]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma\\nHeya no\\nHeya no (yeah!)\\nKora shai\\nKora shai\\nHeya no\\nHeya no\\nKora shai\\nKora shai\\n\\n[Bridge]\\nOne voice\\nThen another\\nWe rise like a river\\nOld words\\nNew hearts\\nBeating quicker\\nQuicker (oh!)\\n\\n[Chorus]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma\\nHeya no\\nHeya no\\nKora shai\\nKora shai\\nHeya no\\nHeya no (last time!)\\nKora shai\\nKora shai",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/omeya-ra-1-1",
+        "https://suno.com/song/168097de-d93a-428e-93d9-0f176c09eef4",
+        "https://cdn2.suno.ai/image_large_168097de-d93a-428e-93d9-0f176c09eef4.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2257522154",
+      "title": "Omeya Ra",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/omeya-ra-2",
+      "soundcloudDurationSeconds": 198,
+      "selectedSuno": {
+        "id": "94d8a8cc-d220-4104-aac2-05811dab4228",
+        "title": "Omeya Ra",
+        "url": "https://suno.com/song/94d8a8cc-d220-4104-aac2-05811dab4228",
+        "version": "v5",
+        "durationSeconds": 198,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/94d8a8cc-d220-4104-aac2-05811dab4228.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_94d8a8cc-d220-4104-aac2-05811dab4228.jpeg",
+        "style": "Progressive psytrance with organic African tribal percussion, deep rolling bassline, hypnotic 4/4 kick, layered hand drums and shakers, call-and-response tribal chants, warm analog synth pads, subtle acid leads, ceremonial and mystical atmosphere, mid-tempo groove, not too aggressive, earthy and ritualistic vibe\\n",
+        "hasVocal": null
+      },
+      "lyrics": "[Intro]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma (hey!)\\n\\n[Chorus]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma\\nHeya no\\nHeya no (oh-hey!)\\nKora shai\\nKora shai\\nHeya no\\nHeya no\\nKora shai\\nKora shai\\n\\n[Verse 1]\\nHands up high\\nDust on our feet\\nCircle of fire\\nWe all repeat\\nCall in the dark\\nAnswer in light\\nName after name\\nWakes in the night\\n\\n[Chorus]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma\\nHeya no\\nHeya no (yeah!)\\nKora shai\\nKora shai\\nHeya no\\nHeya no\\nKora shai\\nKora shai\\n\\n[Bridge]\\nOne voice\\nThen another\\nWe rise like a river\\nOld words\\nNew hearts\\nBeating quicker\\nQuicker (oh!)\\n\\n[Chorus]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma\\nHeya no\\nHeya no\\nKora shai\\nKora shai\\nHeya no\\nHeya no (last time!)\\nKora shai\\nKora shai",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/omeya-ra-2",
+        "https://suno.com/song/94d8a8cc-d220-4104-aac2-05811dab4228",
+        "https://cdn2.suno.ai/image_large_94d8a8cc-d220-4104-aac2-05811dab4228.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2257517540",
+      "title": "Omeya Ra",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/omeya-ra-omeya-ra-3-1",
+      "soundcloudDurationSeconds": 142,
+      "selectedSuno": {
+        "id": "94d8a8cc-d220-4104-aac2-05811dab4228",
+        "title": "Omeya Ra",
+        "url": "https://suno.com/song/94d8a8cc-d220-4104-aac2-05811dab4228",
+        "version": "v5",
+        "durationSeconds": 198,
+        "durationDeltaSeconds": 56,
+        "previewAudioUrl": "https://cdn1.suno.ai/94d8a8cc-d220-4104-aac2-05811dab4228.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_94d8a8cc-d220-4104-aac2-05811dab4228.jpeg",
+        "style": "Progressive psytrance with organic African tribal percussion, deep rolling bassline, hypnotic 4/4 kick, layered hand drums and shakers, call-and-response tribal chants, warm analog synth pads, subtle acid leads, ceremonial and mystical atmosphere, mid-tempo groove, not too aggressive, earthy and ritualistic vibe\\n",
+        "hasVocal": null
+      },
+      "lyrics": "[Intro]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma (hey!)\\n\\n[Chorus]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma\\nHeya no\\nHeya no (oh-hey!)\\nKora shai\\nKora shai\\nHeya no\\nHeya no\\nKora shai\\nKora shai\\n\\n[Verse 1]\\nHands up high\\nDust on our feet\\nCircle of fire\\nWe all repeat\\nCall in the dark\\nAnswer in light\\nName after name\\nWakes in the night\\n\\n[Chorus]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma\\nHeya no\\nHeya no (yeah!)\\nKora shai\\nKora shai\\nHeya no\\nHeya no\\nKora shai\\nKora shai\\n\\n[Bridge]\\nOne voice\\nThen another\\nWe rise like a river\\nOld words\\nNew hearts\\nBeating quicker\\nQuicker (oh!)\\n\\n[Chorus]\\nOmeya ra\\nOmeya ra\\nShiva na\\nKelemba ya\\nTora nai\\nTora nai\\nZulu ma\\nZulu ma\\nHeya no\\nHeya no\\nKora shai\\nKora shai\\nHeya no\\nHeya no (last time!)\\nKora shai\\nKora shai",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/omeya-ra-omeya-ra-3-1",
+        "https://suno.com/song/94d8a8cc-d220-4104-aac2-05811dab4228",
+        "https://cdn2.suno.ai/image_large_94d8a8cc-d220-4104-aac2-05811dab4228.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 56s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2257515467",
+      "title": "Omeya ra, omeya ra",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/omeya-ra-omeya-ra-2",
+      "soundcloudDurationSeconds": 178,
+      "selectedSuno": {
+        "id": "8b3f0d44-beb7-4315-8653-1297e64c67e4",
+        "title": "Omeya ra, omeya ra",
+        "url": "https://suno.com/song/8b3f0d44-beb7-4315-8653-1297e64c67e4",
+        "version": "v5",
+        "durationSeconds": 178,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/8b3f0d44-beb7-4315-8653-1297e64c67e4.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_8b3f0d44-beb7-4315-8653-1297e64c67e4.jpeg",
+        "style": "Progressive psytrance with organic African tribal percussion, deep rolling bassline, hypnotic 4/4 kick, layered hand drums and shakers, call-and-response tribal chants, warm analog synth pads, subtle acid leads, ceremonial and mystical atmosphere, mid-tempo groove, not too aggressive, earthy and ritualistic vibe\\n",
+        "hasVocal": null
+      },
+      "lyrics": "Omeya ra, omeya ra\\nShiva na, kelemba ya\\n\\nTora nai, tora nai\\nZulu ma, zulu ma\\n\\nOmeya ra, omeya ra\\nShiva na, kelemba ya\\n\\nTora nai, tora nai\\nZulu ma, zulu ma\\nHeya no, heya no\\nKora shai, kora shai\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/omeya-ra-omeya-ra-2",
+        "https://suno.com/song/8b3f0d44-beb7-4315-8653-1297e64c67e4",
+        "https://cdn2.suno.ai/image_large_8b3f0d44-beb7-4315-8653-1297e64c67e4.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2257517537",
+      "title": "Omeya ra, omeya ra",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/omeya-ra-omeya-ra-2-2",
+      "soundcloudDurationSeconds": 126,
+      "selectedSuno": {
+        "id": "3acfed6e-2532-4b18-a8ce-f12f9e003e21",
+        "title": "Omeya ra, omeya ra",
+        "url": "https://suno.com/song/3acfed6e-2532-4b18-a8ce-f12f9e003e21",
+        "version": "v5",
+        "durationSeconds": 126,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/3acfed6e-2532-4b18-a8ce-f12f9e003e21.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_3acfed6e-2532-4b18-a8ce-f12f9e003e21.jpeg",
+        "style": "afrobeat dark dub",
+        "hasVocal": null
+      },
+      "lyrics": "Omeya ra, omeya ra\\nShiva na, kelemba ya\\n\\nTora nai, tora nai\\nZulu ma, zulu ma\\n\\nOmeya ra, omeya ra\\nShiva na, kelemba ya\\n\\nTora nai, tora nai\\nZulu ma, zulu ma\\nHeya no, heya no\\nKora shai, kora shai\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/omeya-ra-omeya-ra-2-2",
+        "https://suno.com/song/3acfed6e-2532-4b18-a8ce-f12f9e003e21",
+        "https://cdn2.suno.ai/image_large_3acfed6e-2532-4b18-a8ce-f12f9e003e21.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2279578739",
+      "title": "Paola",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/paola-3-2",
+      "soundcloudDurationSeconds": 410,
+      "selectedSuno": {
+        "id": "3ff14cd1-6cbd-49bd-93d2-68d7f47204a7",
+        "title": "Paola",
+        "url": "https://suno.com/song/3ff14cd1-6cbd-49bd-93d2-68d7f47204a7",
+        "version": "v5",
+        "durationSeconds": 410,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/3ff14cd1-6cbd-49bd-93d2-68d7f47204a7.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_3ff14cd1-6cbd-49bd-93d2-68d7f47204a7.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/paola-3-2",
+        "https://suno.com/song/3ff14cd1-6cbd-49bd-93d2-68d7f47204a7",
+        "https://cdn2.suno.ai/image_large_3ff14cd1-6cbd-49bd-93d2-68d7f47204a7.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2279578736",
+      "title": "Paola",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/paola-4-1",
+      "soundcloudDurationSeconds": 239,
+      "selectedSuno": {
+        "id": "48723745-c265-40e1-b8cb-1758e4ad0c1b",
+        "title": "Paola",
+        "url": "https://suno.com/song/48723745-c265-40e1-b8cb-1758e4ad0c1b",
+        "version": "v5",
+        "durationSeconds": 240,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/48723745-c265-40e1-b8cb-1758e4ad0c1b.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_48723745-c265-40e1-b8cb-1758e4ad0c1b.jpeg",
+        "style": "psychedelic, sad, synth, female vocals, electronic",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/paola-4-1",
+        "https://suno.com/song/48723745-c265-40e1-b8cb-1758e4ad0c1b",
+        "https://cdn2.suno.ai/image_large_48723745-c265-40e1-b8cb-1758e4ad0c1b.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2279578466",
+      "title": "Paola",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/paola-1-1",
+      "soundcloudDurationSeconds": 226,
+      "selectedSuno": {
+        "id": "1610cc4b-034d-4243-b775-67740b12a33a",
+        "title": "Paola",
+        "url": "https://suno.com/song/1610cc4b-034d-4243-b775-67740b12a33a",
+        "version": "v5",
+        "durationSeconds": 226,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/1610cc4b-034d-4243-b775-67740b12a33a.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_1610cc4b-034d-4243-b775-67740b12a33a.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/paola-1-1",
+        "https://suno.com/song/1610cc4b-034d-4243-b775-67740b12a33a",
+        "https://cdn2.suno.ai/image_large_1610cc4b-034d-4243-b775-67740b12a33a.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2279578469",
+      "title": "Paola",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/paola-2",
+      "soundcloudDurationSeconds": 208,
+      "selectedSuno": {
+        "id": "4a9eb3ff-7a8e-41a5-92b3-b2aefa1755eb",
+        "title": "Paola",
+        "url": "https://suno.com/song/4a9eb3ff-7a8e-41a5-92b3-b2aefa1755eb",
+        "version": "v5",
+        "durationSeconds": 208,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/4a9eb3ff-7a8e-41a5-92b3-b2aefa1755eb.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_4a9eb3ff-7a8e-41a5-92b3-b2aefa1755eb.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/paola-2",
+        "https://suno.com/song/4a9eb3ff-7a8e-41a5-92b3-b2aefa1755eb",
+        "https://cdn2.suno.ai/image_large_4a9eb3ff-7a8e-41a5-92b3-b2aefa1755eb.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2255905190",
+      "title": "Pasaron el Carrizal",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/pasaron-el-carrizal",
+      "soundcloudDurationSeconds": 111,
+      "selectedSuno": {
+        "id": "5a582496-e530-4d02-a7d6-47837e181f4c",
+        "title": "Pasaron el Carrizal",
+        "url": "https://suno.com/song/5a582496-e530-4d02-a7d6-47837e181f4c",
+        "version": "v5",
+        "durationSeconds": 111,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/5a582496-e530-4d02-a7d6-47837e181f4c.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_5a582496-e530-4d02-a7d6-47837e181f4c.jpeg",
+        "style": "narcocorrido\\n",
+        "hasVocal": null
+      },
+      "lyrics": "Pasaron el Carrizal\\nIban tomando cerveza\\nSu compañero le dijo\\n“Nos sigue una camioneta”\\nLamberto sonrió tranquilo\\n“Pa’ eso cargo la herramienta”\\n\\nNo era bravata vacía\\nNi palabras al azar\\nEn el polvo del camino\\nYa sabía cómo actuar\\nEl que camina derecho\\nNo le teme al vendaval\\n\\nLa noche cayó despacio\\nCon estrellas de testigo\\nEl motor rugía grave\\nComo un mal presentimiento\\nPero el valor no se compra\\nSe forja con el tiempo\\n\\nNo cantan héroes perfectos\\nNi santos de devoción\\nEste corrido es de hombres\\nQue conocen la tensión\\nEntre el miedo y la lealtad\\nLate fuerte el corazón\\n\\nSi el destino los alcanza\\nQue los encuentre de pie\\nCon la frente bien en alto\\nY sin cuentas que esconder\\nPorque el respeto se gana\\nDesde el amanecer\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/pasaron-el-carrizal",
+        "https://suno.com/song/5a582496-e530-4d02-a7d6-47837e181f4c",
+        "https://cdn2.suno.ai/image_large_5a582496-e530-4d02-a7d6-47837e181f4c.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2258528312",
+      "title": "Paso pensando todos los días",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/paso-pensando-todos-los-dias-2",
+      "soundcloudDurationSeconds": 146,
+      "selectedSuno": {
+        "id": "b9d5ebbb-a15c-4407-a8fe-e653810997bd",
+        "title": "Paso pensando todos los días",
+        "url": "https://suno.com/song/b9d5ebbb-a15c-4407-a8fe-e653810997bd",
+        "version": "v5",
+        "durationSeconds": 147,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/b9d5ebbb-a15c-4407-a8fe-e653810997bd.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_b9d5ebbb-a15c-4407-a8fe-e653810997bd.jpeg",
+        "style": "“reggae with trumpets”",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/paso-pensando-todos-los-dias-2",
+        "https://suno.com/song/b9d5ebbb-a15c-4407-a8fe-e653810997bd",
+        "https://cdn2.suno.ai/image_large_b9d5ebbb-a15c-4407-a8fe-e653810997bd.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2270128577",
+      "title": "Persia",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/untitled-1-2",
+      "soundcloudDurationSeconds": 197,
+      "selectedSuno": {
+        "id": "2e00050d-9377-4a3d-958e-a2a0ecf35261",
+        "title": "Persia",
+        "url": "https://suno.com/song/2e00050d-9377-4a3d-958e-a2a0ecf35261",
+        "version": "v5",
+        "durationSeconds": 175,
+        "durationDeltaSeconds": 22,
+        "previewAudioUrl": "https://cdn1.suno.ai/2e00050d-9377-4a3d-958e-a2a0ecf35261.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_2e00050d-9377-4a3d-958e-a2a0ecf35261.jpeg",
+        "style": "Epic cinematic orchestral, Roman imperial vibe, heroic brass, big taiko drums, choir (Latin syllables), string ostinatos, 110 BPM, wide reverb, dramatic crescendos, film score mix, punchy low end",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/untitled-1-2",
+        "https://suno.com/song/2e00050d-9377-4a3d-958e-a2a0ecf35261",
+        "https://cdn2.suno.ai/image_large_2e00050d-9377-4a3d-958e-a2a0ecf35261.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 22s; revisar versión antes de descargar",
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2270127848",
+      "title": "Persia",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/untitled-4",
+      "soundcloudDurationSeconds": 189,
+      "selectedSuno": {
+        "id": "2e00050d-9377-4a3d-958e-a2a0ecf35261",
+        "title": "Persia",
+        "url": "https://suno.com/song/2e00050d-9377-4a3d-958e-a2a0ecf35261",
+        "version": "v5",
+        "durationSeconds": 175,
+        "durationDeltaSeconds": 14,
+        "previewAudioUrl": "https://cdn1.suno.ai/2e00050d-9377-4a3d-958e-a2a0ecf35261.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_2e00050d-9377-4a3d-958e-a2a0ecf35261.jpeg",
+        "style": "Epic cinematic orchestral, Roman imperial vibe, heroic brass, big taiko drums, choir (Latin syllables), string ostinatos, 110 BPM, wide reverb, dramatic crescendos, film score mix, punchy low end",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/untitled-4",
+        "https://suno.com/song/2e00050d-9377-4a3d-958e-a2a0ecf35261",
+        "https://cdn2.suno.ai/image_large_2e00050d-9377-4a3d-958e-a2a0ecf35261.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 14s; revisar versión antes de descargar",
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2255916773",
+      "title": "Polly",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/pasaron-el-carrizal-7",
+      "soundcloudDurationSeconds": 282,
+      "selectedSuno": {
+        "id": "804c1039-93fa-4ea0-b859-d99fce3eb89d",
+        "title": "Polly",
+        "url": "https://suno.com/song/804c1039-93fa-4ea0-b859-d99fce3eb89d",
+        "version": "v5",
+        "durationSeconds": 282,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/804c1039-93fa-4ea0-b859-d99fce3eb89d.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_804c1039-93fa-4ea0-b859-d99fce3eb89d.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/pasaron-el-carrizal-7",
+        "https://suno.com/song/804c1039-93fa-4ea0-b859-d99fce3eb89d",
+        "https://cdn2.suno.ai/image_large_804c1039-93fa-4ea0-b859-d99fce3eb89d.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2187231183",
+      "title": "Prisi Perez",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/prisi-perez-1-1",
+      "soundcloudDurationSeconds": 132,
+      "selectedSuno": {
+        "id": "b05b9c0f-8820-4c00-a4e4-1dc8709263d1",
+        "title": "Prisi Perez",
+        "url": "https://suno.com/song/b05b9c0f-8820-4c00-a4e4-1dc8709263d1",
+        "version": "v5.5",
+        "durationSeconds": 183,
+        "durationDeltaSeconds": 51,
+        "previewAudioUrl": "https://cdn1.suno.ai/b05b9c0f-8820-4c00-a4e4-1dc8709263d1.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_b05b9c0f-8820-4c00-a4e4-1dc8709263d1.jpeg",
+        "style": "reggae metal dub",
+        "hasVocal": false
+      },
+      "lyrics": "[Verse]\\nShe walks like a whisper loud in the night\\nStealing hearts under the neon light\\nHer name's a melody it lingers long\\nPrisi Perez you're my favorite song\\n\\n[Chorus]\\nPrisi Perez dancing in my dreams\\nTurning my world to gold it seems\\nPrisi Perez the rhythm's alive\\nWith every step you make my heart thrive\\n\\n[Verse 2]\\nHer laugh's a spark that ignites the flame\\nEvery move she makes rewrites the game\\nShe’s got the moon jealous of her glow\\nPrisi Perez you'll never know\\n\\n[Chorus]\\nPrisi Perez dancing in my dreams\\nTurning my world to gold it seems\\nPrisi Perez the rhythm's alive\\nWith every step you make my heart thrive\\n\\n[Bridge]\\nWho are you really a queen or a thief\\nStealing my nights leaving me brief\\nPrisi Perez your spell is strong\\nIn your orbit I belong\\n\\n[Chorus]\\nPrisi Perez dancing in my dreams\\nTurning my world to gold it seems\\nPrisi Perez the rhythm's alive\\nWith every step you make my heart thrive",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/prisi-perez-1-1",
+        "https://suno.com/song/b05b9c0f-8820-4c00-a4e4-1dc8709263d1",
+        "https://cdn2.suno.ai/image_large_b05b9c0f-8820-4c00-a4e4-1dc8709263d1.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 51s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2262758405",
+      "title": "[Rec] Feb 8 23_00_49",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/rec-feb-8-23_00_49-2",
+      "soundcloudDurationSeconds": 131,
+      "selectedSuno": {
+        "id": "f93b9324-4bb2-4cc2-9c62-26fab6297850",
+        "title": "[Rec] Feb 8 23:00:49",
+        "url": "https://suno.com/song/f93b9324-4bb2-4cc2-9c62-26fab6297850",
+        "version": "v5",
+        "durationSeconds": 131,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/f93b9324-4bb2-4cc2-9c62-26fab6297850.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_f93b9324-4bb2-4cc2-9c62-26fab6297850.jpeg",
+        "style": "**Estilo musical:** Latin urban / corridos modernos con fusión trap\\n**Mood:** nocturno, callejero, confiado, cinematográfico\\n**Tempo:** medio, groove marcado\\n**Instrumentación:** bajo 808 profundo, batería trap con hi-hats rápidos, guitarras o sintetizadores oscuros, pads atmosféricos, efectos ambientales tipo “neón de ciudad”\\n**Voz:** masculina, actitud segura, flow relajado pero firme\\n**Producción:** limpia y moderna, con énfasis en el bajo y un hook pegajoso\\n**Atmósfera:** viaje nocturno por la ciudad, luces, velocidad, lujo urbano, sensación de movimiento y estilo\\n**Estructura:** intro atmosférica → verso rítmico → coro muy pegajoso → segundo verso con variación → coro final más intenso\\n**Referencia creativa:** mezcla de corrido/trap latino con estética urbana nocturna y energía cinematográfica\\n",
+        "hasVocal": true
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/rec-feb-8-23_00_49-2",
+        "https://suno.com/song/f93b9324-4bb2-4cc2-9c62-26fab6297850",
+        "https://cdn2.suno.ai/image_large_f93b9324-4bb2-4cc2-9c62-26fab6297850.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2262758408",
+      "title": "[Rec] Feb 8 23_00_49",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/rec-feb-8-23_00_49-1-1",
+      "soundcloudDurationSeconds": 126,
+      "selectedSuno": {
+        "id": "902b5dee-00d8-4d6f-8f16-2d130f5f00f4",
+        "title": "[Rec] Feb 8 23:00:49",
+        "url": "https://suno.com/song/902b5dee-00d8-4d6f-8f16-2d130f5f00f4",
+        "version": "v5",
+        "durationSeconds": 126,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/902b5dee-00d8-4d6f-8f16-2d130f5f00f4.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_902b5dee-00d8-4d6f-8f16-2d130f5f00f4.jpeg",
+        "style": "**Estilo musical:** Latin urban / corridos modernos con fusión trap\\n**Mood:** nocturno, callejero, confiado, cinematográfico\\n**Tempo:** medio, groove marcado\\n**Instrumentación:** bajo 808 profundo, batería trap con hi-hats rápidos, guitarras o sintetizadores oscuros, pads atmosféricos, efectos ambientales tipo “neón de ciudad”\\n**Voz:** masculina, actitud segura, flow relajado pero firme\\n**Producción:** limpia y moderna, con énfasis en el bajo y un hook pegajoso\\n**Atmósfera:** viaje nocturno por la ciudad, luces, velocidad, lujo urbano, sensación de movimiento y estilo\\n**Estructura:** intro atmosférica → verso rítmico → coro muy pegajoso → segundo verso con variación → coro final más intenso\\n**Referencia creativa:** mezcla de corrido/trap latino con estética urbana nocturna y energía cinematográfica\\n",
+        "hasVocal": true
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/rec-feb-8-23_00_49-1-1",
+        "https://suno.com/song/902b5dee-00d8-4d6f-8f16-2d130f5f00f4",
+        "https://cdn2.suno.ai/image_large_902b5dee-00d8-4d6f-8f16-2d130f5f00f4.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2276162477",
+      "title": "“Rodríguez Groove”",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/rodr-guez-groove",
+      "soundcloudDurationSeconds": 137,
+      "selectedSuno": {
+        "id": "88ed820d-8fe9-4d55-a635-ab1971473e2e",
+        "title": "“Rodríguez Groove”",
+        "url": "https://suno.com/song/88ed820d-8fe9-4d55-a635-ab1971473e2e",
+        "version": "v5",
+        "durationSeconds": 138,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/88ed820d-8fe9-4d55-a635-ab1971473e2e.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_88ed820d-8fe9-4d55-a635-ab1971473e2e.jpeg",
+        "style": "neo-psychedelia reggae fusion with soft trap influence, lush female vocals dripping confidence and cosmic glamour, shimmering synths, deep bass, elegant rhythm, “Quantum Luxurious” — luxury as a state of mind, dripping gold and starlight, sensual and introspective vibe",
+        "hasVocal": null
+      },
+      "lyrics": "“Rodríguez Groove”\\n\\nVerso 1\\nCuando camina cambia la dirección,\\nla noche ajusta la iluminación.\\nRíe y el ritmo empieza a crecer,\\ncomo si el mundo la quisiera ver.\\n\\nPre-Coro\\nTiene ese swing natural,\\nmagnetismo orbital.\\nNo lo puede disimular,\\nsu apellido es señal.\\n\\nCoro\\nRodríguez, suena fuerte el tambor,\\ncuando tú llegas sube el calor.\\nRodríguez, brillas sin explicación,\\ntienes el pulso del corazón.\\nOh oh, Les Rodríguez,\\ntu nombre ya trae celebración,\\nse escribe con luz y con vibración.\\n\\nVerso 2\\nPaso firme marcando el compás,\\nmirada que sabe dominar.\\nNo es suerte ni casualidad,\\nes pura electricidad.\\n\\nPuente\\nQue suene el bajo, que ruja el brass,\\nsi tú estás cerca todo va más.\\nNo es lujo falso ni pose chic,\\nes flow auténtico, Rodríguez beat.\\n\\nCoro Final\\nRodríguez, reina del groove solar,\\nenciendes el aire al respirar.\\nRodríguez, ritmo en expansión,\\ntu vibra es pura detonación.\\nOh oh, Les Rodríguez,\\ncuando dices “vamos” nadie se va,\\nporque tu energía… no tiene final.",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/rodr-guez-groove",
+        "https://suno.com/song/88ed820d-8fe9-4d55-a635-ab1971473e2e",
+        "https://cdn2.suno.ai/image_large_88ed820d-8fe9-4d55-a635-ab1971473e2e.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2274498011",
+      "title": "# 🎵 Sarahid Junco",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/sarahid-junco-2",
+      "soundcloudDurationSeconds": 241,
+      "selectedSuno": {
+        "id": "987d40e2-3b55-433e-b57b-14f56fc79ee0",
+        "title": "# 🎵 Sarahid Junco",
+        "url": "https://suno.com/song/987d40e2-3b55-433e-b57b-14f56fc79ee0",
+        "version": "v5",
+        "durationSeconds": 270,
+        "durationDeltaSeconds": 29,
+        "previewAudioUrl": "https://cdn1.suno.ai/987d40e2-3b55-433e-b57b-14f56fc79ee0.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_987d40e2-3b55-433e-b57b-14f56fc79ee0.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/sarahid-junco-2",
+        "https://suno.com/song/987d40e2-3b55-433e-b57b-14f56fc79ee0",
+        "https://cdn2.suno.ai/image_large_987d40e2-3b55-433e-b57b-14f56fc79ee0.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 29s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2274498008",
+      "title": "# 🎵 Sarahid Junco",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/sarahid-junco-1-1",
+      "soundcloudDurationSeconds": 269,
+      "selectedSuno": {
+        "id": "987d40e2-3b55-433e-b57b-14f56fc79ee0",
+        "title": "# 🎵 Sarahid Junco",
+        "url": "https://suno.com/song/987d40e2-3b55-433e-b57b-14f56fc79ee0",
+        "version": "v5",
+        "durationSeconds": 270,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/987d40e2-3b55-433e-b57b-14f56fc79ee0.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_987d40e2-3b55-433e-b57b-14f56fc79ee0.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/sarahid-junco-1-1",
+        "https://suno.com/song/987d40e2-3b55-433e-b57b-14f56fc79ee0",
+        "https://cdn2.suno.ai/image_large_987d40e2-3b55-433e-b57b-14f56fc79ee0.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2255938331",
+      "title": "Shelyne",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/karla-gomez-1",
+      "soundcloudDurationSeconds": 174,
+      "selectedSuno": {
+        "id": "44b23c6f-7e33-4829-bcbe-f313f9803f1d",
+        "title": "Shelyne",
+        "url": "https://suno.com/song/44b23c6f-7e33-4829-bcbe-f313f9803f1d",
+        "version": "v5",
+        "durationSeconds": 174,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/44b23c6f-7e33-4829-bcbe-f313f9803f1d.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_44b23c6f-7e33-4829-bcbe-f313f9803f1d.jpeg",
+        "style": "dub",
+        "hasVocal": null
+      },
+      "lyrics": "Desde que llega Shelyne\\nse acomoda el panorama,\\nno presume lo que tiene\\ny aun así prende la llama.\\nTrae sonrisa peligrosa\\nde esas que no se planean.\\n\\nNo necesita promesas\\nni palabras de ocasión,\\ncon mirarte te desarma\\nla paciencia y la razón.\\nHay mujeres que se miran,\\ny otras que se sienten, son.\\n\\nCamina firme y serena\\ncomo quien sabe su rumbo,\\nno corre tras lo que huye\\nni se queda en lo profundo.\\nCuando quiere, se queda,\\ncuando no, cambia el mundo.\\n\\nNo la hizo la casualidad\\nni la suerte mal contada,\\nse forjó con cicatrices\\ny noches mal descansadas.\\nPor eso cuando sonríe,\\nvale más que mil miradas.\\n\\nY si algún día oyen su nombre\\nrodar lento en esta rola,\\nno pregunten qué promete,\\nmejor cuiden lo que toca.\\nQue Shelyne no es para todos…\\nes pa’ quien aguanta la nota.\\n",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/karla-gomez-1",
+        "https://suno.com/song/44b23c6f-7e33-4829-bcbe-f313f9803f1d",
+        "https://cdn2.suno.ai/image_large_44b23c6f-7e33-4829-bcbe-f313f9803f1d.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2253297050",
+      "title": "Stephen of Smoke",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/stephen-of-smoke",
+      "soundcloudDurationSeconds": 244,
+      "selectedSuno": {
+        "id": "fe517b21-f94b-4d75-ace9-939aa5c1d2f4",
+        "title": "**Stephen of Smoke**",
+        "url": "https://suno.com/song/fe517b21-f94b-4d75-ace9-939aa5c1d2f4",
+        "version": "v5",
+        "durationSeconds": 244,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/fe517b21-f94b-4d75-ace9-939aa5c1d2f4.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_fe517b21-f94b-4d75-ace9-939aa5c1d2f4.jpeg",
+        "style": "dub",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/stephen-of-smoke",
+        "https://suno.com/song/fe517b21-f94b-4d75-ace9-939aa5c1d2f4",
+        "https://cdn2.suno.ai/image_large_fe517b21-f94b-4d75-ace9-939aa5c1d2f4.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2267944037",
+      "title": "Tame Your Tiger",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/tame-your-tiger",
+      "soundcloudDurationSeconds": 204,
+      "selectedSuno": {
+        "id": "29ab0d61-59fe-4f9f-b484-0daa1ffe58f8",
+        "title": "**Tame Your Tiger**",
+        "url": "https://suno.com/song/29ab0d61-59fe-4f9f-b484-0daa1ffe58f8",
+        "version": "v5",
+        "durationSeconds": 204,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/29ab0d61-59fe-4f9f-b484-0daa1ffe58f8.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_29ab0d61-59fe-4f9f-b484-0daa1ffe58f8.jpeg",
+        "style": "metal",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/tame-your-tiger",
+        "https://suno.com/song/29ab0d61-59fe-4f9f-b484-0daa1ffe58f8",
+        "https://cdn2.suno.ai/image_large_29ab0d61-59fe-4f9f-b484-0daa1ffe58f8.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2239732664",
+      "title": "Te quise",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/studio-selection-cover-1-1",
+      "soundcloudDurationSeconds": 182,
+      "selectedSuno": {
+        "id": "b8b9e908-2940-4fb0-ab61-c691035f24c4",
+        "title": "Te Quise",
+        "url": "https://suno.com/song/b8b9e908-2940-4fb0-ab61-c691035f24c4",
+        "version": "v5.5",
+        "durationSeconds": 212,
+        "durationDeltaSeconds": 30,
+        "previewAudioUrl": "https://cdn1.suno.ai/b8b9e908-2940-4fb0-ab61-c691035f24c4.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_b8b9e908-2940-4fb0-ab61-c691035f24c4.jpeg",
+        "style": "Live, Live Concert, Live Audience, Live Singing, live show, Crowd Singing, stadium, Crowd sing-a-long, Crowd noise, live performance, energetic, heavy-hitting drums, hook repetition with crowd singing, rock, Crowd chorus, chorus crowd sing a long, female vocals high Extension, arena rock, Pubblico canta una parte",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/studio-selection-cover-1-1",
+        "https://suno.com/song/b8b9e908-2940-4fb0-ab61-c691035f24c4",
+        "https://cdn2.suno.ai/image_large_b8b9e908-2940-4fb0-ab61-c691035f24c4.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 30s; revisar versión antes de descargar",
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2278998704",
+      "title": "The city learns to listen close",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/the-city-learns-to-listen-close-1-1",
+      "soundcloudDurationSeconds": 166,
+      "selectedSuno": {
+        "id": "77a8cd03-076e-4558-bed2-ffb7aa11c245",
+        "title": "The city learns to listen close",
+        "url": "https://suno.com/song/77a8cd03-076e-4558-bed2-ffb7aa11c245",
+        "version": "v5",
+        "durationSeconds": 166,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/77a8cd03-076e-4558-bed2-ffb7aa11c245.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_77a8cd03-076e-4558-bed2-ffb7aa11c245.jpeg",
+        "style": "neo-psychedelia reggae fusion with soft trap influence, lush female vocals dripping confidence and cosmic glamour, shimmering synths, deep bass, elegant rhythm, “Quantum Luxurious” — luxury as a state of mind, dripping gold and starlight, sensual and introspective vibe",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/the-city-learns-to-listen-close-1-1",
+        "https://suno.com/song/77a8cd03-076e-4558-bed2-ffb7aa11c245",
+        "https://cdn2.suno.ai/image_large_77a8cd03-076e-4558-bed2-ffb7aa11c245.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2276338409",
+      "title": "TÍTULO_ “No Sabe Dónde Vivo”",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/t-tulo-no-sabe-d-nde-vivo",
+      "soundcloudDurationSeconds": 225,
+      "selectedSuno": {
+        "id": "11033719-bc4c-4d0c-9585-d78c1af1d2c0",
+        "title": "TÍTULO: “No Sabe Dónde Vivo”",
+        "url": "https://suno.com/song/11033719-bc4c-4d0c-9585-d78c1af1d2c0",
+        "version": "v5",
+        "durationSeconds": 225,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/11033719-bc4c-4d0c-9585-d78c1af1d2c0.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_11033719-bc4c-4d0c-9585-d78c1af1d2c0.jpeg",
+        "style": "Metal + Reggae + Dub Techno",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/t-tulo-no-sabe-d-nde-vivo",
+        "https://suno.com/song/11033719-bc4c-4d0c-9585-d78c1af1d2c0",
+        "https://cdn2.suno.ai/image_large_11033719-bc4c-4d0c-9585-d78c1af1d2c0.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2259877820",
+      "title": "Tornasol Love",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/tornasol-love-2",
+      "soundcloudDurationSeconds": 201,
+      "selectedSuno": {
+        "id": "124a016e-9ce4-4adc-bc7d-309c224155f4",
+        "title": "Tornasol Love",
+        "url": "https://suno.com/song/124a016e-9ce4-4adc-bc7d-309c224155f4",
+        "version": "v5",
+        "durationSeconds": 201,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/124a016e-9ce4-4adc-bc7d-309c224155f4.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_124a016e-9ce4-4adc-bc7d-309c224155f4.jpeg",
+        "style": "neo-psychedelia reggae fusion with soft trap influence, lush female vocals dripping confidence and cosmic glamour, shimmering synths, deep bass, elegant rhythm, “Quantum Luxurious” — luxury as a state of mind, dripping gold and starlight, sensual and introspective vibe",
+        "hasVocal": false
+      },
+      "lyrics": "Tornasol Love Foreva\\n[Verse]\\n\\nYou change colors like the sky at dawn\\n\\nOne minute here next minute gone\\n\\nA rainbow heart that can't stay still\\n\\nBut I’m chasing you I always will\\n\\n \\n\\n[Prechorus]\\n\\nYou’re a prism breaking every light\\n\\nI can't hold you but it feels so right\\n\\n \\n\\n[Chorus]\\n\\nTornasol love foreva\\n\\nShining through whatever\\n\\nEvery shade you wear\\n\\nI’m always there\\n\\nTornasol love foreva\\n\\n \\n\\n[Verse 2]\\n\\nYou glow like waves under a silver moon\\n\\nSwitching hues like a monsoon tune\\n\\nI try to catch you but you slip away\\n\\nStill I follow every shade of day\\n\\n \\n\\n[Prechorus]\\n\\nYou’re a spark a flame a fleeting glow\\n\\nBut my heart it knows where to go\\n\\n \\n\\n[Chorus]\\n\\nTornasol love foreva\\n\\nShining through whatever\\n\\nEvery shade you wear\\n\\nI’m always there\\n\\nTornasol love foreva",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/tornasol-love-2",
+        "https://suno.com/song/124a016e-9ce4-4adc-bc7d-309c224155f4",
+        "https://cdn2.suno.ai/image_large_124a016e-9ce4-4adc-bc7d-309c224155f4.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2259877823",
+      "title": "Tornasol Love",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/tornasol-love-1-1",
+      "soundcloudDurationSeconds": 200,
+      "selectedSuno": {
+        "id": "124a016e-9ce4-4adc-bc7d-309c224155f4",
+        "title": "Tornasol Love",
+        "url": "https://suno.com/song/124a016e-9ce4-4adc-bc7d-309c224155f4",
+        "version": "v5",
+        "durationSeconds": 201,
+        "durationDeltaSeconds": 1,
+        "previewAudioUrl": "https://cdn1.suno.ai/124a016e-9ce4-4adc-bc7d-309c224155f4.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_124a016e-9ce4-4adc-bc7d-309c224155f4.jpeg",
+        "style": "neo-psychedelia reggae fusion with soft trap influence, lush female vocals dripping confidence and cosmic glamour, shimmering synths, deep bass, elegant rhythm, “Quantum Luxurious” — luxury as a state of mind, dripping gold and starlight, sensual and introspective vibe",
+        "hasVocal": false
+      },
+      "lyrics": "Tornasol Love Foreva\\n[Verse]\\n\\nYou change colors like the sky at dawn\\n\\nOne minute here next minute gone\\n\\nA rainbow heart that can't stay still\\n\\nBut I’m chasing you I always will\\n\\n \\n\\n[Prechorus]\\n\\nYou’re a prism breaking every light\\n\\nI can't hold you but it feels so right\\n\\n \\n\\n[Chorus]\\n\\nTornasol love foreva\\n\\nShining through whatever\\n\\nEvery shade you wear\\n\\nI’m always there\\n\\nTornasol love foreva\\n\\n \\n\\n[Verse 2]\\n\\nYou glow like waves under a silver moon\\n\\nSwitching hues like a monsoon tune\\n\\nI try to catch you but you slip away\\n\\nStill I follow every shade of day\\n\\n \\n\\n[Prechorus]\\n\\nYou’re a spark a flame a fleeting glow\\n\\nBut my heart it knows where to go\\n\\n \\n\\n[Chorus]\\n\\nTornasol love foreva\\n\\nShining through whatever\\n\\nEvery shade you wear\\n\\nI’m always there\\n\\nTornasol love foreva",
+      "lyricsStatus": "available",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/tornasol-love-1-1",
+        "https://suno.com/song/124a016e-9ce4-4adc-bc7d-309c224155f4",
+        "https://cdn2.suno.ai/image_large_124a016e-9ce4-4adc-bc7d-309c224155f4.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2259896399",
+      "title": "Tornasol Touch",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/tornasol-touch_1-1",
+      "soundcloudDurationSeconds": 195,
+      "selectedSuno": {
+        "id": "78c2d0e4-b242-4a8a-bc4d-3eeaaf6cbb00",
+        "title": "**Tornasol Touch**",
+        "url": "https://suno.com/song/78c2d0e4-b242-4a8a-bc4d-3eeaaf6cbb00",
+        "version": "v5",
+        "durationSeconds": 195,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/78c2d0e4-b242-4a8a-bc4d-3eeaaf6cbb00.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_78c2d0e4-b242-4a8a-bc4d-3eeaaf6cbb00.jpeg",
+        "style": "neo-psychedelia reggae fusion with soft trap influence, lush female vocals dripping confidence and cosmic glamour, shimmering synths, deep bass, elegant rhythm, “Quantum Luxurious” — luxury as a state of mind, dripping gold and starlight, sensual and introspective vibe",
+        "hasVocal": null
+      },
+      "lyrics": null,
+      "lyricsStatus": "not_exposed",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/tornasol-touch_1-1",
+        "https://suno.com/song/78c2d0e4-b242-4a8a-bc4d-3eeaaf6cbb00",
+        "https://cdn2.suno.ai/image_large_78c2d0e4-b242-4a8a-bc4d-3eeaaf6cbb00.jpeg"
+      ],
+      "warnings": [
+        "La página pública no expone letra para este candidato"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2235362447",
+      "title": "Ultima Pagina Live",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/ultima-pagina-live",
+      "soundcloudDurationSeconds": 175,
+      "selectedSuno": {
+        "id": "508122a9-3f3a-40e4-ae06-7df3c432d7e9",
+        "title": "Ultima pagina(live)",
+        "url": "https://suno.com/song/508122a9-3f3a-40e4-ae06-7df3c432d7e9",
+        "version": "v5",
+        "durationSeconds": 182,
+        "durationDeltaSeconds": 7,
+        "previewAudioUrl": "https://cdn1.suno.ai/508122a9-3f3a-40e4-ae06-7df3c432d7e9.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_508122a9-3f3a-40e4-ae06-7df3c432d7e9.jpeg",
+        "style": "reggae tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "review_suno_version",
+      "confidence": 0.58,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/ultima-pagina-live",
+        "https://suno.com/song/508122a9-3f3a-40e4-ae06-7df3c432d7e9",
+        "https://cdn2.suno.ai/image_large_508122a9-3f3a-40e4-ae06-7df3c432d7e9.jpeg"
+      ],
+      "warnings": [
+        "La duración difiere 7s; revisar versión antes de descargar"
+      ],
+      "fallbackReason": null
+    },
+    {
+      "soundcloudId": "2250666908",
+      "title": "Victoria",
+      "soundcloudUrl": "https://soundcloud.com/iyari-c/victoria",
+      "soundcloudDurationSeconds": 182,
+      "selectedSuno": {
+        "id": "bd52cd04-8deb-4789-9b69-d13f12c340b5",
+        "title": "victoria",
+        "url": "https://suno.com/song/bd52cd04-8deb-4789-9b69-d13f12c340b5",
+        "version": "v5",
+        "durationSeconds": 182,
+        "durationDeltaSeconds": 0,
+        "previewAudioUrl": "https://cdn1.suno.ai/bd52cd04-8deb-4789-9b69-d13f12c340b5.mp3",
+        "artwork": "https://cdn2.suno.ai/image_large_bd52cd04-8deb-4789-9b69-d13f12c340b5.jpeg",
+        "style": "reggae, tech dub",
+        "hasVocal": false
+      },
+      "lyrics": null,
+      "lyricsStatus": "instrumental",
+      "wavStatus": "requires_authenticated_suno_download",
+      "preferredAction": "download_wav_and_assets_from_suno",
+      "confidence": 0.95,
+      "evidence": [
+        "https://soundcloud.com/iyari-c/victoria",
+        "https://suno.com/song/bd52cd04-8deb-4789-9b69-d13f12c340b5",
+        "https://cdn2.suno.ai/image_large_bd52cd04-8deb-4789-9b69-d13f12c340b5.jpeg"
+      ],
+      "warnings": [],
+      "fallbackReason": null
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+import { openAsBlob } from 'node:fs';
+
 const API_BASE = 'https://api.soundcloud.com';
 
 export class SoundCloudClient {
@@ -16,7 +18,11 @@ export class SoundCloudClient {
         ...options.headers,
       },
     });
-    if (!response.ok) throw new Error(`SoundCloud HTTP ${response.status}: ${await response.text()}`);
+    if (!response.ok) {
+      const error = new Error(`SoundCloud HTTP ${response.status}: ${await response.text()}`);
+      error.status = response.status;
+      throw error;
+    }
     return response.status === 204 ? null : response.json();
   }
 
@@ -45,5 +51,18 @@ export class SoundCloudClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ track: metadata }),
     });
+  }
+
+  async uploadTrack(audioPath, metadata = {}) {
+    const form = new FormData();
+    form.set('track[asset_data]', await openAsBlob(audioPath));
+    if (metadata.artworkPath) form.set('track[artwork_data]', await openAsBlob(metadata.artworkPath));
+    form.set('track[title]', String(metadata.title || 'Sin título'));
+    form.set('track[sharing]', 'private');
+    if (metadata.artist) form.set('track[artist]', String(metadata.artist));
+    if (metadata.description) form.set('track[description]', String(metadata.description));
+    if (metadata.genre) form.set('track[genre]', String(metadata.genre));
+    if (metadata.tagList) form.set('track[tag_list]', String(metadata.tagList));
+    return this.request('/tracks', { method: 'POST', body: form });
   }
 }

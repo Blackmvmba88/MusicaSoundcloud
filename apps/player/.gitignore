@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+release/
+*.tsbuildinfo
+.DS_Store
+.env
+.env.local
+.venv-*/
+.bmmp-data/
+__pycache__/
+*.py[cod]
+*.mp3
+*.wav
+suno-local-matches.json
+suno-local-matches.csv

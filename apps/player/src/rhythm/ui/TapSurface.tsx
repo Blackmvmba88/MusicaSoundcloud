@@ -1,0 +1,1 @@
+export function TapSurface({onTap,disabled}:{onTap:()=>void;disabled:boolean}){return <button disabled={disabled} onPointerDown={e=>{e.preventDefault();onTap()}} className="tap-surface"><span className="tap-icon">●</span><strong>{disabled?'Espera la cuenta previa':'Pulsa aquí'}</strong><small>También puedes usar la barra espaciadora</small></button>}

@@ -1,0 +1,2 @@
+.tap-marks{position:relative;width:calc(100% - 100px);height:24px;margin:-20px 30px 0 70px;border-bottom:1px solid #b9b4aa}.tap-marks i{position:absolute;bottom:-7px;width:13px;height:13px;margin-left:-6px;border-radius:50%;background:var(--atmosphere-accent);box-shadow:0 0 0 3px rgba(53,201,255,.22)}
+@media(max-width:650px){.tap-marks{width:calc(100% - 60px);margin:-12px 10px 0 50px}}

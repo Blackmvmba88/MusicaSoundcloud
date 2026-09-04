@@ -1,0 +1,8 @@
+import type {Level} from '../domain/exercise';
+import './tempo-control.css';
+
+export function ExerciseIntro({level,bpm=80,onBpmChange,onStart,onBack}:{level:Level;bpm?:number;onBpmChange?:(bpm:number)=>void;onStart:()=>void;onBack:()=>void}){
+  const range=level.tempoRange??(level.id.startsWith('songs')?{min:50,max:140,step:5,default:80}:undefined);
+  const presets=range?[range.min,range.default,range.max]:[];
+  return <main className="center page"><button className="back" onClick={onBack}>← Volver</button><p className="eyebrow">TAREA</p><h1>{level.title}</h1><p className="accent">Lectura rítmica</p><section className="intro-copy"><p>En este ejercicio tienes que reproducir<br/>el ritmo que ves en la pantalla.</p><p>Pulsa siguiendo el metrónomo,<br/>comenzando desde la primera nota escrita.</p></section>{range&&<section className="tempo-control"><div><span>Tempo de la sesión</span><b>{bpm} BPM</b></div><input aria-label="Tempo" type="range" min={range.min} max={range.max} step={range.step} value={bpm} onChange={event=>onBpmChange?.(Number(event.target.value))}/><div className="tempo-presets">{presets.map((tempo,index)=><button key={tempo} onClick={()=>onBpmChange?.(tempo)}>{index===0?'Lento':index===1?'Normal':'Rápido'} · {tempo}</button>)}</div><small>{bpm<70?'Ideal para estudiar las entradas':bpm<100?'Tempo equilibrado':'Reto de estabilidad'}</small></section>}<p className="muted">Duraciones en este ejercicio</p><div className="chips">{level.durations.map(duration=><span key={duration}>{duration}</span>)}</div><button className="primary large" onClick={onStart}>Empezar ejercicio <b>→</b></button></main>;
+}

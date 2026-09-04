@@ -1,0 +1,2 @@
+import {describe,expect,it} from 'vitest';import {scoreEvaluations} from '../rhythm/engine/scoring';
+describe('scoring',()=>{it('awards 500 for a perfect clean answer',()=>{const evaluations=[0,1,2,3].map(i=>({expectedEventId:String(i),expectedTimeMs:i*750,actualTimeMs:i*750,errorMs:0,status:'perfect' as const}));expect(scoreEvaluations(evaluations,0).score).toBe(500)});it('penalizes missing and extra taps',()=>{const evaluations=[{expectedEventId:'1',expectedTimeMs:0,status:'missed' as const}];expect(scoreEvaluations(evaluations,1).score).toBe(0)})});
