@@ -1,16 +1,9 @@
-name: Validación
+name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
-
-permissions:
-  contents: read
-
-concurrency:
-  group: validate-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   test:
@@ -23,7 +16,7 @@ jobs:
       - name: Preparar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: "24"
           cache: npm
           cache-dependency-path: apps/player/package-lock.json
 
