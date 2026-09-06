@@ -1,4 +1,5 @@
-const seen = new Set();
+const known = new Map();
+const liveIds = new Set();
 const pending = new Map();
 let baselineReady = false;
 let flushTimer = null;
@@ -23,15 +24,36 @@ function songFromAnchor(anchor) {
   };
 }
 
-function discover({ baseline = false } = {}) {
-  for (const anchor of document.querySelectorAll('a[href*="/song/"]')) {
-    const track = songFromAnchor(anchor);
-    if (!track || seen.has(track.id)) continue;
-    seen.add(track.id);
-    if (!baselineReady || baseline) continue;
+function accept(anchor, { baseline = false } = {}) {
+  const track = songFromAnchor(anchor);
+  if (!track) return;
+  const previousTitle = known.get(track.id);
+
+  if (previousTitle === undefined) {
+    known.set(track.id, track.title);
+    if (!baselineReady || baseline) return;
+    liveIds.add(track.id);
     pending.set(track.id, track);
+    scheduleFlush(120);
+    return;
   }
-  if (pending.size) scheduleFlush(150);
+
+  // Solo refresca metadata de IDs que nacieron durante esta sesión; no reenvía el baseline.
+  if (liveIds.has(track.id) && track.title && track.title !== previousTitle) {
+    known.set(track.id, track.title);
+    pending.set(track.id, track);
+    scheduleFlush(250);
+  }
+}
+
+function scanNode(node, options = {}) {
+  if (!(node instanceof Element)) return;
+  if (node.matches?.('a[href*="/song/"]')) accept(node, options);
+  for (const anchor of node.querySelectorAll?.('a[href*="/song/"]') || []) accept(anchor, options);
+}
+
+function fullScan(options = {}) {
+  for (const anchor of document.querySelectorAll('a[href*="/song/"]')) accept(anchor, options);
 }
 
 function scheduleFlush(delay = 1000) {
@@ -55,12 +77,25 @@ function flush() {
   });
 }
 
-// Todo lo que ya estaba visible al cargar la página se toma como baseline de esta sesión.
-discover({ baseline: true });
+// Lo visible al cargar se toma como baseline; solo lo que aparezca después cuenta como nuevo.
+fullScan({ baseline: true });
 baselineReady = true;
 
-const observer = new MutationObserver(() => discover());
-observer.observe(document.documentElement, { childList: true, subtree: true });
+const observer = new MutationObserver((mutations) => {
+  for (const mutation of mutations) {
+    if (mutation.type === 'attributes') {
+      scanNode(mutation.target);
+      continue;
+    }
+    for (const node of mutation.addedNodes) scanNode(node);
+  }
+});
+observer.observe(document.documentElement, {
+  childList: true,
+  subtree: true,
+  attributes: true,
+  attributeFilter: ['href'],
+});
 
-// Respaldo barato para interfaces virtualizadas/SPA donde una tarjeta pueda cambiar sin insertar un nodo nuevo.
-setInterval(() => discover(), 3000);
+// Respaldo poco frecuente para SPAs/virtualización: 5x menos scans globales que antes.
+setInterval(() => fullScan(), 15_000);
