@@ -95,8 +95,37 @@ export function upsertSunoTrack(db, track) {
 }
 
 export function attachLocalPathToSunoTrack(db, { sunoId, localPath, title, artist = 'Iyari Gomez' }) {
-  const existing = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(String(sunoId));
-  if (!existing) return upsertLocalTrack(db, { title, artist, localPath });
+  const normalizedId = String(sunoId);
+  let existing = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(normalizedId);
+  if (!existing) {
+    upsertSunoTrack(db, { id: normalizedId, title, artist, source: 'suno-sidecar' });
+    existing = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(normalizedId);
+  }
+
+  const pathTrack = db.prepare('SELECT * FROM tracks WHERE local_path = ?').get(localPath);
+  if (pathTrack && pathTrack.id !== existing.id) {
+    db.exec('BEGIN IMMEDIATE');
+    try {
+      db.prepare('DELETE FROM tracks WHERE id = ?').run(existing.id);
+      db.prepare(`
+        UPDATE tracks
+        SET suno_id = ?,
+            suno_url = ?,
+            suno_snapshot = ?,
+            suno_observed_at = ?,
+            title = COALESCE(NULLIF(?, ''), title),
+            artist = COALESCE(NULLIF(?, ''), artist),
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `).run(normalizedId, existing.suno_url, existing.suno_snapshot, existing.suno_observed_at, title || '', artist || '', pathTrack.id);
+      db.exec('COMMIT');
+    } catch (error) {
+      db.exec('ROLLBACK');
+      throw error;
+    }
+    return db.prepare('SELECT * FROM tracks WHERE id = ?').get(pathTrack.id);
+  }
+
   db.prepare(`
     UPDATE tracks
     SET local_path = ?,
@@ -105,8 +134,8 @@ export function attachLocalPathToSunoTrack(db, { sunoId, localPath, title, artis
         sync_status = CASE WHEN soundcloud_id IS NOT NULL THEN 'linked' ELSE 'local' END,
         updated_at = CURRENT_TIMESTAMP
     WHERE suno_id = ?
-  `).run(localPath, title || '', artist || '', String(sunoId));
-  return db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(String(sunoId));
+  `).run(localPath, title || '', artist || '', normalizedId);
+  return db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(normalizedId);
 }
 
 export function upsertSoundCloudTrack(db, track) {
