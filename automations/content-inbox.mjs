@@ -1,7 +1,7 @@
 import { existsSync, watch as watchFs } from 'node:fs';
 import { readdir, stat } from 'node:fs/promises';
 import { homedir } from 'node:os';
-import { basename, dirname, extname, resolve } from 'node:path';
+import { basename, extname, resolve } from 'node:path';
 import { loadEnvFile } from 'node:process';
 import { openDatabase, upsertContentEvent } from '../packages/database/src/db.mjs';
 import { classifyContentPath, fileExternalId, isPartialDownload } from '../packages/content/src/classify.mjs';
@@ -20,29 +20,28 @@ const timers = new Map();
 
 function remember(key, signature) {
   lastSeen.set(key, signature);
-  if (lastSeen.size > 5000) {
-    const oldest = lastSeen.keys().next().value;
-    lastSeen.delete(oldest);
-  }
+  if (lastSeen.size > 5000) lastSeen.delete(lastSeen.keys().next().value);
 }
 
 async function stableInfo(path) {
-  if (!existsSync(path) || isPartialDownload(path)) return null;
+  if (!existsSync(path)) return { state: 'missing' };
+  if (isPartialDownload(path)) return { state: 'partial' };
   const first = await stat(path).catch(() => null);
-  if (!first?.isFile()) return null;
+  if (!first?.isFile()) return { state: 'missing' };
   await new Promise((done) => setTimeout(done, settleMs));
   const second = await stat(path).catch(() => null);
-  if (!second?.isFile()) return null;
-  if (first.size !== second.size || first.mtimeMs !== second.mtimeMs) return null;
-  return second;
+  if (!second?.isFile()) return { state: 'missing' };
+  if (first.size !== second.size || first.mtimeMs !== second.mtimeMs) return { state: 'unstable' };
+  return { state: 'ready', info: second };
 }
 
 async function record(path, root) {
-  const info = await stableInfo(path);
-  if (!info) return false;
+  const stable = await stableInfo(path);
+  if (stable.state !== 'ready') return stable.state;
+  const info = stable.info;
   const externalId = fileExternalId(info, path);
   const signature = `${info.size}:${Math.trunc(info.mtimeMs)}`;
-  if (lastSeen.get(externalId) === signature) return false;
+  if (lastSeen.get(externalId) === signature) return 'duplicate';
 
   const item = upsertContentEvent(db, {
     source: 'filesystem',
@@ -62,7 +61,7 @@ async function record(path, root) {
   });
   remember(externalId, signature);
   console.log(JSON.stringify({ event: 'content.local', id: item.id, kind: item.kind, path: item.local_path }));
-  return true;
+  return 'recorded';
 }
 
 function schedule(path, root, delay = 120) {
@@ -71,8 +70,8 @@ function schedule(path, root, delay = 120) {
   timers.set(path, setTimeout(async () => {
     timers.delete(path);
     try {
-      const recorded = await record(path, root);
-      if (!recorded && existsSync(path) && !isPartialDownload(path)) schedule(path, root, settleMs);
+      const state = await record(path, root);
+      if (state === 'unstable') schedule(path, root, settleMs);
     } catch (error) {
       console.error(JSON.stringify({ event: 'content.error', path, error: error.message }));
     }
@@ -85,11 +84,8 @@ async function walk(root) {
   for (const entry of entries) {
     if (entry.name.startsWith('.')) continue;
     const path = resolve(root, entry.name);
-    if (entry.isDirectory()) {
-      count += await walk(path);
-    } else if (entry.isFile() && await record(path, root)) {
-      count += 1;
-    }
+    if (entry.isDirectory()) count += await walk(path);
+    else if (entry.isFile() && await record(path, root) === 'recorded') count += 1;
   }
   return count;
 }
