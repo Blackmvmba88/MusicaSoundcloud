@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Mamba Suno Bridge",
+  "version": "0.1.0",
+  "description": "Detecta nuevas canciones visibles en tu sesión de Suno y las registra en BlackMamba Music Hub sin descargar el audio.",
+  "host_permissions": [
+    "http://127.0.0.1:4173/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://suno.com/*", "https://www.suno.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Mamba Suno Bridge"
+  }
+}
