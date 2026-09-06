@@ -3,8 +3,11 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { mkdir, readdir, readFile, rename, stat, writeFile } from 'node:fs/promises';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 import { loadEnvFile } from 'node:process';
+import { attachLocalPathToSunoTrack, openDatabase } from '../packages/database/src/db.mjs';
 import { SoundCloudClient } from '../packages/soundcloud/src/client.mjs';
 import { validateTrackPackage } from '../packages/pipeline/src/validate-track-package.mjs';
+
+if (existsSync('.env')) loadEnvFile('.env');
 
 const argv = new Set(process.argv.slice(2));
 const apply = argv.has('--apply');
@@ -13,8 +16,8 @@ const includeExisting = argv.has('--include-existing');
 const fileArg = process.argv.find((value) => value.startsWith('--file='))?.slice(7);
 const root = resolve(process.env.BLACKMAMBA_WAV_MASTER || '/Volumes/ADATA SC740/MÚSICA/WAV_MASTER');
 const statePath = resolve('storage/sync/suno-private-upload.json');
+const database = openDatabase();
 
-if (existsSync('.env')) loadEnvFile('.env');
 if (process.env.SOUNDCLOUD_AUTO_SHARING && process.env.SOUNDCLOUD_AUTO_SHARING !== 'private') {
   throw new Error('Regla rechazada: SOUNDCLOUD_AUTO_SHARING debe ser private');
 }
@@ -97,6 +100,12 @@ async function processFile(file, state) {
   const sidecar = await readSidecar(absolute);
   const title = sidecar.title || cleanTitle(absolute);
   const sunoUrl = sidecar.sunoUrl || (sidecar.id ? `https://suno.com/song/${sidecar.id}` : null);
+  if (sidecar.id) attachLocalPathToSunoTrack(database, {
+    sunoId: sidecar.id,
+    localPath: absolute,
+    title,
+    artist: sidecar.artist || 'Iyari Gomez',
+  });
   const artworkPath = coverFor(absolute, sidecar);
   const readiness = await validateTrackPackage({ audioPath: absolute, artworkPath, sidecar, title });
   if (!readiness.ready) {
