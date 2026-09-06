@@ -61,6 +61,17 @@ CREATE INDEX IF NOT EXISTS content_status_observed_idx
 CREATE INDEX IF NOT EXISTS content_source_kind_idx
   ON content_items(source, kind);
 
+-- Si Downloads descubre primero un archivo y luego Suno/u otra fuente reclama esa misma ruta,
+-- la identidad remota gana y la observación local redundante se fusiona antes del UNIQUE check.
+CREATE TRIGGER IF NOT EXISTS content_merge_local_path_before_update
+BEFORE UPDATE OF local_path ON content_items
+WHEN NEW.local_path IS NOT NULL
+BEGIN
+  DELETE FROM content_items
+  WHERE local_path = NEW.local_path
+    AND id <> OLD.id;
+END;
+
 CREATE TABLE IF NOT EXISTS artwork_jobs (
   id INTEGER PRIMARY KEY,
   track_id INTEGER NOT NULL REFERENCES tracks(id) ON DELETE CASCADE,
