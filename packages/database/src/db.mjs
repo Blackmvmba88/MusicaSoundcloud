@@ -24,6 +24,10 @@ function migrateTracks(db) {
     description: 'TEXT',
     lyrics: 'TEXT',
     metadata_artist: 'TEXT',
+    suno_id: 'TEXT',
+    suno_url: 'TEXT',
+    suno_snapshot: 'TEXT',
+    suno_observed_at: 'TEXT',
     soundcloud_artwork_url: 'TEXT',
     soundcloud_snapshot: 'TEXT',
     last_soundcloud_audit_at: 'TEXT',
@@ -31,10 +35,20 @@ function migrateTracks(db) {
   for (const [name, type] of Object.entries(columns)) {
     if (!existing.has(name)) db.exec(`ALTER TABLE tracks ADD COLUMN ${name} ${type}`);
   }
+  db.exec('CREATE UNIQUE INDEX IF NOT EXISTS tracks_suno_id_idx ON tracks(suno_id) WHERE suno_id IS NOT NULL');
+  db.exec('CREATE INDEX IF NOT EXISTS tracks_suno_observed_at_idx ON tracks(suno_observed_at)');
 }
 
 export function listTracks(db) {
   return db.prepare('SELECT * FROM tracks ORDER BY artist, title').all();
+}
+
+export function listPendingSunoTracks(db) {
+  return db.prepare(`
+    SELECT * FROM tracks
+    WHERE suno_id IS NOT NULL AND local_path IS NULL
+    ORDER BY COALESCE(suno_observed_at, created_at) DESC
+  `).all();
 }
 
 export function upsertLocalTrack(db, { title, artist = 'BlackMamba', localPath }) {
@@ -47,6 +61,52 @@ export function upsertLocalTrack(db, { title, artist = 'BlackMamba', localPath }
       updated_at = CURRENT_TIMESTAMP
   `).run(title, artist, localPath);
   return db.prepare('SELECT * FROM tracks WHERE local_path = ?').get(localPath);
+}
+
+export function upsertSunoTrack(db, track) {
+  const sunoId = String(track.id || track.sunoId || '').trim();
+  if (!sunoId || !/^[a-zA-Z0-9_-]{6,128}$/.test(sunoId)) throw new Error('Suno id inválido');
+  const title = String(track.title || '').trim().slice(0, 300) || `Suno ${sunoId.slice(0, 8)}`;
+  const artist = String(track.artist || 'Iyari Gomez').trim().slice(0, 200) || 'Iyari Gomez';
+  const sunoUrl = `https://suno.com/song/${sunoId}`;
+  const observedAt = Number.isNaN(Date.parse(track.observedAt || '')) ? new Date().toISOString() : new Date(track.observedAt).toISOString();
+  const snapshot = JSON.stringify({
+    id: sunoId,
+    title,
+    artist,
+    url: sunoUrl,
+    observedAt,
+    source: track.source || 'suno-web',
+    page: track.page || null,
+  });
+
+  db.prepare(`
+    INSERT INTO tracks (title, artist, suno_id, suno_url, suno_snapshot, suno_observed_at, sync_status)
+    VALUES (?, ?, ?, ?, ?, ?, 'pending')
+    ON CONFLICT(suno_id) DO UPDATE SET
+      title = CASE WHEN excluded.title != '' THEN excluded.title ELSE tracks.title END,
+      artist = CASE WHEN excluded.artist != '' THEN excluded.artist ELSE tracks.artist END,
+      suno_url = excluded.suno_url,
+      suno_snapshot = excluded.suno_snapshot,
+      suno_observed_at = MIN(COALESCE(tracks.suno_observed_at, excluded.suno_observed_at), excluded.suno_observed_at),
+      updated_at = CURRENT_TIMESTAMP
+  `).run(title, artist, sunoId, sunoUrl, snapshot, observedAt);
+  return db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(sunoId);
+}
+
+export function attachLocalPathToSunoTrack(db, { sunoId, localPath, title, artist = 'Iyari Gomez' }) {
+  const existing = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(String(sunoId));
+  if (!existing) return upsertLocalTrack(db, { title, artist, localPath });
+  db.prepare(`
+    UPDATE tracks
+    SET local_path = ?,
+        title = COALESCE(NULLIF(?, ''), title),
+        artist = COALESCE(NULLIF(?, ''), artist),
+        sync_status = CASE WHEN soundcloud_id IS NOT NULL THEN 'linked' ELSE 'local' END,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE suno_id = ?
+  `).run(localPath, title || '', artist || '', String(sunoId));
+  return db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(String(sunoId));
 }
 
 export function upsertSoundCloudTrack(db, track) {
