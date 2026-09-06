@@ -79,18 +79,29 @@ export function upsertSunoTrack(db, track) {
     source: track.source || 'suno-web',
     page: track.page || null,
   });
+  const existing = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(sunoId);
 
-  db.prepare(`
-    INSERT INTO tracks (title, artist, suno_id, suno_url, suno_snapshot, suno_observed_at, sync_status)
-    VALUES (?, ?, ?, ?, ?, ?, 'pending')
-    ON CONFLICT(suno_id) DO UPDATE SET
-      title = CASE WHEN excluded.title != '' THEN excluded.title ELSE tracks.title END,
-      artist = CASE WHEN excluded.artist != '' THEN excluded.artist ELSE tracks.artist END,
-      suno_url = excluded.suno_url,
-      suno_snapshot = excluded.suno_snapshot,
-      suno_observed_at = MIN(COALESCE(tracks.suno_observed_at, excluded.suno_observed_at), excluded.suno_observed_at),
-      updated_at = CURRENT_TIMESTAMP
-  `).run(title, artist, sunoId, sunoUrl, snapshot, observedAt);
+  if (existing) {
+    const firstObservedAt = existing.suno_observed_at && existing.suno_observed_at < observedAt
+      ? existing.suno_observed_at
+      : observedAt;
+    db.prepare(`
+      UPDATE tracks
+      SET title = ?,
+          artist = ?,
+          suno_url = ?,
+          suno_snapshot = ?,
+          suno_observed_at = ?,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE suno_id = ?
+    `).run(title, artist, sunoUrl, snapshot, firstObservedAt, sunoId);
+  } else {
+    db.prepare(`
+      INSERT INTO tracks (title, artist, suno_id, suno_url, suno_snapshot, suno_observed_at, sync_status)
+      VALUES (?, ?, ?, ?, ?, ?, 'pending')
+    `).run(title, artist, sunoId, sunoUrl, snapshot, observedAt);
+  }
+
   return db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(sunoId);
 }
 
