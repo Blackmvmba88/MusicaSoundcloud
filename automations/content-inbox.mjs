@@ -23,22 +23,8 @@ function remember(key, signature) {
   if (lastSeen.size > 5000) lastSeen.delete(lastSeen.keys().next().value);
 }
 
-async function stableInfo(path) {
-  if (!existsSync(path)) return { state: 'missing' };
-  if (isPartialDownload(path)) return { state: 'partial' };
-  const first = await stat(path).catch(() => null);
-  if (!first?.isFile()) return { state: 'missing' };
-  await new Promise((done) => setTimeout(done, settleMs));
-  const second = await stat(path).catch(() => null);
-  if (!second?.isFile()) return { state: 'missing' };
-  if (first.size !== second.size || first.mtimeMs !== second.mtimeMs) return { state: 'unstable' };
-  return { state: 'ready', info: second };
-}
-
-async function record(path, root) {
-  const stable = await stableInfo(path);
-  if (stable.state !== 'ready') return stable.state;
-  const info = stable.info;
+function recordInfo(path, root, info) {
+  if (!info?.isFile() || isPartialDownload(path)) return 'ignored';
   const externalId = fileExternalId(info, path);
   const signature = `${info.size}:${Math.trunc(info.mtimeMs)}`;
   if (lastSeen.get(externalId) === signature) return 'duplicate';
@@ -64,6 +50,24 @@ async function record(path, root) {
   return 'recorded';
 }
 
+async function stableInfo(path) {
+  if (!existsSync(path)) return { state: 'missing' };
+  if (isPartialDownload(path)) return { state: 'partial' };
+  const first = await stat(path).catch(() => null);
+  if (!first?.isFile()) return { state: 'missing' };
+  await new Promise((done) => setTimeout(done, settleMs));
+  const second = await stat(path).catch(() => null);
+  if (!second?.isFile()) return { state: 'missing' };
+  if (first.size !== second.size || first.mtimeMs !== second.mtimeMs) return { state: 'unstable' };
+  return { state: 'ready', info: second };
+}
+
+async function record(path, root) {
+  const stable = await stableInfo(path);
+  if (stable.state !== 'ready') return stable.state;
+  return recordInfo(path, root, stable.info);
+}
+
 function schedule(path, root, delay = 120) {
   if (!path || basename(path).startsWith('.')) return;
   clearTimeout(timers.get(path));
@@ -78,14 +82,19 @@ function schedule(path, root, delay = 120) {
   }, delay));
 }
 
-async function walk(root) {
+async function walk(root, scanRoot = root) {
   let count = 0;
   const entries = await readdir(root, { withFileTypes: true }).catch(() => []);
   for (const entry of entries) {
     if (entry.name.startsWith('.')) continue;
     const path = resolve(root, entry.name);
-    if (entry.isDirectory()) count += await walk(path);
-    else if (entry.isFile() && await record(path, root) === 'recorded') count += 1;
+    if (entry.isDirectory()) {
+      count += await walk(path, scanRoot);
+      continue;
+    }
+    if (!entry.isFile() || isPartialDownload(path)) continue;
+    const info = await stat(path).catch(() => null);
+    if (recordInfo(path, scanRoot, info) === 'recorded') count += 1;
   }
   return count;
 }
