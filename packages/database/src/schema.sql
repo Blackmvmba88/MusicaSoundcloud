@@ -16,6 +16,10 @@ CREATE TABLE IF NOT EXISTS tracks (
   duration_seconds REAL,
   local_path TEXT UNIQUE,
   artwork_path TEXT,
+  suno_id TEXT,
+  suno_url TEXT,
+  suno_snapshot TEXT,
+  suno_observed_at TEXT,
   soundcloud_id TEXT UNIQUE,
   soundcloud_url TEXT,
   soundcloud_artwork_url TEXT,
@@ -28,6 +32,8 @@ CREATE TABLE IF NOT EXISTS tracks (
 
 CREATE INDEX IF NOT EXISTS tracks_title_idx ON tracks(title);
 CREATE INDEX IF NOT EXISTS tracks_sync_status_idx ON tracks(sync_status);
+CREATE UNIQUE INDEX IF NOT EXISTS tracks_suno_id_idx ON tracks(suno_id) WHERE suno_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS tracks_suno_observed_at_idx ON tracks(suno_observed_at);
 
 CREATE TABLE IF NOT EXISTS artwork_jobs (
   id INTEGER PRIMARY KEY,
