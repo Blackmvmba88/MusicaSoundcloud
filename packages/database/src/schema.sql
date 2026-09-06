@@ -32,8 +32,6 @@ CREATE TABLE IF NOT EXISTS tracks (
 
 CREATE INDEX IF NOT EXISTS tracks_title_idx ON tracks(title);
 CREATE INDEX IF NOT EXISTS tracks_sync_status_idx ON tracks(sync_status);
-CREATE UNIQUE INDEX IF NOT EXISTS tracks_suno_id_idx ON tracks(suno_id) WHERE suno_id IS NOT NULL;
-CREATE INDEX IF NOT EXISTS tracks_suno_observed_at_idx ON tracks(suno_observed_at);
 
 CREATE TABLE IF NOT EXISTS artwork_jobs (
   id INTEGER PRIMARY KEY,
