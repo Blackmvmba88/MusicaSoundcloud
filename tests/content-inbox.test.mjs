@@ -55,6 +55,43 @@ test('content inbox deduplica eventos remotos y luego enlaza archivo local', () 
   rmSync(directory, { recursive: true, force: true });
 });
 
+test('fusiona observación del filesystem cuando una fuente remota reclama la misma ruta', () => {
+  const directory = mkdtempSync(resolve(tmpdir(), 'blackmamba-content-merge-'));
+  const db = openDatabase(resolve(directory, 'test.sqlite'));
+  const path = resolve(directory, 'same.wav');
+
+  upsertContentEvent(db, {
+    source: 'filesystem',
+    externalId: 'fs:1:77',
+    kind: 'audio',
+    title: 'same',
+    localPath: path,
+    bytes: 2048,
+  });
+  upsertContentEvent(db, {
+    source: 'suno',
+    externalId: 'song-777777',
+    kind: 'audio',
+    title: 'Same Song',
+  });
+  assert.equal(getContentStats(db).total, 2);
+
+  const merged = attachContentLocalPath(db, {
+    source: 'suno',
+    externalId: 'song-777777',
+    kind: 'audio',
+    title: 'Same Song',
+    localPath: path,
+    bytes: 2048,
+  });
+  assert.equal(merged.source, 'suno');
+  assert.equal(merged.local_path, path);
+  assert.equal(getContentStats(db).total, 1);
+
+  db.close();
+  rmSync(directory, { recursive: true, force: true });
+});
+
 test('Suno alimenta también el inbox genérico antes del WAV', () => {
   const directory = mkdtempSync(resolve(tmpdir(), 'blackmamba-content-suno-'));
   const db = openDatabase(resolve(directory, 'test.sqlite'));
