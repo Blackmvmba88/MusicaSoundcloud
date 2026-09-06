@@ -1,8 +1,20 @@
 import { createReadStream, existsSync, readdirSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, resolve, sep } from 'node:path';
+import { loadEnvFile } from 'node:process';
 import { fileURLToPath } from 'node:url';
-import { listPendingSunoTracks, listTracks, openDatabase, upsertLocalTrack, upsertSunoTrack } from '../../../packages/database/src/db.mjs';
+import {
+  getContentStats,
+  listContentInbox,
+  listPendingSunoTracks,
+  listTracks,
+  openDatabase,
+  upsertContentEvent,
+  upsertLocalTrack,
+  upsertSunoTrack,
+} from '../../../packages/database/src/db.mjs';
+
+if (existsSync('.env')) loadEnvFile('.env');
 
 const root = resolve(fileURLToPath(new URL('../../../', import.meta.url)));
 const webRoot = resolve(root, 'apps/web');
@@ -33,9 +45,13 @@ function safePath(base, requested) {
   return path === base || path.startsWith(`${base}${sep}`) ? path : null;
 }
 
-function allowSunoBridge(request, response) {
+function allowLocalBridge(request, response) {
   const origin = request.headers.origin;
-  if (origin && !origin.startsWith('chrome-extension://')) return false;
+  const allowedOrigins = new Set([
+    `http://127.0.0.1:${port}`,
+    `http://localhost:${port}`,
+  ]);
+  if (origin && !origin.startsWith('chrome-extension://') && !allowedOrigins.has(origin)) return false;
   if (origin) {
     response.setHeader('Access-Control-Allow-Origin', origin);
     response.setHeader('Vary', 'Origin');
@@ -45,7 +61,7 @@ function allowSunoBridge(request, response) {
   return true;
 }
 
-async function readJson(request, maxBytes = 64 * 1024) {
+async function readJson(request, maxBytes = 128 * 1024) {
   let raw = '';
   for await (const chunk of request) {
     raw += chunk;
@@ -58,22 +74,42 @@ const server = createServer(async (request, response) => {
   try {
     const url = new URL(request.url, `http://${request.headers.host || `127.0.0.1:${port}`}`);
 
-    if (url.pathname.startsWith('/api/suno/')) {
-      if (!allowSunoBridge(request, response)) return json(response, 403, { error: 'Origen no permitido' });
+    if (url.pathname.startsWith('/api/suno/') || url.pathname.startsWith('/api/content/')) {
+      if (!allowLocalBridge(request, response)) return json(response, 403, { error: 'Origen no permitido' });
       if (request.method === 'OPTIONS') return response.end();
     }
 
     if (url.pathname === '/api/health') return json(response, 200, { ok: true });
     if (url.pathname === '/api/tracks' && request.method === 'GET') return json(response, 200, listTracks(db));
+
+    if (url.pathname === '/api/content/pending' && request.method === 'GET') {
+      const items = listContentInbox(db, {
+        status: url.searchParams.get('status') || 'pending',
+        source: url.searchParams.get('source') || null,
+        kind: url.searchParams.get('kind') || null,
+        limit: url.searchParams.get('limit') || 100,
+      });
+      return json(response, 200, { items });
+    }
+    if (url.pathname === '/api/content/stats' && request.method === 'GET') return json(response, 200, getContentStats(db));
+    if (url.pathname === '/api/content/events' && request.method === 'POST') {
+      const payload = await readJson(request);
+      const events = Array.isArray(payload.events) ? payload.events : payload.event ? [payload.event] : [];
+      if (!events.length || events.length > 100) return json(response, 400, { error: 'Se requieren entre 1 y 100 eventos' });
+      const recorded = events.map((event) => upsertContentEvent(db, event));
+      return json(response, 200, { recorded: recorded.length, items: recorded });
+    }
+
+    // Compatibilidad del primer bridge: Suno también alimenta el Content Inbox genérico.
     if (url.pathname === '/api/suno/pending' && request.method === 'GET') return json(response, 200, { tracks: listPendingSunoTracks(db) });
     if (url.pathname === '/api/suno/events' && request.method === 'POST') {
       const payload = await readJson(request);
       const tracks = Array.isArray(payload.tracks) ? payload.tracks : payload.track ? [payload.track] : [];
       if (!tracks.length || tracks.length > 50) return json(response, 400, { error: 'Se requieren entre 1 y 50 canciones' });
-      const recorded = [];
-      for (const track of tracks) recorded.push(upsertSunoTrack(db, track));
+      const recorded = tracks.map((track) => upsertSunoTrack(db, track));
       return json(response, 200, { recorded: recorded.length, tracks: recorded });
     }
+
     if (url.pathname === '/api/library/scan' && request.method === 'POST') {
       const tracks = scan(mediaRoot).map((localPath) => upsertLocalTrack(db, {
         title: localPath.split(sep).at(-1).replace(/\.[^.]+$/, '').replaceAll('_', ' '),
