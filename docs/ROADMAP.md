@@ -51,6 +51,12 @@ Este roadmap sigue el ciclo real de una canción. Una fase se considera terminad
 ## Publicación y aprendizaje
 
 - [x] Incorporar el primer resumen de Pinterest Analytics.
+- [x] Definir gap audit de SoundCloud Public API vs Creator Insights.
+- [x] Guardar snapshots read-only de plays, likes, comentarios, reposts y descargas por pista.
+- [ ] Ejecutar el primer snapshot real y certificar cobertura de contadores.
+- [ ] Calcular deltas entre snapshots sin confundirlos con períodos oficiales de Insights.
+- [ ] Añadir concentración Top-N, long-tail, velocity y resurrección de catálogo.
+- [ ] Diseñar importación manual trazable para evidencia de países, ciudades, top fans y sources mientras no exista export/API oficial.
 - [ ] Importar métricas detalladas por Pin, tablero, fecha y hora.
 - [ ] Registrar cada publicación para evitar material repetido.
 - [ ] Diseñar un experimento de horarios y frecuencia.
