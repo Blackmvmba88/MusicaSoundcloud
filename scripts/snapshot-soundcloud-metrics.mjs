@@ -24,21 +24,35 @@ const summary = summarizeSoundCloudTrackMetrics(remoteTracks);
 const bySoundCloudId = new Map(summary.tracks.map((track) => [track.soundcloudId, track]));
 const db = openDatabase();
 
-for (const remoteTrack of remoteTracks) {
-  const localTrack = upsertSoundCloudTrack(db, remoteTrack);
-  const metric = bySoundCloudId.get(String(remoteTrack.urn || remoteTrack.id));
-  insertSoundCloudMetricSnapshot(db, {
-    trackId: localTrack.id,
-    capturedAt,
-    playbackCount: metric.playbackCount,
-    likesCount: metric.likesCount,
-    commentCount: metric.commentCount,
-    repostsCount: metric.repostsCount,
-    downloadCount: metric.downloadCount,
-  });
-}
+try {
+  db.exec('BEGIN IMMEDIATE');
+  for (const remoteTrack of remoteTracks) {
+    const soundcloudId = String(remoteTrack.urn || remoteTrack.id);
+    const metric = bySoundCloudId.get(soundcloudId);
+    if (!metric) throw new Error(`No se pudo normalizar la pista ${soundcloudId}`);
 
-db.close();
+    const localTrack = upsertSoundCloudTrack(db, remoteTrack);
+    insertSoundCloudMetricSnapshot(db, {
+      trackId: localTrack.id,
+      capturedAt,
+      playbackCount: metric.playbackCount,
+      likesCount: metric.likesCount,
+      commentCount: metric.commentCount,
+      repostsCount: metric.repostsCount,
+      downloadCount: metric.downloadCount,
+    });
+  }
+  db.exec('COMMIT');
+} catch (error) {
+  try {
+    db.exec('ROLLBACK');
+  } catch {
+    // Ignore rollback errors and surface the original failure.
+  }
+  throw error;
+} finally {
+  db.close();
+}
 
 const report = {
   generatedAt: capturedAt,
