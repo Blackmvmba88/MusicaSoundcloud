@@ -19,7 +19,7 @@ if (!token) {
 const capturedAt = new Date().toISOString();
 const client = new SoundCloudClient(token);
 const me = await client.me();
-const remoteTracks = await client.userTracks(me.urn || me.id);
+const remoteTracks = await client.myTracks();
 const summary = summarizeSoundCloudTrackMetrics(remoteTracks);
 const bySoundCloudId = new Map(summary.tracks.map((track) => [track.soundcloudId, track]));
 const db = openDatabase();
