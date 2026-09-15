@@ -89,3 +89,64 @@ export function upsertSoundCloudTrack(db, track) {
   );
   return db.prepare('SELECT * FROM tracks WHERE soundcloud_id = ?').get(soundcloudId);
 }
+
+export function insertSoundCloudMetricSnapshot(db, {
+  trackId,
+  capturedAt,
+  playbackCount = null,
+  likesCount = null,
+  commentCount = null,
+  repostsCount = null,
+  downloadCount = null,
+  source = 'public_api',
+}) {
+  if (!trackId) throw new Error('trackId es obligatorio para guardar métricas');
+  if (!capturedAt) throw new Error('capturedAt es obligatorio para guardar métricas');
+
+  db.prepare(`
+    INSERT INTO soundcloud_metric_snapshots (
+      track_id, captured_at, playback_count, likes_count,
+      comment_count, reposts_count, download_count, source
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(track_id, captured_at) DO UPDATE SET
+      playback_count = excluded.playback_count,
+      likes_count = excluded.likes_count,
+      comment_count = excluded.comment_count,
+      reposts_count = excluded.reposts_count,
+      download_count = excluded.download_count,
+      source = excluded.source
+  `).run(
+    trackId,
+    capturedAt,
+    playbackCount,
+    likesCount,
+    commentCount,
+    repostsCount,
+    downloadCount,
+    source,
+  );
+
+  return db.prepare(`
+    SELECT *
+    FROM soundcloud_metric_snapshots
+    WHERE track_id = ? AND captured_at = ?
+  `).get(trackId, capturedAt);
+}
+
+export function listSoundCloudMetricSnapshots(db, { trackId = null, limit = 1000 } = {}) {
+  if (trackId) {
+    return db.prepare(`
+      SELECT *
+      FROM soundcloud_metric_snapshots
+      WHERE track_id = ?
+      ORDER BY captured_at DESC
+      LIMIT ?
+    `).all(trackId, limit);
+  }
+  return db.prepare(`
+    SELECT *
+    FROM soundcloud_metric_snapshots
+    ORDER BY captured_at DESC, track_id
+    LIMIT ?
+  `).all(limit);
+}
