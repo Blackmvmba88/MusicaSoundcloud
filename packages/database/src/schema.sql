@@ -13,6 +13,10 @@ CREATE TABLE IF NOT EXISTS tracks (
   description TEXT,
   lyrics TEXT,
   metadata_artist TEXT,
+  aliases TEXT,
+  source TEXT,
+  suno_id TEXT,
+  suno_url TEXT,
   duration_seconds REAL,
   local_path TEXT UNIQUE,
   artwork_path TEXT,
@@ -28,6 +32,7 @@ CREATE TABLE IF NOT EXISTS tracks (
 
 CREATE INDEX IF NOT EXISTS tracks_title_idx ON tracks(title);
 CREATE INDEX IF NOT EXISTS tracks_sync_status_idx ON tracks(sync_status);
+CREATE INDEX IF NOT EXISTS tracks_suno_id_idx ON tracks(suno_id);
 
 CREATE TABLE IF NOT EXISTS artwork_jobs (
   id INTEGER PRIMARY KEY,
