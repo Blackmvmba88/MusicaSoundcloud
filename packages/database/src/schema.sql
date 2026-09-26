@@ -86,3 +86,22 @@ CREATE TABLE IF NOT EXISTS artwork_jobs (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS soundcloud_metric_snapshots (
+  id INTEGER PRIMARY KEY,
+  track_id INTEGER NOT NULL REFERENCES tracks(id) ON DELETE CASCADE,
+  captured_at TEXT NOT NULL,
+  playback_count INTEGER,
+  likes_count INTEGER,
+  comment_count INTEGER,
+  reposts_count INTEGER,
+  download_count INTEGER,
+  source TEXT NOT NULL DEFAULT 'public_api' CHECK (source IN ('public_api', 'manual')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(track_id, captured_at)
+);
+
+CREATE INDEX IF NOT EXISTS soundcloud_metric_snapshots_track_idx
+  ON soundcloud_metric_snapshots(track_id, captured_at);
+CREATE INDEX IF NOT EXISTS soundcloud_metric_snapshots_captured_idx
+  ON soundcloud_metric_snapshots(captured_at);

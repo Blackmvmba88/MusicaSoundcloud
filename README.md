@@ -27,7 +27,7 @@ El ID de Suno, la huella del WAV y las referencias visuales evitan repetir traba
 - Carga multipart con audio y portada a SoundCloud.
 - Privacidad `private` fijada en código, no delegada a configuración.
 - Indicadores visuales de evolución por canción.
-- SQLite local para catálogo y conciliación.
+- SQLite local para catálogo, conciliación y snapshots métricos de SoundCloud.
 - Pruebas centrales y 52 pruebas del reproductor.
 - Repositorio privado en GitHub.
 
@@ -80,14 +80,17 @@ El archivo `.env` está ignorado por Git y debe conservar permisos privados.
 ## Operación cotidiana
 
 ```bash
-npm run doctor                    # salud general, solo lectura
-npm run doctor -- --json          # salida para automatización
-npm run player:desktop            # reproductor Electron
-npm run player:dev                # interfaz React en desarrollo
-npm run suno:auto-upload:check    # simulación, no sube
-npm run soundcloud:audit          # auditoría remota de solo lectura
-npm run soundcloud:match-suno     # cotejo Suno ↔ SoundCloud
+npm run doctor                       # salud general, solo lectura
+npm run doctor -- --json             # salida para automatización
+npm run player:desktop               # reproductor Electron
+npm run player:dev                   # interfaz React en desarrollo
+npm run suno:auto-upload:check       # simulación, no sube
+npm run soundcloud:audit             # auditoría remota de solo lectura
+npm run soundcloud:metrics:snapshot  # snapshot de contadores públicos; no modifica SoundCloud
+npm run soundcloud:match-suno        # cotejo Suno ↔ SoundCloud
 ```
+
+Los snapshots de métricas guardan los contadores acumulados documentados por la Public API (`playback_count`, likes, comentarios, reposts y descargas). No se presentan como sustituto de los períodos, países, ciudades, top fans o sources de Creator Insights. Ver [el gap audit de métricas](docs/SOUNDCLOUD_METRICS_GAP_AUDIT.md).
 
 El observador real usa `npm run suno:auto-upload:watch`. Solo debe operar después del canario. Aunque se invoque con `--apply`, bloquea canciones incompletas y siempre envía `sharing=private`.
 
@@ -147,9 +150,9 @@ La única colección maestra de audio aceptada actualmente es:
 ```text
 apps/player/   aplicación React/Electron y servidor multimedia local
 apps/server/   API y reproductor web inicial
-packages/      base de datos, SoundCloud y validación del paquete musical
+packages/      base de datos, SoundCloud, métricas y validación del paquete musical
 automations/   tareas incrementales e idempotentes
-scripts/       doctor, inicialización, auditoría y consolidación
+scripts/       doctor, inicialización, auditoría, métricas y consolidación
 storage/       base, medios y checkpoints locales no versionados
 inbox/         entradas pendientes
 portadas/      material visual aprobado o en revisión
@@ -163,6 +166,7 @@ tests/         contratos centrales
 - [Contexto operativo](docs/PROJECT_CONTEXT.md)
 - [Arquitectura](docs/ARCHITECTURE.md)
 - [Roadmap](docs/ROADMAP.md)
+- [SoundCloud Metrics — Gap audit](docs/SOUNDCLOUD_METRICS_GAP_AUDIT.md)
 - [Arquitectura del reproductor](apps/player/DESKTOP_ARCHITECTURE.md)
 - [Seguridad del reproductor](apps/player/SECURITY.md)
 

@@ -30,15 +30,23 @@ export class SoundCloudClient {
     return this.request('/me');
   }
 
-  async userTracks(userRef) {
+  async collectTracks(initialPath) {
     const tracks = [];
-    let path = `/users/${encodeURIComponent(userRef)}/tracks?limit=200&linked_partitioning=true`;
+    let path = initialPath;
     while (path) {
       const page = await this.request(path);
       tracks.push(...(Array.isArray(page) ? page : page.collection || []));
       path = page.next_href ? page.next_href.replace(API_BASE, '') : null;
     }
     return tracks;
+  }
+
+  myTracks() {
+    return this.collectTracks('/me/tracks?limit=200&linked_partitioning=true');
+  }
+
+  userTracks(userRef) {
+    return this.collectTracks(`/users/${encodeURIComponent(userRef)}/tracks?limit=200&linked_partitioning=true`);
   }
 
   track(id) {

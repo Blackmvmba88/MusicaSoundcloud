@@ -15,6 +15,7 @@
     "content:watch": "node automations/content-inbox.mjs --watch",
     "soundcloud:authorize": "node scripts/authorize-soundcloud.mjs",
     "soundcloud:audit": "node scripts/audit-soundcloud.mjs",
+    "soundcloud:metrics:snapshot": "node scripts/snapshot-soundcloud-metrics.mjs",
     "soundcloud:match-suno": "node scripts/build-soundcloud-suno-match.mjs",
     "suno:pending": "node scripts/list-suno-pending.mjs",
     "suno:auto-upload:check": "node automations/suno-private-upload.mjs --once",
