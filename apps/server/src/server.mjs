@@ -3,18 +3,7 @@ import { createServer } from 'node:http';
 import { extname, resolve, sep } from 'node:path';
 import { loadEnvFile } from 'node:process';
 import { fileURLToPath } from 'node:url';
-import {
-  getContentStats,
-  listContentInbox,
-  listPendingSunoTracks,
-  listTracks,
-  openDatabase,
-  upsertContentEvent,
-  upsertLocalTrack,
-  upsertSunoTrack,
-} from '../../../packages/database/src/db.mjs';
-
-if (existsSync('.env')) loadEnvFile('.env');
+import { listTracks, openDatabase, searchTracks, upsertLocalTrack } from '../../../packages/database/src/db.mjs';
 
 const root = resolve(fileURLToPath(new URL('../../../', import.meta.url)));
 const webRoot = resolve(root, 'apps/web');
@@ -45,27 +34,24 @@ function safePath(base, requested) {
   return path === base || path.startsWith(`${base}${sep}`) ? path : null;
 }
 
-function allowLocalBridge(request, response) {
-  const origin = request.headers.origin;
-  const allowedOrigins = new Set([
-    `http://127.0.0.1:${port}`,
-    `http://localhost:${port}`,
-  ]);
-  if (origin && !origin.startsWith('chrome-extension://') && !allowedOrigins.has(origin)) return false;
-  if (origin) {
-    response.setHeader('Access-Control-Allow-Origin', origin);
-    response.setHeader('Vary', 'Origin');
+const server = createServer((request, response) => {
+  const url = new URL(request.url, `http://${request.headers.host}`);
+  if (url.pathname === '/api/health') return json(response, 200, { ok: true });
+  if (url.pathname === '/api/tracks' && request.method === 'GET') return json(response, 200, listTracks(db));
+  if (url.pathname === '/api/search' && request.method === 'GET') {
+    const query = url.searchParams.get('q') || '';
+    const limit = Number(url.searchParams.get('limit') || 30);
+    return json(response, 200, {
+      query,
+      results: searchTracks(db, query, { limit }),
+    });
   }
-  response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  return true;
-}
-
-async function readJson(request, maxBytes = 128 * 1024) {
-  let raw = '';
-  for await (const chunk of request) {
-    raw += chunk;
-    if (Buffer.byteLength(raw) > maxBytes) throw new Error('Payload demasiado grande');
+  if (url.pathname === '/api/library/scan' && request.method === 'POST') {
+    const tracks = scan(mediaRoot).map((localPath) => upsertLocalTrack(db, {
+      title: localPath.split(sep).at(-1).replace(/\.[^.]+$/, '').replaceAll('_', ' '),
+      localPath,
+    }));
+    return json(response, 200, { imported: tracks.length, tracks });
   }
   return raw ? JSON.parse(raw) : {};
 }
