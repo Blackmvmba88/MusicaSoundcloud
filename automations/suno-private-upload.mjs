@@ -1,10 +1,13 @@
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { createReadStream, existsSync, readFileSync, watch as watchFs, writeFileSync } from 'node:fs';
 import { mkdir, readdir, readFile, rename, stat, writeFile } from 'node:fs/promises';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 import { loadEnvFile } from 'node:process';
+import { attachLocalPathToSunoTrack, openDatabase } from '../packages/database/src/db.mjs';
 import { SoundCloudClient } from '../packages/soundcloud/src/client.mjs';
 import { validateTrackPackage } from '../packages/pipeline/src/validate-track-package.mjs';
+
+if (existsSync('.env')) loadEnvFile('.env');
 
 const argv = new Set(process.argv.slice(2));
 const apply = argv.has('--apply');
@@ -13,8 +16,8 @@ const includeExisting = argv.has('--include-existing');
 const fileArg = process.argv.find((value) => value.startsWith('--file='))?.slice(7);
 const root = resolve(process.env.BLACKMAMBA_WAV_MASTER || '/Volumes/ADATA SC740/MÚSICA/WAV_MASTER');
 const statePath = resolve('storage/sync/suno-private-upload.json');
+const database = openDatabase();
 
-if (existsSync('.env')) loadEnvFile('.env');
 if (process.env.SOUNDCLOUD_AUTO_SHARING && process.env.SOUNDCLOUD_AUTO_SHARING !== 'private') {
   throw new Error('Regla rechazada: SOUNDCLOUD_AUTO_SHARING debe ser private');
 }
@@ -32,8 +35,10 @@ const saveState = async (state) => {
 };
 const sha256 = async (file) => {
   const hash = createHash('sha256');
-  const handle = await import('node:fs');
-  await new Promise((done, fail) => handle.createReadStream(file).on('data', (chunk) => hash.update(chunk)).on('end', done).on('error', fail));
+  await new Promise((done, fail) => createReadStream(file)
+    .on('data', (chunk) => hash.update(chunk))
+    .on('end', done)
+    .on('error', fail));
   return hash.digest('hex');
 };
 const cleanTitle = (file) => basename(file, extname(file))
@@ -97,6 +102,12 @@ async function processFile(file, state) {
   const sidecar = await readSidecar(absolute);
   const title = sidecar.title || cleanTitle(absolute);
   const sunoUrl = sidecar.sunoUrl || (sidecar.id ? `https://suno.com/song/${sidecar.id}` : null);
+  if (sidecar.id) attachLocalPathToSunoTrack(database, {
+    sunoId: sidecar.id,
+    localPath: absolute,
+    title,
+    artist: sidecar.artist || 'Iyari Gomez',
+  });
   const artworkPath = coverFor(absolute, sidecar);
   const readiness = await validateTrackPackage({ audioPath: absolute, artworkPath, sidecar, title });
   if (!readiness.ready) {
@@ -156,5 +167,49 @@ async function scan() {
 }
 
 const report = async () => console.log(JSON.stringify({ checkedAt: new Date().toISOString(), mode: apply ? 'apply-private' : 'dry-run', results: await scan() }, null, 2));
-await report();
-if (watch) setInterval(report, 30_000);
+let running = false;
+let rerun = false;
+let debounceTimer = null;
+
+async function runReport() {
+  if (running) {
+    rerun = true;
+    return;
+  }
+  running = true;
+  try {
+    do {
+      rerun = false;
+      await report();
+    } while (rerun);
+  } finally {
+    running = false;
+  }
+}
+
+function scheduleReport(delay = 350) {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => runReport().catch((error) => console.error(error)), delay);
+}
+
+await runReport();
+if (watch) {
+  const watcher = watchFs(root, (_event, filename) => {
+    if (!filename) return scheduleReport(500);
+    const name = String(filename);
+    if (/\.wav$/i.test(name) || /\.wav\.suno\.json$/i.test(name) || /\.(png|jpe?g|webp)$/i.test(name)) scheduleReport();
+  });
+  // fs.watch es el camino caliente; este barrido solo cubre eventos perdidos o unidades externas raras.
+  const safety = setInterval(() => scheduleReport(0), 300_000);
+  const stop = () => {
+    clearInterval(safety);
+    clearTimeout(debounceTimer);
+    watcher.close();
+    database.close();
+    process.exit(0);
+  };
+  process.once('SIGINT', stop);
+  process.once('SIGTERM', stop);
+} else {
+  database.close();
+}

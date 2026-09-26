@@ -5,6 +5,17 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const defaultDatabasePath = resolve(here, '../../../storage/database/music.sqlite');
+const contentKinds = new Set(['audio', 'image', 'video', 'capture', 'download', 'document', 'archive', 'other']);
+const contentStatuses = new Set(['pending', 'local', 'processed', 'published', 'archived', 'error']);
+
+function iso(value) {
+  const parsed = Date.parse(value || '');
+  return Number.isNaN(parsed) ? new Date().toISOString() : new Date(parsed).toISOString();
+}
+
+function clean(value, max = 300) {
+  return String(value || '').replace(/\s+/g, ' ').trim().slice(0, max);
+}
 
 export function openDatabase(databasePath = defaultDatabasePath) {
   mkdirSync(dirname(databasePath), { recursive: true });
@@ -35,10 +46,112 @@ function migrateTracks(db) {
   for (const [name, type] of Object.entries(columns)) {
     if (!existing.has(name)) db.exec(`ALTER TABLE tracks ADD COLUMN ${name} ${type}`);
   }
+  db.exec('CREATE UNIQUE INDEX IF NOT EXISTS tracks_suno_id_idx ON tracks(suno_id) WHERE suno_id IS NOT NULL');
+  db.exec('CREATE INDEX IF NOT EXISTS tracks_suno_observed_at_idx ON tracks(suno_observed_at)');
 }
 
 export function listTracks(db) {
   return db.prepare('SELECT * FROM tracks ORDER BY artist, title').all();
+}
+
+export function listPendingSunoTracks(db) {
+  return db.prepare(`
+    SELECT * FROM tracks
+    WHERE suno_id IS NOT NULL AND local_path IS NULL
+    ORDER BY COALESCE(suno_observed_at, created_at) DESC
+  `).all();
+}
+
+export function listContentInbox(db, { status = 'pending', source = null, kind = null, limit = 100 } = {}) {
+  const normalizedStatus = status === 'all' ? null : contentStatuses.has(status) ? status : 'pending';
+  const normalizedLimit = Math.max(1, Math.min(Number(limit) || 100, 500));
+  return db.prepare(`
+    SELECT * FROM content_items
+    WHERE (? IS NULL OR status = ?)
+      AND (? IS NULL OR source = ?)
+      AND (? IS NULL OR kind = ?)
+    ORDER BY observed_at DESC, id DESC
+    LIMIT ?
+  `).all(normalizedStatus, normalizedStatus, source, source, kind, kind, normalizedLimit);
+}
+
+export function getContentStats(db) {
+  const totals = db.prepare(`
+    SELECT status, kind, COUNT(*) AS count
+    FROM content_items
+    GROUP BY status, kind
+    ORDER BY status, kind
+  `).all();
+  return {
+    total: Number(db.prepare('SELECT COUNT(*) AS count FROM content_items').get().count),
+    pending: Number(db.prepare("SELECT COUNT(*) AS count FROM content_items WHERE status = 'pending'").get().count),
+    groups: totals.map((row) => ({ ...row, count: Number(row.count) })),
+  };
+}
+
+export function upsertContentEvent(db, event) {
+  const source = clean(event.source || 'unknown', 80).toLowerCase().replace(/[^a-z0-9._-]+/g, '-') || 'unknown';
+  const externalId = clean(event.externalId || event.external_id, 256) || null;
+  const localPath = event.localPath || event.local_path ? resolve(String(event.localPath || event.local_path)) : null;
+  const kind = contentKinds.has(event.kind) ? event.kind : 'other';
+  const title = clean(event.title, 300) || null;
+  const sourceUrl = clean(event.sourceUrl || event.source_url, 2048) || null;
+  const mimeType = clean(event.mimeType || event.mime_type, 160) || null;
+  const bytes = Number.isFinite(Number(event.bytes)) && Number(event.bytes) >= 0 ? Math.trunc(Number(event.bytes)) : null;
+  const observedAt = iso(event.observedAt || event.observed_at);
+  const status = contentStatuses.has(event.status) ? event.status : localPath ? 'local' : 'pending';
+  const metadata = event.metadata && typeof event.metadata === 'object' ? event.metadata : {};
+  const metadataJson = JSON.stringify(metadata);
+
+  let existing = null;
+  if (externalId) existing = db.prepare('SELECT * FROM content_items WHERE source = ? AND external_id = ?').get(source, externalId);
+  if (!existing && localPath) existing = db.prepare('SELECT * FROM content_items WHERE local_path = ?').get(localPath);
+
+  if (existing) {
+    const firstObservedAt = existing.observed_at && existing.observed_at < observedAt ? existing.observed_at : observedAt;
+    db.prepare(`
+      UPDATE content_items
+      SET external_id = COALESCE(external_id, ?),
+          kind = ?,
+          title = COALESCE(?, title),
+          source_url = COALESCE(?, source_url),
+          local_path = COALESCE(?, local_path),
+          mime_type = COALESCE(?, mime_type),
+          bytes = COALESCE(?, bytes),
+          status = CASE
+            WHEN status IN ('published', 'archived') THEN status
+            WHEN ? = 'local' OR local_path IS NOT NULL OR ? IS NOT NULL THEN 'local'
+            ELSE ?
+          END,
+          observed_at = ?,
+          metadata_json = ?,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).run(externalId, kind, title, sourceUrl, localPath, mimeType, bytes, status, localPath, status, firstObservedAt, metadataJson, existing.id);
+    return db.prepare('SELECT * FROM content_items WHERE id = ?').get(existing.id);
+  }
+
+  db.prepare(`
+    INSERT INTO content_items (
+      source, external_id, kind, title, source_url, local_path, mime_type, bytes,
+      status, observed_at, metadata_json
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(source, externalId, kind, title, sourceUrl, localPath, mimeType, bytes, status, observedAt, metadataJson);
+  return db.prepare('SELECT * FROM content_items WHERE id = last_insert_rowid()').get();
+}
+
+export function attachContentLocalPath(db, { source, externalId, localPath, kind = 'other', title, mimeType, bytes, metadata = {} }) {
+  return upsertContentEvent(db, {
+    source,
+    externalId,
+    localPath,
+    kind,
+    title,
+    mimeType,
+    bytes,
+    metadata,
+    status: 'local',
+  });
 }
 
 export function upsertLocalTrack(db, { title, artist = 'BlackMamba', localPath }) {
@@ -51,6 +164,101 @@ export function upsertLocalTrack(db, { title, artist = 'BlackMamba', localPath }
       updated_at = CURRENT_TIMESTAMP
   `).run(title, artist, localPath);
   return db.prepare('SELECT * FROM tracks WHERE local_path = ?').get(localPath);
+}
+
+export function upsertSunoTrack(db, track) {
+  const sunoId = String(track.id || track.sunoId || '').trim();
+  if (!sunoId || !/^[a-zA-Z0-9_-]{6,128}$/.test(sunoId)) throw new Error('Suno id inválido');
+  const title = clean(track.title, 300) || `Suno ${sunoId.slice(0, 8)}`;
+  const artist = clean(track.artist || 'Iyari Gomez', 200) || 'Iyari Gomez';
+  const sunoUrl = `https://suno.com/song/${sunoId}`;
+  const observedAt = iso(track.observedAt);
+  const snapshotObject = {
+    id: sunoId,
+    title,
+    artist,
+    url: sunoUrl,
+    observedAt,
+    source: track.source || 'suno-web',
+    page: track.page || null,
+  };
+  const snapshot = JSON.stringify(snapshotObject);
+  const existing = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(sunoId);
+
+  if (existing) {
+    const firstObservedAt = existing.suno_observed_at && existing.suno_observed_at < observedAt ? existing.suno_observed_at : observedAt;
+    db.prepare(`
+      UPDATE tracks
+      SET title = ?, artist = ?, suno_url = ?, suno_snapshot = ?, suno_observed_at = ?, updated_at = CURRENT_TIMESTAMP
+      WHERE suno_id = ?
+    `).run(title, artist, sunoUrl, snapshot, firstObservedAt, sunoId);
+  } else {
+    db.prepare(`
+      INSERT INTO tracks (title, artist, suno_id, suno_url, suno_snapshot, suno_observed_at, sync_status)
+      VALUES (?, ?, ?, ?, ?, ?, 'pending')
+    `).run(title, artist, sunoId, sunoUrl, snapshot, observedAt);
+  }
+
+  upsertContentEvent(db, {
+    source: 'suno',
+    externalId: sunoId,
+    kind: 'audio',
+    title,
+    sourceUrl: sunoUrl,
+    observedAt,
+    metadata: snapshotObject,
+  });
+
+  return db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(sunoId);
+}
+
+export function attachLocalPathToSunoTrack(db, { sunoId, localPath, title, artist = 'Iyari Gomez' }) {
+  const normalizedId = String(sunoId);
+  let existing = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(normalizedId);
+  if (!existing) {
+    upsertSunoTrack(db, { id: normalizedId, title, artist, source: 'suno-sidecar' });
+    existing = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(normalizedId);
+  }
+
+  const pathTrack = db.prepare('SELECT * FROM tracks WHERE local_path = ?').get(localPath);
+  let linked;
+  if (pathTrack && pathTrack.id !== existing.id) {
+    db.exec('BEGIN IMMEDIATE');
+    try {
+      db.prepare('DELETE FROM tracks WHERE id = ?').run(existing.id);
+      db.prepare(`
+        UPDATE tracks
+        SET suno_id = ?, suno_url = ?, suno_snapshot = ?, suno_observed_at = ?,
+            title = COALESCE(NULLIF(?, ''), title), artist = COALESCE(NULLIF(?, ''), artist),
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `).run(normalizedId, existing.suno_url, existing.suno_snapshot, existing.suno_observed_at, title || '', artist || '', pathTrack.id);
+      db.exec('COMMIT');
+    } catch (error) {
+      db.exec('ROLLBACK');
+      throw error;
+    }
+    linked = db.prepare('SELECT * FROM tracks WHERE id = ?').get(pathTrack.id);
+  } else {
+    db.prepare(`
+      UPDATE tracks
+      SET local_path = ?, title = COALESCE(NULLIF(?, ''), title), artist = COALESCE(NULLIF(?, ''), artist),
+          sync_status = CASE WHEN soundcloud_id IS NOT NULL THEN 'linked' ELSE 'local' END,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE suno_id = ?
+    `).run(localPath, title || '', artist || '', normalizedId);
+    linked = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(normalizedId);
+  }
+
+  attachContentLocalPath(db, {
+    source: 'suno',
+    externalId: normalizedId,
+    localPath,
+    kind: 'audio',
+    title: title || linked?.title,
+    metadata: { artist, linkedFrom: 'suno-sidecar' },
+  });
+  return linked;
 }
 
 export function upsertSoundCloudTrack(db, track) {
