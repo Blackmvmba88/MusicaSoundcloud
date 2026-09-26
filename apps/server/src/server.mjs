@@ -2,7 +2,7 @@ import { createReadStream, existsSync, readdirSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { listTracks, openDatabase, upsertLocalTrack } from '../../../packages/database/src/db.mjs';
+import { listTracks, openDatabase, searchTracks, upsertLocalTrack } from '../../../packages/database/src/db.mjs';
 
 const root = resolve(fileURLToPath(new URL('../../../', import.meta.url)));
 const webRoot = resolve(root, 'apps/web');
@@ -37,6 +37,14 @@ const server = createServer((request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
   if (url.pathname === '/api/health') return json(response, 200, { ok: true });
   if (url.pathname === '/api/tracks' && request.method === 'GET') return json(response, 200, listTracks(db));
+  if (url.pathname === '/api/search' && request.method === 'GET') {
+    const query = url.searchParams.get('q') || '';
+    const limit = Number(url.searchParams.get('limit') || 30);
+    return json(response, 200, {
+      query,
+      results: searchTracks(db, query, { limit }),
+    });
+  }
   if (url.pathname === '/api/library/scan' && request.method === 'POST') {
     const tracks = scan(mediaRoot).map((localPath) => upsertLocalTrack(db, {
       title: localPath.split(sep).at(-1).replace(/\.[^.]+$/, '').replaceAll('_', ' '),
@@ -58,4 +66,3 @@ const server = createServer((request, response) => {
 });
 
 server.listen(port, '127.0.0.1', () => console.log(`BlackMamba Music Hub: http://127.0.0.1:${port}`));
-
