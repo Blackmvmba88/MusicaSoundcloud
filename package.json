@@ -27,7 +27,8 @@
     "player:desktop": "npm --prefix apps/player run desktop:dev",
     "artwork:dry-run": "node automations/artwork-sync.mjs --dry-run",
     "test": "node --test tests/*.test.mjs",
-    "usb:consolidate-wav": "node scripts/consolidate-usb-wav.mjs"
+    "usb:consolidate-wav": "node scripts/consolidate-usb-wav.mjs",
+    "soundcloud:metrics:mengine": "node scripts/export-mengine-metrics.mjs"
   },
   "engines": {
     "node": ">=24"
