@@ -30,6 +30,7 @@ test('normaliza contadores públicos de SoundCloud sin inventar ausentes', () =>
     soundcloudId: '123',
     title: 'Roots of Love',
     url: 'https://soundcloud.com/example/roots-of-love',
+    createdAt: null,
     playbackCount: 199,
     likesCount: 12,
     commentCount: 0,
