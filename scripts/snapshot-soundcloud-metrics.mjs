@@ -71,6 +71,7 @@ const report = {
     coverage: summary.coverage,
   },
   topTracksByLifetimePlays: summary.topTracksByPlays,
+  tracks: summary.tracks,
 };
 
 mkdirSync('reports', { recursive: true });
