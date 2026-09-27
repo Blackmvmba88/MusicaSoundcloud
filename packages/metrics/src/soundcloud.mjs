@@ -7,6 +7,7 @@ export function normalizeSoundCloudTrackMetrics(track) {
     soundcloudId: String(track.urn || track.id),
     title: track.title || null,
     url: track.permalink_url || null,
+    createdAt: track.created_at || track.createdAt || null,
     playbackCount: finiteInteger(track.playback_count),
     likesCount: finiteInteger(track.favoritings_count),
     commentCount: finiteInteger(track.comment_count),
