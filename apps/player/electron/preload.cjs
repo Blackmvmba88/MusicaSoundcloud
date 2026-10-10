@@ -2,6 +2,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('blackMambaDesktop', {
   platform: process.platform,
+  readNotionCatalog: () => ipcRenderer.invoke('notion-catalog-readonly'),
   setCompactMode: (compact) => ipcRenderer.invoke('set-compact-mode', Boolean(compact)),
   extractVideoMp3: () => ipcRenderer.invoke('extract-video-mp3'),
   revealLocalAudio: (file) => ipcRenderer.invoke('reveal-local-audio', file),
