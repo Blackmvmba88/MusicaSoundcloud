@@ -24,6 +24,7 @@ import { IdentificationCard } from "@phosphor-icons/react/IdentificationCard";
 import { ImageSquare } from "@phosphor-icons/react/ImageSquare";
 import { CloudArrowUp } from "@phosphor-icons/react/CloudArrowUp";
 import { AudioVisualizer } from "./AudioVisualizer";
+import { NotionCatalogPanel } from "./NotionCatalogPanel";
 import { SyncLyricsViewer } from "./SyncLyricsViewer";
 import { loadCatalog, loadRatings, loadTrackDetails, persistRatings } from "../api/catalog";
 
@@ -1182,6 +1183,7 @@ export function App() {
         } as React.CSSProperties
       }
     >
+      <NotionCatalogPanel track={track ? { sunoId: track.sunoId, sunoUrl: track.sunoUrl ?? track.platforms?.suno?.url, isrc: track.isrc, soundcloudUrl: track.soundcloudUrl ?? track.platforms?.soundcloud?.url } : undefined} />
       <nav>
         <a
           className="brand"
