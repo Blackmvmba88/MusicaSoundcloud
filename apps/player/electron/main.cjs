@@ -5,6 +5,22 @@ const fs = require('node:fs');
 const fsp = require('node:fs/promises');
 const { startMediaServer } = require('./media-server.cjs');
 
+// Notion is queried only by the trusted Electron main process. Never pass the token to the renderer.
+ipcMain.handle('notion-catalog-readonly', async (event) => {
+  if (!window || event.sender !== window.webContents) return { ok: false, error: 'unauthorized_window' };
+  if (!process.env.NOTION_TOKEN) return { ok: false, error: 'notion_not_configured' };
+  try {
+    const { readNotionCatalog } = await import('../../../packages/notion/catalog-readonly.mjs');
+    const songs = await readNotionCatalog();
+    return { ok: true, songs };
+  } catch (err) {
+    // Avoid passing unexpected error messages containing credentials to untrusted renderer.
+    console.error('[Notion] catalog read failed:', err?.name || 'Error');
+    return { ok: false, error: 'notion_catalog_unavailable' };
+  }
+});
+
+
 const USB_SUNO_PATH = process.env.BLACKMAMBA_WAV_MASTER || '/Volumes/ADATA SC740/MÚSICA/WAV_MASTER';
 
 let window;
