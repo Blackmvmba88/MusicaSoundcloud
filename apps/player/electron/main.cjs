@@ -10,7 +10,7 @@ ipcMain.handle('notion-catalog-readonly', async (event) => {
   if (!window || event.sender !== window.webContents) return { ok: false, error: 'unauthorized_window' };
   if (!process.env.NOTION_TOKEN) return { ok: false, error: 'notion_not_configured' };
   try {
-    const { readNotionCatalog } = await import('../../../packages/notion/catalog-readonly.mjs');
+    const { readNotionCatalog } = await import('./catalog-readonly.mjs');
     const songs = await readNotionCatalog();
     return { ok: true, songs };
   } catch (err) {
