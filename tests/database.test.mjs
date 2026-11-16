@@ -17,3 +17,20 @@ test('registra una pista local sin duplicarla', () => {
   rmSync(directory, { recursive: true, force: true });
 });
 
+
+test('inicializa una base SQLite nueva con columnas Suno únicas y WAL', () => {
+  const directory = mkdtempSync(resolve(tmpdir(), 'blackmamba-schema-bootstrap-'));
+  let db;
+  try {
+    db = openDatabase(resolve(directory, 'fresh.sqlite'));
+    const columns = db.prepare('PRAGMA table_info(tracks)').all().map((column) => column.name);
+    assert.equal(columns.filter((name) => name === 'suno_id').length, 1);
+    assert.equal(columns.filter((name) => name === 'suno_url').length, 1);
+    assert.equal(db.prepare('PRAGMA journal_mode').get().journal_mode, 'wal');
+    assert.equal(db.prepare('PRAGMA foreign_keys').get().foreign_keys, 1);
+    assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
+  } finally {
+    db?.close();
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
