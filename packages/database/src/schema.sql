@@ -101,3 +101,15 @@ CREATE INDEX IF NOT EXISTS soundcloud_metric_snapshots_track_idx
   ON soundcloud_metric_snapshots(track_id, captured_at);
 CREATE INDEX IF NOT EXISTS soundcloud_metric_snapshots_captured_idx
   ON soundcloud_metric_snapshots(captured_at);
+
+-- Auditoría de conciliación: no depende del registro retirado (que deja de existir).
+-- El ID canónico se protege contra borrados que invaliden el historial.
+CREATE TABLE IF NOT EXISTS track_merge_aliases (
+  retired_track_id INTEGER PRIMARY KEY,
+  canonical_track_id INTEGER NOT NULL REFERENCES tracks(id) ON DELETE RESTRICT,
+  retired_snapshot_json TEXT NOT NULL,
+  merged_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CHECK (retired_track_id <> canonical_track_id)
+);
+CREATE INDEX IF NOT EXISTS track_merge_aliases_canonical_idx
+  ON track_merge_aliases(canonical_track_id);
