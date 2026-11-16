@@ -62,16 +62,9 @@ CREATE INDEX IF NOT EXISTS content_status_observed_idx
 CREATE INDEX IF NOT EXISTS content_source_kind_idx
   ON content_items(source, kind);
 
--- Si Downloads descubre primero un archivo y luego Suno/u otra fuente reclama esa misma ruta,
--- la identidad remota gana y la observación local redundante se fusiona antes del UNIQUE check.
-CREATE TRIGGER IF NOT EXISTS content_merge_local_path_before_update
-BEFORE UPDATE OF local_path ON content_items
-WHEN NEW.local_path IS NOT NULL
-BEGIN
-  DELETE FROM content_items
-  WHERE local_path = NEW.local_path
-    AND id <> OLD.id;
-END;
+-- La fusión destructiva anterior podía ejecutar CASCADE sobre relaciones futuras.
+-- El procedimiento transaccional de db.mjs conserva alias y bloquea dependencias desconocidas.
+DROP TRIGGER IF EXISTS content_merge_local_path_before_update;
 
 CREATE TABLE IF NOT EXISTS artwork_jobs (
   id INTEGER PRIMARY KEY,
@@ -113,3 +106,13 @@ CREATE TABLE IF NOT EXISTS track_merge_aliases (
 );
 CREATE INDEX IF NOT EXISTS track_merge_aliases_canonical_idx
   ON track_merge_aliases(canonical_track_id);
+
+CREATE TABLE IF NOT EXISTS content_merge_aliases (
+  retired_content_id INTEGER PRIMARY KEY,
+  canonical_content_id INTEGER NOT NULL REFERENCES content_items(id) ON DELETE RESTRICT,
+  retired_snapshot_json TEXT NOT NULL,
+  merged_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CHECK (retired_content_id <> canonical_content_id)
+);
+CREATE INDEX IF NOT EXISTS content_merge_aliases_canonical_idx
+  ON content_merge_aliases(canonical_content_id);
