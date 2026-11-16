@@ -20,8 +20,6 @@ CREATE TABLE IF NOT EXISTS tracks (
   duration_seconds REAL,
   local_path TEXT UNIQUE,
   artwork_path TEXT,
-  suno_id TEXT,
-  suno_url TEXT,
   suno_snapshot TEXT,
   suno_observed_at TEXT,
   soundcloud_id TEXT UNIQUE,
