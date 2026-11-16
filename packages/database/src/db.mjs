@@ -114,6 +114,21 @@ export function getContentStats(db) {
   };
 }
 
+function assertNoUnmanagedContentRelations(db, retiredContentId) {
+  const tables = db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all();
+  for (const { name } of tables) {
+    if (name === 'content_merge_aliases') continue;
+    const quotedTable = '"' + name.replaceAll('"', '""') + '"';
+    for (const foreignKey of db.prepare(`PRAGMA foreign_key_list(${quotedTable})`).all()) {
+      if (foreignKey.table !== 'content_items') continue;
+      const quotedColumn = '"' + foreignKey.from.replaceAll('"', '""') + '"';
+      if (db.prepare(`SELECT 1 FROM ${quotedTable} WHERE ${quotedColumn} = ? LIMIT 1`).get(retiredContentId)) {
+        throw new Error(`Conciliación bloqueada: ${name}.${foreignKey.from} conserva relaciones con content ${retiredContentId}`);
+      }
+    }
+  }
+}
+
 export function upsertContentEvent(db, event) {
   const source = clean(event.source || 'unknown', 80).toLowerCase().replace(/[^a-z0-9._-]+/g, '-') || 'unknown';
   const externalId = clean(event.externalId || event.external_id, 256) || null;
@@ -133,26 +148,55 @@ export function upsertContentEvent(db, event) {
   if (!existing && localPath) existing = db.prepare('SELECT * FROM content_items WHERE local_path = ?').get(localPath);
 
   if (existing) {
-    const firstObservedAt = existing.observed_at && existing.observed_at < observedAt ? existing.observed_at : observedAt;
-    db.prepare(`
-      UPDATE content_items
-      SET external_id = COALESCE(external_id, ?),
-          kind = ?,
-          title = COALESCE(?, title),
-          source_url = COALESCE(?, source_url),
-          local_path = COALESCE(?, local_path),
-          mime_type = COALESCE(?, mime_type),
-          bytes = COALESCE(?, bytes),
-          status = CASE
-            WHEN status IN ('published', 'archived') THEN status
-            WHEN ? = 'local' OR local_path IS NOT NULL OR ? IS NOT NULL THEN 'local'
-            ELSE ?
-          END,
-          observed_at = ?,
-          metadata_json = ?,
-          updated_at = CURRENT_TIMESTAMP
-      WHERE id = ?
-    `).run(externalId, kind, title, sourceUrl, localPath, mimeType, bytes, status, localPath, status, firstObservedAt, metadataJson, existing.id);
+    // SAVEPOINT admite llamadas desde una transacción externa y evita fusiones a medias.
+    db.exec('SAVEPOINT content_item_merge');
+    try {
+      if (localPath) {
+        const conflict = db.prepare('SELECT * FROM content_items WHERE local_path = ? AND id <> ?')
+          .get(localPath, existing.id);
+        if (conflict) {
+          const localObservation = ['filesystem', 'downloads', 'download'].includes(conflict.source) || !conflict.external_id;
+          if (!localObservation) {
+            throw new Error('Conciliación bloqueada: dos identidades remotas reclaman la misma ruta');
+          }
+          assertNoUnmanagedContentRelations(db, conflict.id);
+          db.prepare('UPDATE content_merge_aliases SET canonical_content_id = ? WHERE canonical_content_id = ?')
+            .run(existing.id, conflict.id);
+          db.prepare(`
+            INSERT INTO content_merge_aliases (retired_content_id, canonical_content_id, retired_snapshot_json)
+            VALUES (?, ?, ?)
+          `).run(conflict.id, existing.id, JSON.stringify(conflict));
+          db.prepare('DELETE FROM content_items WHERE id = ?').run(conflict.id);
+        }
+      }
+
+      const firstObservedAt = existing.observed_at && existing.observed_at < observedAt ? existing.observed_at : observedAt;
+      db.prepare(`
+        UPDATE content_items
+        SET external_id = COALESCE(external_id, ?),
+            kind = ?,
+            title = COALESCE(?, title),
+            source_url = COALESCE(?, source_url),
+            local_path = COALESCE(?, local_path),
+            mime_type = COALESCE(?, mime_type),
+            bytes = COALESCE(?, bytes),
+            status = CASE
+              WHEN status IN ('published', 'archived') THEN status
+              WHEN ? = 'local' OR local_path IS NOT NULL OR ? IS NOT NULL THEN 'local'
+              ELSE ?
+            END,
+            observed_at = ?,
+            metadata_json = ?,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `).run(externalId, kind, title, sourceUrl, localPath, mimeType, bytes,
+        status, localPath, status, firstObservedAt, metadataJson, existing.id);
+      db.exec('RELEASE SAVEPOINT content_item_merge');
+    } catch (error) {
+      db.exec('ROLLBACK TO SAVEPOINT content_item_merge');
+      db.exec('RELEASE SAVEPOINT content_item_merge');
+      throw error;
+    }
     return db.prepare('SELECT * FROM content_items WHERE id = ?').get(existing.id);
   }
 
