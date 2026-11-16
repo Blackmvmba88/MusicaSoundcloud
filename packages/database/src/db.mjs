@@ -237,6 +237,25 @@ export function upsertSunoTrack(db, track) {
   return db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(sunoId);
 }
 
+// Nunca permitir que la conciliación borre relaciones de futuras tablas por CASCADE.
+// Las relaciones que conocemos se transfieren explícitamente dentro de la transacción.
+function assertNoUnmanagedTrackRelations(db, retiredTrackId) {
+  const handledTables = new Set(['artwork_jobs', 'soundcloud_metric_snapshots', 'track_merge_aliases']);
+  const tables = db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all();
+  for (const { name } of tables) {
+    if (handledTables.has(name)) continue;
+    const quotedTable = '"' + name.replaceAll('"', '""') + '"';
+    const foreignKeys = db.prepare(`PRAGMA foreign_key_list(${quotedTable})`).all();
+    for (const foreignKey of foreignKeys) {
+      if (foreignKey.table !== 'tracks') continue;
+      // FKs compuestas no se consideran transferibles automáticamente.
+      const column = '"' + foreignKey.from.replaceAll('"', '""') + '"';
+      const linked = db.prepare(`SELECT 1 FROM ${quotedTable} WHERE ${column} = ? LIMIT 1`).get(retiredTrackId);
+      if (linked) throw new Error(`Conciliación bloqueada: ${name}.${foreignKey.from} conserva relaciones con track ${retiredTrackId}`);
+    }
+  }
+}
+
 export function attachLocalPathToSunoTrack(db, { sunoId, localPath, title, artist = 'Iyari Gomez' }) {
   const normalizedId = String(sunoId);
   let existing = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(normalizedId);
@@ -250,14 +269,39 @@ export function attachLocalPathToSunoTrack(db, { sunoId, localPath, title, artis
   if (pathTrack && pathTrack.id !== existing.id) {
     db.exec('BEGIN IMMEDIATE');
     try {
+      // Un mismo archivo no puede representar dos identidades Suno distintas.
+      if (pathTrack.suno_id && pathTrack.suno_id !== normalizedId) {
+        throw new Error('Conciliación bloqueada: la ruta ya pertenece a otro ID Suno');
+      }
+      if (pathTrack.soundcloud_id && existing.soundcloud_id && pathTrack.soundcloud_id !== existing.soundcloud_id) {
+        throw new Error('Conciliación bloqueada: SoundCloud tiene identidades incompatibles');
+      }
+      assertNoUnmanagedTrackRelations(db, existing.id);
+
+      // Transferir los dependientes ANTES de retirar el registro redundante.
+      // Si hay colisión de snapshots (track_id, captured_at), SQLite revierte
+      // toda la operación en lugar de perder datos silenciosamente.
+      db.prepare('UPDATE artwork_jobs SET track_id = ? WHERE track_id = ?').run(pathTrack.id, existing.id);
+      db.prepare('UPDATE soundcloud_metric_snapshots SET track_id = ? WHERE track_id = ?').run(pathTrack.id, existing.id);
+      db.prepare('UPDATE track_merge_aliases SET canonical_track_id = ? WHERE canonical_track_id = ?').run(pathTrack.id, existing.id);
+      db.prepare(`
+        INSERT INTO track_merge_aliases (retired_track_id, canonical_track_id, retired_snapshot_json)
+        VALUES (?, ?, ?)
+      `).run(existing.id, pathTrack.id, JSON.stringify(existing));
+
       db.prepare('DELETE FROM tracks WHERE id = ?').run(existing.id);
       db.prepare(`
         UPDATE tracks
         SET suno_id = ?, suno_url = ?, suno_snapshot = ?, suno_observed_at = ?,
+            soundcloud_id = COALESCE(soundcloud_id, ?),
+            soundcloud_url = COALESCE(soundcloud_url, ?),
             title = COALESCE(NULLIF(?, ''), title), artist = COALESCE(NULLIF(?, ''), artist),
+            sync_status = CASE WHEN COALESCE(soundcloud_id, ?) IS NOT NULL THEN 'linked' ELSE 'local' END,
             updated_at = CURRENT_TIMESTAMP
         WHERE id = ?
-      `).run(normalizedId, existing.suno_url, existing.suno_snapshot, existing.suno_observed_at, title || '', artist || '', pathTrack.id);
+      `).run(normalizedId, existing.suno_url, existing.suno_snapshot, existing.suno_observed_at,
+        existing.soundcloud_id, existing.soundcloud_url, title || '', artist || '',
+        existing.soundcloud_id, pathTrack.id);
       db.exec('COMMIT');
     } catch (error) {
       db.exec('ROLLBACK');
