@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { openDatabase, upsertSunoTrack } from '../packages/database/src/db.mjs';
 import { validateTrackPackage } from '../packages/pipeline/src/validate-track-package.mjs';
 import { discoverLocalMedia } from './worker-media-discovery.mjs';
+import { importSunoLinks } from './suno-link-intake.mjs';
 
 const PROJECT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const STORAGE = resolve(PROJECT, 'storage');
@@ -89,6 +90,7 @@ function readConfig() {
     media,
     sourcePrefix,
     catalog: resolve(process.env.WORKER_SUNO_CATALOG || DEFAULT_CATALOG),
+    links: resolve(process.env.WORKER_SUNO_LINKS || join(PROJECT, 'inbox/suno-links.json')),
   };
 }
 
@@ -225,13 +227,14 @@ export async function scanOnce(db, config) {
   initWorker(db);
   const catalog = await importCatalog(db, config.catalog);
   const mediaScan = await discoverLocalMedia(db, config);
+  const linkIntake = await importSunoLinks(db, config.links || join(PROJECT, 'inbox/suno-links.json'));
   let cursor = db.prepare('SELECT last_track_id FROM release_worker_runtime WHERE id = 1').get().last_track_id;
   const query = db.prepare(`SELECT * FROM tracks
     WHERE id > ? AND soundcloud_id IS NULL AND (suno_id IS NOT NULL OR local_path IS NOT NULL)
     ORDER BY id LIMIT ?`);
   let tracks = query.all(cursor, config.batch);
   if (!tracks.length && cursor !== 0) { cursor = 0; tracks = query.all(cursor, config.batch); }
-  const totals = { examined: tracks.length, changed: 0, protected: 0, errors: 0, cursor, catalog, mediaScan };
+  const totals = { examined: tracks.length, changed: 0, protected: 0, errors: 0, cursor, catalog, mediaScan, linkIntake };
   for (const track of tracks) {
     try {
       const plan = await validateTrack(track, config);
