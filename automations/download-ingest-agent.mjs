@@ -101,8 +101,22 @@ async function sidecar(source, destination, now, age) {
   } catch { return false; }
   const hash = createHash('sha256').update(bytes).digest('hex');
   if (await sameContent(to, hash)) return false;
-  try { await lstat(to); return false; } // Do not overwrite reviewed metadata.
-  catch (error) { if (error.code !== 'ENOENT') throw error; }
+  try {
+    await lstat(to);
+    // A matching WAV hash does NOT prove two releases have the same Suno identity.
+    // Never overwrite or silently discard the second metadata identity.
+    const existing = JSON.parse(await readFile(to, 'utf8'));
+    const incoming = JSON.parse(bytes.toString('utf8'));
+    const currentId = String(existing?.id || existing?.sunoId || '').trim();
+    const incomingId = String(incoming?.id || incoming?.sunoId || '').trim();
+    const error = new Error(
+      currentId && incomingId && currentId !== incomingId
+        ? 'Conflicto de identidad Suno: WAV idéntico con IDs distintos; revisión manual'
+        : 'Conflicto de metadatos: ficha diferente a la registrada; revisión manual'
+    );
+    error.code = 'SIDECAR_CONFLICT';
+    throw error;
+  } catch (error) { if (error.code !== 'ENOENT') throw error; }
   await stage(from, to, hash);
   return true;
 }
@@ -111,7 +125,7 @@ async function sidecar(source, destination, now, age) {
 export async function scanDownloadsOnce(rawConfig, now = Date.now()) {
   const config = validate(rawConfig), journal = await readJournal(config.statePath);
   const entries = await readdir(config.downloads, { withFileTypes: true });
-  const totals = { examined: 0, waiting: 0, staged: 0, duplicates: 0, sidecars: 0, failures: 0 };
+  const totals = { examined: 0, waiting: 0, staged: 0, duplicates: 0, sidecars: 0, conflicts: 0, failures: 0 };
   for (const entry of entries.sort((a,b)=>a.name.localeCompare(b.name))) {
     if (!entry.isFile() || !isCandidate(entry.name)) continue;
     totals.examined++;
@@ -153,8 +167,20 @@ export async function scanDownloadsOnce(rawConfig, now = Date.now()) {
       if (await sidecar(source, destination, now, config.minAgeMs)) totals.sidecars++;
       await writeJournal(config.statePath, journal);
     } catch (error) {
-      totals.failures++;
-      process.stderr.write(JSON.stringify({ event: 'download-ingest-error', file: entry.name, error: error.message }) + '\n');
+      if (error.code === 'SIDECAR_CONFLICT') {
+        totals.conflicts++;
+        journal.files[source] = {
+          ...(journal.files[source] || {}),
+          status: 'metadata-conflict',
+          conflictReason: error.message,
+          conflictAt: new Date(now).toISOString(),
+        };
+        await writeJournal(config.statePath, journal);
+      } else totals.failures++;
+      process.stderr.write(JSON.stringify({
+        event: error.code === 'SIDECAR_CONFLICT' ? 'download-metadata-conflict' : 'download-ingest-error',
+        file: entry.name, error: error.message,
+      }) + '\n');
     }
   }
   await writeJournal(config.statePath, journal);
