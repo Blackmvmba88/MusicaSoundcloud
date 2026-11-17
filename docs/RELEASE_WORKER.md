@@ -4,9 +4,9 @@
 
 Worker de larga duración para el mismo repositorio y la misma SQLite del orquestador (PR #9).
 **No** es un servicio de Suno ni publica canciones. Detecta pistas ya importadas del catálogo
-Suno, lee el WAV y su ficha `.wav.suno.json` cuando están accesibles, valida portada
+Suno y WAV locales, lee el WAV y su ficha `.wav.suno.json` cuando están accesibles, valida portada
 y metadatos, mantiene bloqueos y transiciones en `release_jobs`, y deja las obras
-aprobables en `ready_for_review`. Las obras ya aprobadas/entregadas no se retroceden.
+aprobables en `ready_for_review`. El escaneo de /music registra WAV nuevos y los asocia por ID cuando la ficha lo permite.\nLas obras ya aprobadas/entregadas no se retroceden.
 
 La biblioteca de Suno incluida en el repositorio es un **snapshot**, no una conexión en tiempo
 real. Para detectar nuevos temas desde un servidor externo hay que actualizar el archivo
@@ -25,7 +25,7 @@ cp .env.worker.example .env.worker
 docker compose --env-file .env.worker -f compose.worker.yml build
 docker compose --env-file .env.worker -f compose.worker.yml up -d
 docker compose --env-file .env.worker -f compose.worker.yml ps
-docker compose --env-file .env.worker -f compose.worker.yml logs -f release-worker
+docker compose --env-file .env.worker -f compose.worker.yml logs -f release-worker\ndocker compose --env-file .env.worker -f compose.worker.yml exec release-worker \\\n  node scripts/release-worker-status.mjs
 ```
 
 Prueba controlada de una única pasada sin servicio permanente:
