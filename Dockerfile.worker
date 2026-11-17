@@ -1,0 +1,18 @@
+FROM node:24-bookworm-slim
+WORKDIR /workspace
+
+# Sin dependencias de producción externas: SQLite nativa de Node 24.
+COPY --chown=node:node . .
+RUN mkdir -p /workspace/storage/database /workspace/storage/sync /music /catalog \
+    && chown -R node:node /workspace/storage
+
+ENV NODE_ENV=production \
+    WORKER_MEDIA_ROOT=/music \
+    WORKER_SUNO_CATALOG=/catalog/suno-library.json \
+    WORKER_INTERVAL_SECONDS=300 \
+    WORKER_BATCH_SIZE=100
+USER node
+
+HEALTHCHECK --interval=60s --timeout=10s --start-period=90s --retries=3 \
+  CMD ["node", "automations/release-worker.mjs", "--health"]
+CMD ["node", "automations/release-worker.mjs"]
