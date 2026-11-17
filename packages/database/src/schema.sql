@@ -20,8 +20,6 @@ CREATE TABLE IF NOT EXISTS tracks (
   duration_seconds REAL,
   local_path TEXT UNIQUE,
   artwork_path TEXT,
-  suno_id TEXT,
-  suno_url TEXT,
   suno_snapshot TEXT,
   suno_observed_at TEXT,
   soundcloud_id TEXT UNIQUE,
@@ -34,9 +32,7 @@ CREATE TABLE IF NOT EXISTS tracks (
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS tracks_title_idx ON tracks(title);
-CREATE INDEX IF NOT EXISTS tracks_sync_status_idx ON tracks(sync_status);
-CREATE INDEX IF NOT EXISTS tracks_suno_id_idx ON tracks(suno_id);
+-- Los índices de tracks se crean después de migrar columnas heredadas en db.mjs.
 
 CREATE TABLE IF NOT EXISTS content_items (
   id INTEGER PRIMARY KEY,

@@ -20,34 +20,59 @@ function clean(value, max = 300) {
 export function openDatabase(databasePath = defaultDatabasePath) {
   mkdirSync(dirname(databasePath), { recursive: true });
   const db = new DatabaseSync(databasePath);
-  db.exec(readFileSync(resolve(here, 'schema.sql'), 'utf8'));
-  migrateTracks(db);
-  return db;
+  try {
+    db.exec(readFileSync(resolve(here, 'schema.sql'), 'utf8'));
+    migrateTracks(db);
+    return db;
+  } catch (error) {
+    db.close();
+    throw error;
+  }
 }
 
 function migrateTracks(db) {
-  const existing = new Set(db.prepare('PRAGMA table_info(tracks)').all().map((column) => column.name));
-  const columns = {
-    genre: 'TEXT',
-    tag_list: 'TEXT',
-    bpm: 'INTEGER',
-    release_date: 'TEXT',
-    description: 'TEXT',
-    lyrics: 'TEXT',
-    metadata_artist: 'TEXT',
-    aliases: 'TEXT',
-    source: 'TEXT',
-    suno_id: 'TEXT',
-    suno_url: 'TEXT',
-    soundcloud_artwork_url: 'TEXT',
-    soundcloud_snapshot: 'TEXT',
-    last_soundcloud_audit_at: 'TEXT',
-  };
-  for (const [name, type] of Object.entries(columns)) {
-    if (!existing.has(name)) db.exec(`ALTER TABLE tracks ADD COLUMN ${name} ${type}`);
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    const existing = new Set(db.prepare('PRAGMA table_info(tracks)').all().map((column) => column.name));
+    const columns = {
+      album: 'TEXT',
+      genre: 'TEXT',
+      tag_list: 'TEXT',
+      bpm: 'INTEGER',
+      release_date: 'TEXT',
+      description: 'TEXT',
+      lyrics: 'TEXT',
+      metadata_artist: 'TEXT',
+      aliases: 'TEXT',
+      source: 'TEXT',
+      suno_id: 'TEXT',
+      suno_url: 'TEXT',
+      suno_snapshot: 'TEXT',
+      suno_observed_at: 'TEXT',
+      duration_seconds: 'REAL',
+      artwork_path: 'TEXT',
+      soundcloud_id: 'TEXT',
+      soundcloud_url: 'TEXT',
+      soundcloud_artwork_url: 'TEXT',
+      soundcloud_snapshot: 'TEXT',
+      last_soundcloud_audit_at: 'TEXT',
+      sync_status: "TEXT NOT NULL DEFAULT 'local'",
+      created_at: 'TEXT',
+      updated_at: 'TEXT',
+    };
+    for (const [name, type] of Object.entries(columns)) {
+      if (!existing.has(name)) db.exec(`ALTER TABLE tracks ADD COLUMN ${name} ${type}`);
+    }
+    // Los índices se crean al final: una base heredada puede no tener estas columnas.
+    db.exec('CREATE INDEX IF NOT EXISTS tracks_title_idx ON tracks(title)');
+    db.exec('CREATE INDEX IF NOT EXISTS tracks_sync_status_idx ON tracks(sync_status)');
+    db.exec('CREATE INDEX IF NOT EXISTS tracks_suno_id_idx ON tracks(suno_id)');
+    db.exec('CREATE INDEX IF NOT EXISTS tracks_suno_observed_at_idx ON tracks(suno_observed_at)');
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
   }
-  db.exec('CREATE UNIQUE INDEX IF NOT EXISTS tracks_suno_id_idx ON tracks(suno_id) WHERE suno_id IS NOT NULL');
-  db.exec('CREATE INDEX IF NOT EXISTS tracks_suno_observed_at_idx ON tracks(suno_observed_at)');
 }
 
 export function listTracks(db) {
