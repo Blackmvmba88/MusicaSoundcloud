@@ -118,3 +118,18 @@ la unión de identidades por hash sin verificar el ID remoto.
 
 Pruebas nuevas: `tests/release-worker.test.mjs` (ficha tardía y copia renombrada),
 `tests/suno-link-intake.test.mjs` (conservación de claves foráneas).
+
+
+## Colisión de SHA-256 entre identidades Suno
+Un mismo audio puede pertenecer a **dos lanzamientos independientes**. Cuando dos
+WAV idénticos traen fichas Suno distintas, el watcher conserva ambos originales,
+no sustituye la ficha ya registrada, marca el segundo origen como
+`metadata-conflict` en `download-ingest-state.json`, contabiliza `conflicts`
+y emite `download-metadata-conflict` en el log. Se requiere conciliación editorial
+antes de decidir si crear una publicación distinta. También se informa una
+diferencia de metadatos con el mismo ID, sin reemplazar automáticamente lo aprobado.
+
+Esta protección evita el descarte silencioso de una segunda ficha, pero todavía
+no genera dos artefactos separados para una colisión con contenido idéntico.
+No conectar la publicación automática a estos conflictos.
+Prueba adicional: `same WAV bytes with distinct Suno IDs`.
