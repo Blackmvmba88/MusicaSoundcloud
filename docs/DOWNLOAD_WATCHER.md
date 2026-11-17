@@ -95,3 +95,26 @@ imagen Docker. Si llegan por el repositorio remoto, el host debe traer las
 actualizaciones a la carpeta montada; el servicio no sincroniza GitHub solo.
 No se scrapea la página de Suno y no se descargan archivos automáticamente.
 Prueba aislada: node --test tests/suno-link-intake.test.mjs
+
+
+## Conciliación de WAV renombrados y metadatos tardíos
+El agente puede ingresar un WAV usando un nombre con sufijo SHA-256. El worker ahora
+registra la copia disponible en `release_worker_media_aliases` cuando el catálogo Suno
+ya conserva otra ruta original. El archivo original y `tracks.local_path` no se alteran.
+La validación utiliza el alias solo después de comprobar que el archivo vive dentro
+del volumen permitido. La relación se hace por ID de Suno en la ficha sidecar, no por
+parecido del nombre de archivo.
+
+Si el WAV llega antes que la ficha `.wav.suno.json`, un escaneo posterior detecta
+esa ficha y reconcilia la pista local con Suno. Al fusionar una pista Suno con una
+pista local se transfieren las referencias de `release_source_links` al ID canónico
+sobreviviente, dentro de la misma transacción SQLite, conservando la procedencia.
+La importación del enlace corto sin verificación sigue como `awaiting_identity`.
+
+**Límite de esta versión:** dos lanzamientos distintos con audio byte-a-byte
+idéntico y dos fichas Suno diferentes pueden requerir conciliación editorial;
+la deduplicación por SHA no prueba que sean la misma publicación. No automatizar
+la unión de identidades por hash sin verificar el ID remoto.
+
+Pruebas nuevas: `tests/release-worker.test.mjs` (ficha tardía y copia renombrada),
+`tests/suno-link-intake.test.mjs` (conservación de claves foráneas).
