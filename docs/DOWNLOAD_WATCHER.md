@@ -1,0 +1,135 @@
+# BlackMamba RECORDS — Descargas como punto de entrada redundante
+
+## Objetivo
+El nuevo agente observa **Descargas de macOS** y mantiene un segundo punto de arranque independiente
+del worker Docker. Usa eventos nativos de carpeta y **reconciliación periódica** para detectar
+archivos incluso si se perdió un evento o se reinició el sistema.
+
+**Importante:** no elimina originales, no necesita credenciales de Suno, no modifica la SQLite
+directamente y **nunca sube o publica canciones automáticamente**.
+
+## Flujo
+- WAV estable: copia inmutable a la **raíz** de WORKER_MEDIA_DIR, nombre con SHA-256.
+  El worker de PR #10 lo descubre, registra y valida en la SQLite existente.
+  Falta de datos o portada -> bloqueo, no publicación.
+- MP3, M4A y FLAC: ingresan en media/pending-import, estado awaiting-wav-conversion.
+  **La conversión todavía no está implementada**.
+- Ficha nombre.wav.suno.json: se anexa si aparece junto al WAV descargado;
+  no se sobreescribe una ficha existente.
+- Archivos temporales .part, .crdownload, etc., enlaces simbólicos y formatos ajenos
+  al audio no se importan.
+- SHA-256 evita copias múltiples del mismo audio aunque cambie de nombre.
+  Un archivo modificado es una versión distinta y no destruye la anterior.
+
+## Redundancia
+1. fs.watch recibe eventos de Descargas para reaccionar rápido.
+2. Escaneo periódico cada 30 s detecta descargas omitidas.
+3. Journal local, atómico y persistente en storage/sync/download-ingest-state.json.
+   Si se corrompe, se detiene el procesamiento para no perder la protección antduplicados.
+4. El worker Docker conserva su escaneo propio de /music y su SQLite canónica.
+   Son dos procesos con responsabilidades independientes, no dos publicadores.
+
+## Arranque e instalación en macOS
+Requiere Node.js >=22 y una sesión macOS con permiso para leer Descargas.
+Elige la misma carpeta física de medios que montará Docker. Al mover el repositorio,
+se debe volver a instalar el servicio desde la nueva ubicación.
+
+~~~bash
+cd /ruta/al/repositorio/MusicaSoundcloud
+export BLACKMAMBA_DOWNLOADS_DIR="$HOME/Downloads"
+export WORKER_MEDIA_DIR="$PWD/media"
+node --test tests/download-ingest-agent.test.mjs
+node automations/download-ingest-agent.mjs --once
+node scripts/download-agent-service.mjs install
+node scripts/download-agent-service.mjs status
+tail -f storage/logs/download-ingest.log
+~~~
+
+Desinstalación sin borrar archivos ni checkpoint:
+
+~~~bash
+node scripts/download-agent-service.mjs uninstall
+~~~
+
+El script instala un LaunchAgent del usuario, con RunAtLoad y KeepAlive, sin privilegios
+de administrador y sin abrir puertos. Solo se instala cuando el usuario ejecuta ese
+comando. En macOS puede ser necesario conceder acceso a Descargas al Node utilizado.
+
+## Docker y host remoto
+El compose.worker.yml existente monta los medios en /music:ro. En la misma Mac,
+WORKER_MEDIA_DIR debe apuntar a la carpeta que Docker monta. El agente escribe en la
+carpeta del host; Docker solo lee el contenido.
+
+Si Docker opera en **otra computadora**, es imprescindible sincronizar la carpeta de
+medios a ese host por un canal seguro: la Mac apagada no puede detectar descargas nuevas.
+Este PR no instala sincronización remota ni demuestra despliegue siempre encendido.
+
+## Pruebas
+~~~bash
+node --check automations/download-ingest-agent.mjs
+node --check scripts/download-agent-service.mjs
+node --test tests/download-ingest-agent.test.mjs
+~~~
+
+Este módulo es independiente de las migraciones de SQLite, pero el procesamiento
+completo sigue condicionado a integrar y probar en orden los PR #7, #8, #9 y #10.
+
+**Pendiente:** canario de descarga real en macOS, validación de LaunchAgent,
+integración Node 24 / SQLite y Docker, y conversión de formatos no WAV.
+
+
+## URL como tercera entrada (Suno)
+También se reciben URLs como https://suno.com/s/heo74Dpr07HTwQhP.
+Cuando el usuario manda un enlace, agregarlo una sola vez a
+inbox/suno-links.json (version 1, links con atributo url). El archivo se monta
+en Docker de solo lectura vía WORKER_SUNO_LINKS_FILE y el worker lo importa
+en release_source_links dentro de la MISMA SQLite, sin catálogo paralelo.
+
+Los enlaces /s/<token> son enlaces de compartición, **no IDs confirmados de
+canción**. Su estado permanece awaiting_identity hasta que haya una
+correspondencia fiable en tracks.suno_url; /song/<id> sí contiene un ID de
+canción, pero no aporta por sí solo WAV, portada ni autorización de publicar.
+
+El inbox local vinculado al host permite nuevos enlaces sin reconstruir la
+imagen Docker. Si llegan por el repositorio remoto, el host debe traer las
+actualizaciones a la carpeta montada; el servicio no sincroniza GitHub solo.
+No se scrapea la página de Suno y no se descargan archivos automáticamente.
+Prueba aislada: node --test tests/suno-link-intake.test.mjs
+
+
+## Conciliación de WAV renombrados y metadatos tardíos
+El agente puede ingresar un WAV usando un nombre con sufijo SHA-256. El worker ahora
+registra la copia disponible en `release_worker_media_aliases` cuando el catálogo Suno
+ya conserva otra ruta original. El archivo original y `tracks.local_path` no se alteran.
+La validación utiliza el alias solo después de comprobar que el archivo vive dentro
+del volumen permitido. La relación se hace por ID de Suno en la ficha sidecar, no por
+parecido del nombre de archivo.
+
+Si el WAV llega antes que la ficha `.wav.suno.json`, un escaneo posterior detecta
+esa ficha y reconcilia la pista local con Suno. Al fusionar una pista Suno con una
+pista local se transfieren las referencias de `release_source_links` al ID canónico
+sobreviviente, dentro de la misma transacción SQLite, conservando la procedencia.
+La importación del enlace corto sin verificación sigue como `awaiting_identity`.
+
+**Límite de esta versión:** dos lanzamientos distintos con audio byte-a-byte
+idéntico y dos fichas Suno diferentes pueden requerir conciliación editorial;
+la deduplicación por SHA no prueba que sean la misma publicación. No automatizar
+la unión de identidades por hash sin verificar el ID remoto.
+
+Pruebas nuevas: `tests/release-worker.test.mjs` (ficha tardía y copia renombrada),
+`tests/suno-link-intake.test.mjs` (conservación de claves foráneas).
+
+
+## Colisión de SHA-256 entre identidades Suno
+Un mismo audio puede pertenecer a **dos lanzamientos independientes**. Cuando dos
+WAV idénticos traen fichas Suno distintas, el watcher conserva ambos originales,
+no sustituye la ficha ya registrada, marca el segundo origen como
+`metadata-conflict` en `download-ingest-state.json`, contabiliza `conflicts`
+y emite `download-metadata-conflict` en el log. Se requiere conciliación editorial
+antes de decidir si crear una publicación distinta. También se informa una
+diferencia de metadatos con el mismo ID, sin reemplazar automáticamente lo aprobado.
+
+Esta protección evita el descarte silencioso de una segunda ficha, pero todavía
+no genera dos artefactos separados para una colisión con contenido idéntico.
+No conectar la publicación automática a estos conflictos.
+Prueba adicional: `same WAV bytes with distinct Suno IDs`.

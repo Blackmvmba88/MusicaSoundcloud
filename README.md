@@ -136,6 +136,23 @@ La única colección maestra de audio aceptada actualmente es:
 - Las portadas aprobadas pueden versionarse cuando forman parte del sistema creativo.
 - SQLite y reportes operativos permanecen locales salvo decisión explícita.
 
+## Vigilante persistente con Docker (rama experimental)
+
+La modalidad de servidor externo vigila archivos WAV, fichas Suno y trabajos de entrega
+con una SQLite persistente, sin exponer puertos ni publicar audio automáticamente.
+Requiere el orquestador de PR #9, host encendido y biblioteca/snapshot sincronizados.
+Si sólo está disponible un snapshot antiguo, el servicio no conoce canciones nuevas
+hasta que se actualice la fuente.
+
+```sh
+cp .env.worker.example .env.worker
+docker compose --env-file .env.worker -f compose.worker.yml up -d --build
+docker compose --env-file .env.worker -f compose.worker.yml exec release-worker \
+  node scripts/release-worker-status.mjs
+```
+
+Procedimiento, seguridad y limitaciones: [RELEASE_WORKER](docs/RELEASE_WORKER.md).
+
 ## Seguridad
 
 - No se guardan tokens en Git.
@@ -188,3 +205,20 @@ docker run --rm blackmamba-music-ci
 ```
 
 La imagen valida el código y el reproductor web. No contiene credenciales, audio maestro ni checkpoints.
+
+
+## Entradas redundantes: Descargas y enlaces Suno (rama experimental)
+
+Además del escaneo Docker de WAV, un agente macOS detecta nuevas descargas con
+eventos de carpeta y reconciliación periódica. Los WAV estables se agregan al
+directorio de medios, sin borrar originales ni publicarlos. MP3/M4A/FLAC quedan
+en una cola pendiente de conversión, no se anuncian como WAV aprobados.
+
+También se aceptan enlaces https de Suno enviados por el usuario. El inbox
+[inbox/suno-links.json](inbox/suno-links.json) se importa a la misma SQLite como
+referencia, sin asumir que el token de /s/ sea el ID real de la canción.
+
+Documentación operativa: [DOWNLOAD_WATCHER](docs/DOWNLOAD_WATCHER.md).
+Verificaciones aisladas: node --test tests/download-ingest-agent.test.mjs
+y node --test tests/suno-link-intake.test.mjs.
+Pendiente integración con las migraciones y el worker de los PR #7-#10.
