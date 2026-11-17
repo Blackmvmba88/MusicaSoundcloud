@@ -23,6 +23,15 @@ export function openDatabase(databasePath = defaultDatabasePath) {
   try {
     db.exec(readFileSync(resolve(here, 'schema.sql'), 'utf8'));
     migrateTracks(db);
+    db.exec('SAVEPOINT release_schema_migration');
+    try {
+      db.exec(readFileSync(resolve(here, 'release-schema.sql'), 'utf8'));
+      db.exec('RELEASE SAVEPOINT release_schema_migration');
+    } catch (error) {
+      db.exec('ROLLBACK TO SAVEPOINT release_schema_migration');
+      db.exec('RELEASE SAVEPOINT release_schema_migration');
+      throw error;
+    }
     return db;
   } catch (error) {
     db.close();
@@ -284,7 +293,7 @@ export function upsertSunoTrack(db, track) {
 // Nunca permitir que la conciliación borre relaciones de futuras tablas por CASCADE.
 // Las relaciones que conocemos se transfieren explícitamente dentro de la transacción.
 function assertNoUnmanagedTrackRelations(db, retiredTrackId) {
-  const handledTables = new Set(['artwork_jobs', 'soundcloud_metric_snapshots', 'track_merge_aliases']);
+  const handledTables = new Set(['artwork_jobs', 'soundcloud_metric_snapshots', 'track_merge_aliases', 'release_jobs']);
   const tables = db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all();
   for (const { name } of tables) {
     if (handledTables.has(name)) continue;
@@ -327,6 +336,8 @@ export function attachLocalPathToSunoTrack(db, { sunoId, localPath, title, artis
       // toda la operación en lugar de perder datos silenciosamente.
       db.prepare('UPDATE artwork_jobs SET track_id = ? WHERE track_id = ?').run(pathTrack.id, existing.id);
       db.prepare('UPDATE soundcloud_metric_snapshots SET track_id = ? WHERE track_id = ?').run(pathTrack.id, existing.id);
+      // La identidad del trabajo permanece: sólo cambia su pista canónica.
+      db.prepare('UPDATE release_jobs SET track_id = ?, updated_at = CURRENT_TIMESTAMP WHERE track_id = ?').run(pathTrack.id, existing.id);
       db.prepare('UPDATE track_merge_aliases SET canonical_track_id = ? WHERE canonical_track_id = ?').run(pathTrack.id, existing.id);
       db.prepare(`
         INSERT INTO track_merge_aliases (retired_track_id, canonical_track_id, retired_snapshot_json)
