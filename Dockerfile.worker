@@ -9,8 +9,8 @@ RUN mkdir -p /workspace/storage/database /workspace/storage/sync /music /catalog
 ENV NODE_ENV=production \
     WORKER_MEDIA_ROOT=/music \
     WORKER_SUNO_CATALOG=/catalog/suno-library.json \
-    WORKER_INTERVAL_SECONDS=300 \
-    WORKER_BATCH_SIZE=100
+    WORKER_INTERVAL_SECONDS=60 \
+    WORKER_BATCH_SIZE=500
 USER node
 
 HEALTHCHECK --interval=60s --timeout=10s --start-period=90s --retries=3 \
