@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import test from 'node:test';
-import { listTracks, openDatabase, upsertLocalTrack } from '../packages/database/src/db.mjs';
+import { attachLocalPathToSunoTrack, listTracks, openDatabase, upsertLocalTrack, upsertSunoTrack } from '../packages/database/src/db.mjs';
 
 test('registra una pista local sin duplicarla', () => {
   const directory = mkdtempSync(resolve(tmpdir(), 'blackmamba-music-'));
@@ -72,6 +72,76 @@ test('migra una base heredada antes de crear índices y sin perder pistas', () =
     assert.equal(db.prepare('PRAGMA foreign_key_check').all().length, 0);
   } finally {
     db?.close();
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('conciliación conserva trabajos, métricas y alias histórico', () => {
+  const directory = mkdtempSync(resolve(tmpdir(), 'blackmamba-track-merge-'));
+  const db = openDatabase(resolve(directory, 'test.sqlite'));
+  try {
+    const local = upsertLocalTrack(db, { title: 'Local WAV', localPath: '/music/merge-test.wav' });
+    const suno = upsertSunoTrack(db, { id: 'track-merge-001', title: 'Suno WAV' });
+    db.prepare('INSERT INTO artwork_jobs (track_id, source_path) VALUES (?, ?)').run(suno.id, '/covers/merge-test.png');
+    db.prepare("INSERT INTO soundcloud_metric_snapshots (track_id, captured_at, playback_count) VALUES (?, '2026-11-16T12:00:00Z', 123)").run(suno.id);
+
+    const linked = attachLocalPathToSunoTrack(db, {
+      sunoId: 'track-merge-001', localPath: '/music/merge-test.wav', title: 'Suno WAV'
+    });
+    assert.equal(linked.id, local.id);
+    assert.equal(linked.suno_id, 'track-merge-001');
+    assert.equal(listTracks(db).length, 1);
+    assert.equal(db.prepare('SELECT track_id FROM artwork_jobs').get().track_id, local.id);
+    assert.equal(db.prepare('SELECT track_id FROM soundcloud_metric_snapshots').get().track_id, local.id);
+    const alias = db.prepare('SELECT * FROM track_merge_aliases').get();
+    assert.equal(alias.retired_track_id, suno.id);
+    assert.equal(alias.canonical_track_id, local.id);
+    assert.equal(JSON.parse(alias.retired_snapshot_json).suno_id, 'track-merge-001');
+    assert.equal(db.prepare('PRAGMA foreign_key_check').all().length, 0);
+  } finally {
+    db.close();
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('una colisión de métricas revierte la conciliación entera', () => {
+  const directory = mkdtempSync(resolve(tmpdir(), 'blackmamba-track-merge-conflict-'));
+  const db = openDatabase(resolve(directory, 'test.sqlite'));
+  try {
+    const local = upsertLocalTrack(db, { title: 'Local', localPath: '/music/collision.wav' });
+    const suno = upsertSunoTrack(db, { id: 'track-merge-002', title: 'Suno' });
+    const statement = db.prepare("INSERT INTO soundcloud_metric_snapshots (track_id, captured_at, playback_count) VALUES (?, '2026-11-16T12:00:00Z', ?)");
+    statement.run(local.id, 100);
+    statement.run(suno.id, 200);
+
+    assert.throws(() => attachLocalPathToSunoTrack(db, {
+      sunoId: 'track-merge-002', localPath: '/music/collision.wav'
+    }));
+    assert.equal(listTracks(db).length, 2);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM soundcloud_metric_snapshots').get().n, 2);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM track_merge_aliases').get().n, 0);
+    assert.equal(db.prepare('PRAGMA foreign_key_check').all().length, 0);
+  } finally {
+    db.close();
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('bloquea una fusión cuando una tabla futura depende de la pista retirada', () => {
+  const directory = mkdtempSync(resolve(tmpdir(), 'blackmamba-track-merge-unknown-'));
+  const db = openDatabase(resolve(directory, 'test.sqlite'));
+  try {
+    upsertLocalTrack(db, { title: 'Local', localPath: '/music/unknown.wav' });
+    const suno = upsertSunoTrack(db, { id: 'track-merge-003', title: 'Suno' });
+    db.exec('CREATE TABLE future_release_jobs (id INTEGER PRIMARY KEY, track_id INTEGER REFERENCES tracks(id) ON DELETE CASCADE)');
+    db.prepare('INSERT INTO future_release_jobs (track_id) VALUES (?)').run(suno.id);
+    assert.throws(() => attachLocalPathToSunoTrack(db, {
+      sunoId: 'track-merge-003', localPath: '/music/unknown.wav'
+    }), /Conciliación bloqueada/);
+    assert.equal(listTracks(db).length, 2);
+    assert.equal(db.prepare('SELECT track_id FROM future_release_jobs').get().track_id, suno.id);
+  } finally {
+    db.close();
     rmSync(directory, { recursive: true, force: true });
   }
 });

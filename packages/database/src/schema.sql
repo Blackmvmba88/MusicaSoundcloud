@@ -62,16 +62,9 @@ CREATE INDEX IF NOT EXISTS content_status_observed_idx
 CREATE INDEX IF NOT EXISTS content_source_kind_idx
   ON content_items(source, kind);
 
--- Si Downloads descubre primero un archivo y luego Suno/u otra fuente reclama esa misma ruta,
--- la identidad remota gana y la observación local redundante se fusiona antes del UNIQUE check.
-CREATE TRIGGER IF NOT EXISTS content_merge_local_path_before_update
-BEFORE UPDATE OF local_path ON content_items
-WHEN NEW.local_path IS NOT NULL
-BEGIN
-  DELETE FROM content_items
-  WHERE local_path = NEW.local_path
-    AND id <> OLD.id;
-END;
+-- La fusión destructiva anterior podía ejecutar CASCADE sobre relaciones futuras.
+-- El procedimiento transaccional de db.mjs conserva alias y bloquea dependencias desconocidas.
+DROP TRIGGER IF EXISTS content_merge_local_path_before_update;
 
 CREATE TABLE IF NOT EXISTS artwork_jobs (
   id INTEGER PRIMARY KEY,
@@ -101,3 +94,25 @@ CREATE INDEX IF NOT EXISTS soundcloud_metric_snapshots_track_idx
   ON soundcloud_metric_snapshots(track_id, captured_at);
 CREATE INDEX IF NOT EXISTS soundcloud_metric_snapshots_captured_idx
   ON soundcloud_metric_snapshots(captured_at);
+
+-- Auditoría de conciliación: no depende del registro retirado (que deja de existir).
+-- El ID canónico se protege contra borrados que invaliden el historial.
+CREATE TABLE IF NOT EXISTS track_merge_aliases (
+  retired_track_id INTEGER PRIMARY KEY,
+  canonical_track_id INTEGER NOT NULL REFERENCES tracks(id) ON DELETE RESTRICT,
+  retired_snapshot_json TEXT NOT NULL,
+  merged_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CHECK (retired_track_id <> canonical_track_id)
+);
+CREATE INDEX IF NOT EXISTS track_merge_aliases_canonical_idx
+  ON track_merge_aliases(canonical_track_id);
+
+CREATE TABLE IF NOT EXISTS content_merge_aliases (
+  retired_content_id INTEGER PRIMARY KEY,
+  canonical_content_id INTEGER NOT NULL REFERENCES content_items(id) ON DELETE RESTRICT,
+  retired_snapshot_json TEXT NOT NULL,
+  merged_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CHECK (retired_content_id <> canonical_content_id)
+);
+CREATE INDEX IF NOT EXISTS content_merge_aliases_canonical_idx
+  ON content_merge_aliases(canonical_content_id);

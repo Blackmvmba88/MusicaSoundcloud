@@ -23,6 +23,15 @@ export function openDatabase(databasePath = defaultDatabasePath) {
   try {
     db.exec(readFileSync(resolve(here, 'schema.sql'), 'utf8'));
     migrateTracks(db);
+    db.exec('SAVEPOINT release_schema_migration');
+    try {
+      db.exec(readFileSync(resolve(here, 'release-schema.sql'), 'utf8'));
+      db.exec('RELEASE SAVEPOINT release_schema_migration');
+    } catch (error) {
+      db.exec('ROLLBACK TO SAVEPOINT release_schema_migration');
+      db.exec('RELEASE SAVEPOINT release_schema_migration');
+      throw error;
+    }
     return db;
   } catch (error) {
     db.close();
@@ -114,6 +123,21 @@ export function getContentStats(db) {
   };
 }
 
+function assertNoUnmanagedContentRelations(db, retiredContentId) {
+  const tables = db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all();
+  for (const { name } of tables) {
+    if (name === 'content_merge_aliases') continue;
+    const quotedTable = '"' + name.replaceAll('"', '""') + '"';
+    for (const foreignKey of db.prepare(`PRAGMA foreign_key_list(${quotedTable})`).all()) {
+      if (foreignKey.table !== 'content_items') continue;
+      const quotedColumn = '"' + foreignKey.from.replaceAll('"', '""') + '"';
+      if (db.prepare(`SELECT 1 FROM ${quotedTable} WHERE ${quotedColumn} = ? LIMIT 1`).get(retiredContentId)) {
+        throw new Error(`Conciliación bloqueada: ${name}.${foreignKey.from} conserva relaciones con content ${retiredContentId}`);
+      }
+    }
+  }
+}
+
 export function upsertContentEvent(db, event) {
   const source = clean(event.source || 'unknown', 80).toLowerCase().replace(/[^a-z0-9._-]+/g, '-') || 'unknown';
   const externalId = clean(event.externalId || event.external_id, 256) || null;
@@ -133,26 +157,55 @@ export function upsertContentEvent(db, event) {
   if (!existing && localPath) existing = db.prepare('SELECT * FROM content_items WHERE local_path = ?').get(localPath);
 
   if (existing) {
-    const firstObservedAt = existing.observed_at && existing.observed_at < observedAt ? existing.observed_at : observedAt;
-    db.prepare(`
-      UPDATE content_items
-      SET external_id = COALESCE(external_id, ?),
-          kind = ?,
-          title = COALESCE(?, title),
-          source_url = COALESCE(?, source_url),
-          local_path = COALESCE(?, local_path),
-          mime_type = COALESCE(?, mime_type),
-          bytes = COALESCE(?, bytes),
-          status = CASE
-            WHEN status IN ('published', 'archived') THEN status
-            WHEN ? = 'local' OR local_path IS NOT NULL OR ? IS NOT NULL THEN 'local'
-            ELSE ?
-          END,
-          observed_at = ?,
-          metadata_json = ?,
-          updated_at = CURRENT_TIMESTAMP
-      WHERE id = ?
-    `).run(externalId, kind, title, sourceUrl, localPath, mimeType, bytes, status, localPath, status, firstObservedAt, metadataJson, existing.id);
+    // SAVEPOINT admite llamadas desde una transacción externa y evita fusiones a medias.
+    db.exec('SAVEPOINT content_item_merge');
+    try {
+      if (localPath) {
+        const conflict = db.prepare('SELECT * FROM content_items WHERE local_path = ? AND id <> ?')
+          .get(localPath, existing.id);
+        if (conflict) {
+          const localObservation = ['filesystem', 'downloads', 'download'].includes(conflict.source) || !conflict.external_id;
+          if (!localObservation) {
+            throw new Error('Conciliación bloqueada: dos identidades remotas reclaman la misma ruta');
+          }
+          assertNoUnmanagedContentRelations(db, conflict.id);
+          db.prepare('UPDATE content_merge_aliases SET canonical_content_id = ? WHERE canonical_content_id = ?')
+            .run(existing.id, conflict.id);
+          db.prepare(`
+            INSERT INTO content_merge_aliases (retired_content_id, canonical_content_id, retired_snapshot_json)
+            VALUES (?, ?, ?)
+          `).run(conflict.id, existing.id, JSON.stringify(conflict));
+          db.prepare('DELETE FROM content_items WHERE id = ?').run(conflict.id);
+        }
+      }
+
+      const firstObservedAt = existing.observed_at && existing.observed_at < observedAt ? existing.observed_at : observedAt;
+      db.prepare(`
+        UPDATE content_items
+        SET external_id = COALESCE(external_id, ?),
+            kind = ?,
+            title = COALESCE(?, title),
+            source_url = COALESCE(?, source_url),
+            local_path = COALESCE(?, local_path),
+            mime_type = COALESCE(?, mime_type),
+            bytes = COALESCE(?, bytes),
+            status = CASE
+              WHEN status IN ('published', 'archived') THEN status
+              WHEN ? = 'local' OR local_path IS NOT NULL OR ? IS NOT NULL THEN 'local'
+              ELSE ?
+            END,
+            observed_at = ?,
+            metadata_json = ?,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `).run(externalId, kind, title, sourceUrl, localPath, mimeType, bytes,
+        status, localPath, status, firstObservedAt, metadataJson, existing.id);
+      db.exec('RELEASE SAVEPOINT content_item_merge');
+    } catch (error) {
+      db.exec('ROLLBACK TO SAVEPOINT content_item_merge');
+      db.exec('RELEASE SAVEPOINT content_item_merge');
+      throw error;
+    }
     return db.prepare('SELECT * FROM content_items WHERE id = ?').get(existing.id);
   }
 
@@ -237,6 +290,25 @@ export function upsertSunoTrack(db, track) {
   return db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(sunoId);
 }
 
+// Nunca permitir que la conciliación borre relaciones de futuras tablas por CASCADE.
+// Las relaciones que conocemos se transfieren explícitamente dentro de la transacción.
+function assertNoUnmanagedTrackRelations(db, retiredTrackId) {
+  const handledTables = new Set(['artwork_jobs', 'soundcloud_metric_snapshots', 'track_merge_aliases', 'release_jobs']);
+  const tables = db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all();
+  for (const { name } of tables) {
+    if (handledTables.has(name)) continue;
+    const quotedTable = '"' + name.replaceAll('"', '""') + '"';
+    const foreignKeys = db.prepare(`PRAGMA foreign_key_list(${quotedTable})`).all();
+    for (const foreignKey of foreignKeys) {
+      if (foreignKey.table !== 'tracks') continue;
+      // FKs compuestas no se consideran transferibles automáticamente.
+      const column = '"' + foreignKey.from.replaceAll('"', '""') + '"';
+      const linked = db.prepare(`SELECT 1 FROM ${quotedTable} WHERE ${column} = ? LIMIT 1`).get(retiredTrackId);
+      if (linked) throw new Error(`Conciliación bloqueada: ${name}.${foreignKey.from} conserva relaciones con track ${retiredTrackId}`);
+    }
+  }
+}
+
 export function attachLocalPathToSunoTrack(db, { sunoId, localPath, title, artist = 'Iyari Gomez' }) {
   const normalizedId = String(sunoId);
   let existing = db.prepare('SELECT * FROM tracks WHERE suno_id = ?').get(normalizedId);
@@ -250,14 +322,41 @@ export function attachLocalPathToSunoTrack(db, { sunoId, localPath, title, artis
   if (pathTrack && pathTrack.id !== existing.id) {
     db.exec('BEGIN IMMEDIATE');
     try {
+      // Un mismo archivo no puede representar dos identidades Suno distintas.
+      if (pathTrack.suno_id && pathTrack.suno_id !== normalizedId) {
+        throw new Error('Conciliación bloqueada: la ruta ya pertenece a otro ID Suno');
+      }
+      if (pathTrack.soundcloud_id && existing.soundcloud_id && pathTrack.soundcloud_id !== existing.soundcloud_id) {
+        throw new Error('Conciliación bloqueada: SoundCloud tiene identidades incompatibles');
+      }
+      assertNoUnmanagedTrackRelations(db, existing.id);
+
+      // Transferir los dependientes ANTES de retirar el registro redundante.
+      // Si hay colisión de snapshots (track_id, captured_at), SQLite revierte
+      // toda la operación en lugar de perder datos silenciosamente.
+      db.prepare('UPDATE artwork_jobs SET track_id = ? WHERE track_id = ?').run(pathTrack.id, existing.id);
+      db.prepare('UPDATE soundcloud_metric_snapshots SET track_id = ? WHERE track_id = ?').run(pathTrack.id, existing.id);
+      // La identidad del trabajo permanece: sólo cambia su pista canónica.
+      db.prepare('UPDATE release_jobs SET track_id = ?, updated_at = CURRENT_TIMESTAMP WHERE track_id = ?').run(pathTrack.id, existing.id);
+      db.prepare('UPDATE track_merge_aliases SET canonical_track_id = ? WHERE canonical_track_id = ?').run(pathTrack.id, existing.id);
+      db.prepare(`
+        INSERT INTO track_merge_aliases (retired_track_id, canonical_track_id, retired_snapshot_json)
+        VALUES (?, ?, ?)
+      `).run(existing.id, pathTrack.id, JSON.stringify(existing));
+
       db.prepare('DELETE FROM tracks WHERE id = ?').run(existing.id);
       db.prepare(`
         UPDATE tracks
         SET suno_id = ?, suno_url = ?, suno_snapshot = ?, suno_observed_at = ?,
+            soundcloud_id = COALESCE(soundcloud_id, ?),
+            soundcloud_url = COALESCE(soundcloud_url, ?),
             title = COALESCE(NULLIF(?, ''), title), artist = COALESCE(NULLIF(?, ''), artist),
+            sync_status = CASE WHEN COALESCE(soundcloud_id, ?) IS NOT NULL THEN 'linked' ELSE 'local' END,
             updated_at = CURRENT_TIMESTAMP
         WHERE id = ?
-      `).run(normalizedId, existing.suno_url, existing.suno_snapshot, existing.suno_observed_at, title || '', artist || '', pathTrack.id);
+      `).run(normalizedId, existing.suno_url, existing.suno_snapshot, existing.suno_observed_at,
+        existing.soundcloud_id, existing.soundcloud_url, title || '', artist || '',
+        existing.soundcloud_id, pathTrack.id);
       db.exec('COMMIT');
     } catch (error) {
       db.exec('ROLLBACK');

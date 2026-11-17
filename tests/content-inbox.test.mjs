@@ -87,6 +87,11 @@ test('fusiona observación del filesystem cuando una fuente remota reclama la mi
   assert.equal(merged.source, 'suno');
   assert.equal(merged.local_path, path);
   assert.equal(getContentStats(db).total, 1);
+  const audit = db.prepare('SELECT * FROM content_merge_aliases').get();
+  assert.ok(audit);
+  assert.equal(audit.canonical_content_id, merged.id);
+  assert.equal(JSON.parse(audit.retired_snapshot_json).source, 'filesystem');
+  assert.equal(db.prepare('PRAGMA foreign_key_check').all().length, 0);
 
   db.close();
   rmSync(directory, { recursive: true, force: true });
@@ -107,4 +112,31 @@ test('Suno alimenta también el inbox genérico antes del WAV', () => {
 
   db.close();
   rmSync(directory, { recursive: true, force: true });
+});
+
+test('content inbox bloquea una fusión con dependencias futuras y conserva ambos registros', () => {
+  const directory = mkdtempSync(resolve(tmpdir(), 'blackmamba-content-guard-'));
+  const db = openDatabase(resolve(directory, 'test.sqlite'));
+  try {
+    const path = resolve(directory, 'guard.wav');
+    const local = upsertContentEvent(db, {
+      source: 'filesystem', externalId: 'fs:guard', kind: 'audio', localPath: path
+    });
+    upsertContentEvent(db, {
+      source: 'suno', externalId: 'song-guard-001', kind: 'audio'
+    });
+    db.exec('CREATE TABLE future_content_jobs (id INTEGER PRIMARY KEY, content_id INTEGER REFERENCES content_items(id) ON DELETE CASCADE)');
+    db.prepare('INSERT INTO future_content_jobs (content_id) VALUES (?)').run(local.id);
+
+    assert.throws(() => attachContentLocalPath(db, {
+      source: 'suno', externalId: 'song-guard-001', localPath: path, kind: 'audio'
+    }), /Conciliación bloqueada/);
+    assert.equal(getContentStats(db).total, 2);
+    assert.equal(db.prepare('SELECT content_id FROM future_content_jobs').get().content_id, local.id);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM content_merge_aliases').get().n, 0);
+    assert.equal(db.prepare('PRAGMA foreign_key_check').all().length, 0);
+  } finally {
+    db.close();
+    rmSync(directory, { recursive: true, force: true });
+  }
 });
