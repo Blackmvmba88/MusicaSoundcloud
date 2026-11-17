@@ -136,6 +136,23 @@ La única colección maestra de audio aceptada actualmente es:
 - Las portadas aprobadas pueden versionarse cuando forman parte del sistema creativo.
 - SQLite y reportes operativos permanecen locales salvo decisión explícita.
 
+## Vigilante persistente con Docker (rama experimental)
+
+La modalidad de servidor externo vigila archivos WAV, fichas Suno y trabajos de entrega
+con una SQLite persistente, sin exponer puertos ni publicar audio automáticamente.
+Requiere el orquestador de PR #9, host encendido y biblioteca/snapshot sincronizados.
+Si sólo está disponible un snapshot antiguo, el servicio no conoce canciones nuevas
+hasta que se actualice la fuente.
+
+```sh
+cp .env.worker.example .env.worker
+docker compose --env-file .env.worker -f compose.worker.yml up -d --build
+docker compose --env-file .env.worker -f compose.worker.yml exec release-worker \
+  node scripts/release-worker-status.mjs
+```
+
+Procedimiento, seguridad y limitaciones: [RELEASE_WORKER](docs/RELEASE_WORKER.md).
+
 ## Seguridad
 
 - No se guardan tokens en Git.
