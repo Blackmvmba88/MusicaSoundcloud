@@ -18,12 +18,14 @@ services:
       WORKER_MEDIA_ROOT: /music
       WORKER_SOURCE_AUDIO_PREFIX: ${WORKER_SOURCE_AUDIO_PREFIX:-/Volumes/ADATA SC740/MÚSICA/WAV_MASTER}
       WORKER_SUNO_CATALOG: /catalog/suno-library.json
+      WORKER_SUNO_LINKS: /links/suno-links.json
       WORKER_INTERVAL_SECONDS: ${WORKER_INTERVAL_SECONDS:-60}
       WORKER_BATCH_SIZE: ${WORKER_BATCH_SIZE:-500}
     volumes:
       - release_worker_storage:/workspace/storage
       - ${WORKER_MEDIA_DIR:-./media}:/music:ro
       - ${WORKER_CATALOG_FILE:-./apps/player/suno-library-enriched.json}:/catalog/suno-library.json:ro
+      - ${WORKER_SUNO_LINKS_FILE:-./inbox/suno-links.json}:/links/suno-links.json:ro
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=64m
     stop_grace_period: 30s

@@ -205,3 +205,20 @@ docker run --rm blackmamba-music-ci
 ```
 
 La imagen valida el código y el reproductor web. No contiene credenciales, audio maestro ni checkpoints.
+
+
+## Entradas redundantes: Descargas y enlaces Suno (rama experimental)
+
+Además del escaneo Docker de WAV, un agente macOS detecta nuevas descargas con
+eventos de carpeta y reconciliación periódica. Los WAV estables se agregan al
+directorio de medios, sin borrar originales ni publicarlos. MP3/M4A/FLAC quedan
+en una cola pendiente de conversión, no se anuncian como WAV aprobados.
+
+También se aceptan enlaces https de Suno enviados por el usuario. El inbox
+[inbox/suno-links.json](inbox/suno-links.json) se importa a la misma SQLite como
+referencia, sin asumir que el token de /s/ sea el ID real de la canción.
+
+Documentación operativa: [DOWNLOAD_WATCHER](docs/DOWNLOAD_WATCHER.md).
+Verificaciones aisladas: node --test tests/download-ingest-agent.test.mjs
+y node --test tests/suno-link-intake.test.mjs.
+Pendiente integración con las migraciones y el worker de los PR #7-#10.

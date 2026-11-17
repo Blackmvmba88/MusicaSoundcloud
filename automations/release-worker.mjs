@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { openDatabase, upsertSunoTrack } from '../packages/database/src/db.mjs';
 import { validateTrackPackage } from '../packages/pipeline/src/validate-track-package.mjs';
 import { discoverLocalMedia } from './worker-media-discovery.mjs';
+import { importSunoLinks } from './suno-link-intake.mjs';
 
 const PROJECT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const STORAGE = resolve(PROJECT, 'storage');
@@ -89,6 +90,7 @@ function readConfig() {
     media,
     sourcePrefix,
     catalog: resolve(process.env.WORKER_SUNO_CATALOG || DEFAULT_CATALOG),
+    links: resolve(process.env.WORKER_SUNO_LINKS || join(PROJECT, 'inbox/suno-links.json')),
   };
 }
 
@@ -113,11 +115,24 @@ async function safeFile(path, config) {
   } catch { return false; }
 }
 
-async function validateTrack(track, config) {
-  if (!track.local_path) return planRelease({ hasAudio: false });
-  const audioPath = mapMediaPath(track.local_path, config);
-  if (!await safeFile(audioPath, config)) return planRelease({
-    hasAudio: false, diagnostic: 'La ruta local no está montada o el WAV no es accesible en /music',
+async function validateTrack(db, track, config) {
+  let audioPath = track.local_path ? mapMediaPath(track.local_path, config) : null;
+  let readable = await safeFile(audioPath, config);
+  if (!readable && track.suno_id) {
+    // The catalog may preserve an original Mac path while the downloaded copy
+    // has a content-addressed filename. Use a verified alias, never rewrite history.
+    const aliases = db.prepare('SELECT media_path FROM release_worker_media_aliases WHERE suno_id = ? ORDER BY last_seen_at DESC, media_path').all(track.suno_id);
+    for (const alias of aliases) {
+      const candidate = mapMediaPath(alias.media_path, config);
+      if (await safeFile(candidate, config)) {
+        audioPath = candidate;
+        readable = true;
+        break;
+      }
+    }
+  }
+  if (!readable) return planRelease({
+    hasAudio: false, diagnostic: 'La ruta local no está montada ni hay WAV alternativo comprobado en /music',
   });
   let sidecar;
   try {
@@ -225,16 +240,17 @@ export async function scanOnce(db, config) {
   initWorker(db);
   const catalog = await importCatalog(db, config.catalog);
   const mediaScan = await discoverLocalMedia(db, config);
+  const linkIntake = await importSunoLinks(db, config.links || join(PROJECT, 'inbox/suno-links.json'));
   let cursor = db.prepare('SELECT last_track_id FROM release_worker_runtime WHERE id = 1').get().last_track_id;
   const query = db.prepare(`SELECT * FROM tracks
     WHERE id > ? AND soundcloud_id IS NULL AND (suno_id IS NOT NULL OR local_path IS NOT NULL)
     ORDER BY id LIMIT ?`);
   let tracks = query.all(cursor, config.batch);
   if (!tracks.length && cursor !== 0) { cursor = 0; tracks = query.all(cursor, config.batch); }
-  const totals = { examined: tracks.length, changed: 0, protected: 0, errors: 0, cursor, catalog, mediaScan };
+  const totals = { examined: tracks.length, changed: 0, protected: 0, errors: 0, cursor, catalog, mediaScan, linkIntake };
   for (const track of tracks) {
     try {
-      const plan = await validateTrack(track, config);
+      const plan = await validateTrack(db, track, config);
       const result = persistReleasePlan(db, track, plan);
       if (result.changed) totals.changed++;
       if (result.protected) totals.protected++;
