@@ -5,6 +5,7 @@ import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { parseSunoLink, importSunoLinks } from '../automations/suno-link-intake.mjs';
+import { openDatabase, upsertSunoTrack, upsertLocalTrack, attachLocalPathToSunoTrack } from '../packages/database/src/db.mjs';
 
 async function isolated(fn) {
   const root = await mkdtemp(join(tmpdir(), 'bm-suno-links-'));
@@ -66,3 +67,32 @@ test('malformed inbox throws before writing any entry', async () => isolated(asy
   await assert.rejects(() => importSunoLinks(db,file));
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sqlite_master WHERE type='table' AND name='release_source_links'").get().n,0);
 }));
+
+test('merging a Suno track with previously imported WAV preserves URL provenance and foreign keys', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'bm-suno-merge-'));
+  const db = openDatabase(join(root, 'music.sqlite'));
+  const sunoId = 'aabbccdd-1234-4444-9999-abcdef123456';
+  const localPath = join(root, 'my-song.wav');
+  const inbox = join(root, 'suno-links.json');
+  try {
+    const canonical = upsertSunoTrack(db, { id: sunoId, title: 'My Song', artist: 'Iyari Gomez' });
+    await writeFile(inbox, JSON.stringify({ version: 1, links: [
+      'https://suno.com/song/' + sunoId
+    ] }));
+    assert.equal((await importSunoLinks(db, inbox)).linked, 1);
+    assert.equal(db.prepare('SELECT track_id FROM release_source_links').get().track_id, canonical.id);
+
+    const local = upsertLocalTrack(db, { title: 'My Song', localPath, artist: 'Iyari Gomez' });
+    assert.notEqual(canonical.id, local.id);
+    const merged = attachLocalPathToSunoTrack(db, { sunoId, localPath, title: 'My Song' });
+    assert.equal(merged.id, local.id);
+    assert.equal(db.prepare('SELECT track_id FROM release_source_links').get().track_id, local.id);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks WHERE suno_id = ?').get(sunoId).n, 1);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM track_merge_aliases WHERE retired_track_id = ?').get(canonical.id).n, 1);
+    assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
+    assert.equal((await importSunoLinks(db, inbox)).pending, 0);
+  } finally {
+    db.close();
+    await rm(root, { recursive: true, force: true });
+  }
+});
