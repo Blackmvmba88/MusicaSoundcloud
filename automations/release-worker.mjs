@@ -57,6 +57,7 @@ function healthcheck() {
     const heartbeat = JSON.parse(readFileSync(HEALTH_FILE, 'utf8'));
     const interval = numberEnv('WORKER_INTERVAL_SECONDS', 300, 10, 86400);
     const age = Date.now() - Date.parse(heartbeat.at);
+    if (heartbeat.status === 'error') throw new Error('último ciclo falló');
     if (!Number.isFinite(age) || age < 0 || age > interval * 3000 + 60000) throw new Error('heartbeat vencido');
     process.stdout.write(JSON.stringify({ ok: true, at: heartbeat.at }) + '\n');
   } catch (error) {
