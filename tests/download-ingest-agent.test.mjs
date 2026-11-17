@@ -105,3 +105,28 @@ test('symlinks and unrelated files remain untouched', async () => fixture(async 
   assert.equal(report.examined, 0);
   assert.equal((await readdir(cfg.media)).length, 0);
 }));
+
+test('same WAV bytes with distinct Suno IDs must enter a durable conflict, not silently merge', async () =>
+  fixture(async cfg => {
+    const first = join(cfg.downloads, 'first.wav');
+    const second = join(cfg.downloads, 'second.wav');
+    await writeFile(first, wav);
+    await writeFile(second, wav);
+    const firstMeta = { id: 'aaaaaaaa-1111-4444-8888-123456789abc', title: 'Release A' };
+    const secondMeta = { id: 'bbbbbbbb-2222-4444-8888-123456789abc', title: 'Release B' };
+    await writeFile(first + '.suno.json', JSON.stringify(firstMeta));
+    await writeFile(second + '.suno.json', JSON.stringify(secondMeta));
+    const now = Date.now();
+    await scanDownloadsOnce(cfg, now);
+    const result = await scanDownloadsOnce(cfg, now + 1200);
+    assert.equal(result.staged, 1);
+    assert.equal(result.conflicts, 1);
+    const journal = JSON.parse(await readFile(cfg.statePath, 'utf8'));
+    assert.equal(journal.files[second].status, 'metadata-conflict');
+    assert.match(journal.files[second].conflictReason, /IDs distintos/);
+    const wavNames = (await readdir(cfg.media)).filter(name => name.endsWith('.wav'));
+    assert.equal(wavNames.length, 1);
+    assert.deepEqual(JSON.parse(await readFile(join(cfg.media, wavNames[0] + '.suno.json'), 'utf8')), firstMeta);
+    assert.deepEqual(JSON.parse(await readFile(second + '.suno.json', 'utf8')), secondMeta);
+  })
+);
