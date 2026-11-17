@@ -13,6 +13,7 @@ import { validateTrackPackage } from '../packages/pipeline/src/validate-track-pa
 import { discoverLocalMedia } from './worker-media-discovery.mjs';
 import { importSunoLinks } from './suno-link-intake.mjs';
 import { resolveSidecarSunoId } from './sidecar-identity.mjs';
+import { summarizeWorkerScan, checkWorkerHeartbeat } from './worker-health.mjs';
 
 const PROJECT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const STORAGE = resolve(PROJECT, 'storage');
@@ -58,10 +59,8 @@ function healthcheck() {
   try {
     const heartbeat = JSON.parse(readFileSync(HEALTH_FILE, 'utf8'));
     const interval = numberEnv('WORKER_INTERVAL_SECONDS', 60, 10, 86400);
-    const age = Date.now() - Date.parse(heartbeat.at);
-    if (heartbeat.status === 'error') throw new Error('último ciclo falló');
-    if (!Number.isFinite(age) || age < 0 || age > interval * 3000 + 60000) throw new Error('heartbeat vencido');
-    process.stdout.write(JSON.stringify({ ok: true, at: heartbeat.at }) + '\n');
+    const result = checkWorkerHeartbeat(heartbeat, interval);
+    process.stdout.write(JSON.stringify(result) + '\n');
   } catch (error) {
     process.stderr.write(`worker unhealthy: ${error.message}\n`);
     process.exitCode = 1;
@@ -272,11 +271,15 @@ export async function scanOnce(db, config) {
     }
   }
   const nextCursor = tracks.length ? tracks[tracks.length - 1].id : 0;
+  const outcome = summarizeWorkerScan({ mediaScan, trackErrors: totals.errors });
+  Object.assign(totals, outcome);
   db.prepare(`UPDATE release_worker_runtime SET
-    last_track_id = ?, last_success_at = CURRENT_TIMESTAMP, last_error = ?
-    WHERE id = 1`).run(nextCursor, totals.errors ? `${totals.errors} track(s) fallaron` : null);
+    last_track_id = ?,
+    last_success_at = CASE WHEN ? = 0 THEN CURRENT_TIMESTAMP ELSE last_success_at END,
+    last_error = ?
+    WHERE id = 1`).run(nextCursor, totals.errors, totals.errorMessage);
   totals.cursor = nextCursor;
-  setHealth({ status: totals.errors ? 'partial' : 'ok', ...totals });
+  setHealth(totals);
   return totals;
 }
 
@@ -293,6 +296,7 @@ async function main() {
       try {
         const report = await scanOnce(db, config);
         process.stdout.write(JSON.stringify({ event: 'release-scan', ...report }) + '\n');
+        if (process.argv.includes('--once') && report.status !== 'ok') process.exitCode = 1;
       } catch (error) {
         setHealth({ status: 'error', message: error.message });
         process.stderr.write(JSON.stringify({ event: 'cycle-error', message: error.message }) + '\n');
