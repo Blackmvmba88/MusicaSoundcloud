@@ -3,7 +3,7 @@ WORKDIR /workspace
 
 # Sin dependencias de producción externas: SQLite nativa de Node 24.
 COPY --chown=node:node . .
-RUN mkdir -p /workspace/storage/database /workspace/storage/sync /music /catalog \
+RUN mkdir -p /workspace/storage/database /workspace/storage/sync /music /catalog /links \
     && chown -R node:node /workspace/storage
 
 ENV NODE_ENV=production \
