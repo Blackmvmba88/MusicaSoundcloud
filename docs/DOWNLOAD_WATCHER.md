@@ -76,3 +76,22 @@ completo sigue condicionado a integrar y probar en orden los PR #7, #8, #9 y #10
 
 **Pendiente:** canario de descarga real en macOS, validación de LaunchAgent,
 integración Node 24 / SQLite y Docker, y conversión de formatos no WAV.
+
+
+## URL como tercera entrada (Suno)
+También se reciben URLs como https://suno.com/s/heo74Dpr07HTwQhP.
+Cuando el usuario manda un enlace, agregarlo una sola vez a
+inbox/suno-links.json (version 1, links con atributo url). El archivo se monta
+en Docker de solo lectura vía WORKER_SUNO_LINKS_FILE y el worker lo importa
+en release_source_links dentro de la MISMA SQLite, sin catálogo paralelo.
+
+Los enlaces /s/<token> son enlaces de compartición, **no IDs confirmados de
+canción**. Su estado permanece awaiting_identity hasta que haya una
+correspondencia fiable en tracks.suno_url; /song/<id> sí contiene un ID de
+canción, pero no aporta por sí solo WAV, portada ni autorización de publicar.
+
+El inbox local vinculado al host permite nuevos enlaces sin reconstruir la
+imagen Docker. Si llegan por el repositorio remoto, el host debe traer las
+actualizaciones a la carpeta montada; el servicio no sincroniza GitHub solo.
+No se scrapea la página de Suno y no se descargan archivos automáticamente.
+Prueba aislada: node --test tests/suno-link-intake.test.mjs
