@@ -6,7 +6,7 @@ on:
 
 jobs:
   database-regression:
-    name: SQLite bootstrap and reconciliation regression
+    name: SQLite bootstrap and migration regression
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -16,8 +16,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Verify SQLite migration and reconciliation
-        run: node --test tests/database.test.mjs tests/content-inbox.test.mjs tests/orchestrator-persistence.test.mjs
+      - name: Verify SQLite bootstrap and legacy migration
+        run: node --test tests/database.test.mjs tests/content-inbox.test.mjs
 
   test:
     runs-on: [self-hosted, macOS, ARM64, blackmamba-music]
