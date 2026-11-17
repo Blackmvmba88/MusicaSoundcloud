@@ -55,7 +55,7 @@ function setHealth(info) {
 function healthcheck() {
   try {
     const heartbeat = JSON.parse(readFileSync(HEALTH_FILE, 'utf8'));
-    const interval = numberEnv('WORKER_INTERVAL_SECONDS', 300, 10, 86400);
+    const interval = numberEnv('WORKER_INTERVAL_SECONDS', 60, 10, 86400);
     const age = Date.now() - Date.parse(heartbeat.at);
     if (heartbeat.status === 'error') throw new Error('último ciclo falló');
     if (!Number.isFinite(age) || age < 0 || age > interval * 3000 + 60000) throw new Error('heartbeat vencido');
@@ -84,8 +84,8 @@ function readConfig() {
   const media = resolve(process.env.WORKER_MEDIA_ROOT || '/music');
   const sourcePrefix = process.env.WORKER_SOURCE_AUDIO_PREFIX || '/Volumes/ADATA SC740/MÚSICA/WAV_MASTER';
   return {
-    interval: numberEnv('WORKER_INTERVAL_SECONDS', 300, 10, 86400),
-    batch: numberEnv('WORKER_BATCH_SIZE', 100, 1, 2000),
+    interval: numberEnv('WORKER_INTERVAL_SECONDS', 60, 10, 86400),
+    batch: numberEnv('WORKER_BATCH_SIZE', 500, 1, 2000),
     media,
     sourcePrefix,
     catalog: resolve(process.env.WORKER_SUNO_CATALOG || DEFAULT_CATALOG),
