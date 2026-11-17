@@ -5,6 +5,20 @@ on:
   workflow_dispatch:
 
 jobs:
+  database-regression:
+    name: SQLite bootstrap and reconciliation regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify SQLite migration and reconciliation
+        run: node --test tests/database.test.mjs tests/content-inbox.test.mjs
+
   test:
     runs-on: [self-hosted, macOS, ARM64, blackmamba-music]
     timeout-minutes: 15
