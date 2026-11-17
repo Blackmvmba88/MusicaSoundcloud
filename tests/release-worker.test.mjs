@@ -81,7 +81,7 @@ test('WAV y ficha se descubren; se guardan en SQLite y sobreviven un reinicio', 
     assert.equal(first.errors, 0);
     assert.equal(db.prepare('SELECT state FROM release_jobs').get().state, 'ready_for_review');
     assert.equal(db.prepare('SELECT readiness FROM release_jobs').get().readiness, 'complete');
-    db.close(); db = openDatabase(dbpath);
+    db.close(); db = null; db = openDatabase(dbpath);
     await scanOnce(db, config);
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks').get().n, 1);
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM release_jobs').get().n, 1);
