@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '24'
       - name: Verify SQLite migration and reconciliation
-        run: node --test tests/database.test.mjs tests/content-inbox.test.mjs
+        run: node --test tests/database.test.mjs tests/content-inbox.test.mjs tests/orchestrator-persistence.test.mjs
 
   test:
     runs-on: [self-hosted, macOS, ARM64, blackmamba-music]
