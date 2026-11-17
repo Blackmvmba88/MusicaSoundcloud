@@ -18,8 +18,8 @@ services:
       WORKER_MEDIA_ROOT: /music
       WORKER_SOURCE_AUDIO_PREFIX: ${WORKER_SOURCE_AUDIO_PREFIX:-/Volumes/ADATA SC740/MÚSICA/WAV_MASTER}
       WORKER_SUNO_CATALOG: /catalog/suno-library.json
-      WORKER_INTERVAL_SECONDS: ${WORKER_INTERVAL_SECONDS:-300}
-      WORKER_BATCH_SIZE: ${WORKER_BATCH_SIZE:-100}
+      WORKER_INTERVAL_SECONDS: ${WORKER_INTERVAL_SECONDS:-60}
+      WORKER_BATCH_SIZE: ${WORKER_BATCH_SIZE:-500}
     volumes:
       - release_worker_storage:/workspace/storage
       - ${WORKER_MEDIA_DIR:-./media}:/music:ro
