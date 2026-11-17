@@ -6,6 +6,7 @@ import { loadEnvFile } from 'node:process';
 import { attachLocalPathToSunoTrack, openDatabase } from '../packages/database/src/db.mjs';
 import { SoundCloudClient } from '../packages/soundcloud/src/client.mjs';
 import { validateTrackPackage } from '../packages/pipeline/src/validate-track-package.mjs';
+import { existingUpload, markUploadPending, markUploadUncertain, validateUploadState } from '../packages/pipeline/src/private-upload-state.mjs';
 
 if (existsSync('.env')) loadEnvFile('.env');
 
@@ -16,7 +17,7 @@ const includeExisting = argv.has('--include-existing');
 const fileArg = process.argv.find((value) => value.startsWith('--file='))?.slice(7);
 const root = resolve(process.env.BLACKMAMBA_WAV_MASTER || '/Volumes/ADATA SC740/MÚSICA/WAV_MASTER');
 const statePath = resolve('storage/sync/suno-private-upload.json');
-const database = openDatabase();
+const database = apply ? openDatabase() : null;
 
 if (process.env.SOUNDCLOUD_AUTO_SHARING && process.env.SOUNDCLOUD_AUTO_SHARING !== 'private') {
   throw new Error('Regla rechazada: SOUNDCLOUD_AUTO_SHARING debe ser private');
@@ -24,8 +25,11 @@ if (process.env.SOUNDCLOUD_AUTO_SHARING && process.env.SOUNDCLOUD_AUTO_SHARING !
 
 const emptyState = () => ({ version: 1, rule: 'private-only', baselineCreatedAt: null, files: {} });
 const loadState = () => {
-  try { return { ...emptyState(), ...JSON.parse(readFileSync(statePath, 'utf8')) }; }
-  catch { return emptyState(); }
+  try { return validateUploadState(JSON.parse(readFileSync(statePath, 'utf8'))); }
+  catch (error) {
+    if (error?.code === 'ENOENT') return emptyState();
+    throw new Error('Checkpoint de subida ilegible; deteniendo para evitar duplicados', { cause: error });
+  }
 };
 const saveState = async (state) => {
   await mkdir(dirname(statePath), { recursive: true });
@@ -97,12 +101,12 @@ async function processFile(file, state) {
   const info = await stat(absolute);
   if (!info.isFile() || info.size < 44) return null;
   const hash = await sha256(absolute);
-  const duplicate = Object.values(state.files).find((item) => item.sha256 === hash && item.status === 'uploaded');
-  if (duplicate || state.files[absolute]?.status === 'uploaded') return { file: absolute, status: 'duplicate', soundcloudUrl: duplicate?.soundcloudUrl || state.files[absolute]?.soundcloudUrl };
+  const previousUpload = existingUpload(state.files, absolute, hash);
+  if (previousUpload) return { file: absolute, ...previousUpload, sharing: 'private' };
   const sidecar = await readSidecar(absolute);
   const title = sidecar.title || cleanTitle(absolute);
   const sunoUrl = sidecar.sunoUrl || (sidecar.id ? `https://suno.com/song/${sidecar.id}` : null);
-  if (sidecar.id) attachLocalPathToSunoTrack(database, {
+  if (apply && sidecar.id) attachLocalPathToSunoTrack(database, {
     sunoId: sidecar.id,
     localPath: absolute,
     title,
@@ -120,7 +124,15 @@ async function processFile(file, state) {
   }
   if (!apply) return { file: absolute, title, sunoUrl, sharing: 'private', status: 'would-upload' };
   const api = await client();
-  const uploaded = await api.uploadTrack(absolute, {
+  // Persist an in-flight checkpoint before POST. Network timeouts can hide a successful upload.
+  const pending = markUploadPending({
+    ...(state.files[absolute] || {}), sha256: hash, sunoId: sidecar.id || null, sunoUrl, title,
+  });
+  state.files[absolute] = pending;
+  await saveState(state);
+  let uploaded;
+  try {
+    uploaded = await api.uploadTrack(absolute, {
     title,
     artist: sidecar.artist || 'Iyari Gomez',
     artworkPath,
@@ -132,7 +144,14 @@ async function processFile(file, state) {
       sunoUrl && `Origen Suno: ${sunoUrl}`,
       sidecar.lyrics,
     ].filter(Boolean).join('\n\n'),
-  });
+    });
+    if (!uploaded?.urn && !uploaded?.id) throw new Error('SoundCloud response missing track ID');
+  } catch (error) {
+    // Never retry automatically: the remote POST might have completed.
+    state.files[absolute] = markUploadUncertain(pending, error);
+    await saveState(state);
+    return { file: absolute, ...state.files[absolute] };
+  }
   const entry = {
     sha256: hash, sunoId: sidecar.id || null, sunoUrl, title,
     soundcloudId: String(uploaded.urn || uploaded.id), soundcloudUrl: uploaded.permalink_url || null,
@@ -152,6 +171,7 @@ async function scan() {
   const state = loadState();
   const files = fileArg ? [resolve(fileArg)] : await wavFiles();
   if (!state.baselineCreatedAt && !includeExisting && !fileArg) {
+    if (!apply) return [{ status: 'would-create-baseline', files: files.length, sharing: 'private' }];
     for (const file of files) state.files[file] = { status: 'baseline', observedAt: new Date().toISOString() };
     state.baselineCreatedAt = new Date().toISOString();
     await saveState(state);
@@ -205,11 +225,11 @@ if (watch) {
     clearInterval(safety);
     clearTimeout(debounceTimer);
     watcher.close();
-    database.close();
+    database?.close();
     process.exit(0);
   };
   process.once('SIGINT', stop);
   process.once('SIGTERM', stop);
 } else {
-  database.close();
+  database?.close();
 }
