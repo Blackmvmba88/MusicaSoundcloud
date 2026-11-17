@@ -12,6 +12,7 @@ import { openDatabase, upsertSunoTrack } from '../packages/database/src/db.mjs';
 import { validateTrackPackage } from '../packages/pipeline/src/validate-track-package.mjs';
 import { discoverLocalMedia } from './worker-media-discovery.mjs';
 import { importSunoLinks } from './suno-link-intake.mjs';
+import { resolveSidecarSunoId } from './sidecar-identity.mjs';
 
 const PROJECT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const STORAGE = resolve(PROJECT, 'storage');
@@ -141,6 +142,17 @@ async function validateTrack(db, track, config) {
     return planRelease({
       hasAudio: true,
       validation: { ready: false, stage: 'waiting-metadata', errors: [`Ficha .wav.suno.json ausente o inválida: ${error.code || error.message}`] },
+    });
+  }
+  try {
+    resolveSidecarSunoId(sidecar, { expectedId: track.suno_id || null });
+  } catch (error) {
+    return planRelease({
+      hasAudio: true,
+      validation: {
+        ready: false, stage: 'waiting-metadata',
+        errors: [`Identidad Suno no verificable: ${error.message}`],
+      },
     });
   }
   let cover = null;

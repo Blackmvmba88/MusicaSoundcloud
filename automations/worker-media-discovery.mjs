@@ -1,6 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { join, basename, extname } from 'node:path';
 import { attachLocalPathToSunoTrack, upsertLocalTrack } from '../packages/database/src/db.mjs';
+import { resolveSidecarSunoId } from './sidecar-identity.mjs';
 
 const validSunoId = /^[a-zA-Z0-9_-]{6,128}$/;
 
@@ -37,7 +38,7 @@ export async function discoverLocalMedia(db, { media, batch }) {
       let sidecar = {};
       try { sidecar = JSON.parse(await readFile(file + '.suno.json', 'utf8')); }
       catch { /* File exists without metadata. */ }
-      const id = String(sidecar.id || sidecar.sunoId || '').trim();
+      const id = resolveSidecarSunoId(sidecar);
       const title = String(sidecar.title || basename(name, extname(name))).trim();
       const pathTrack = getPath.get(file);
       if (validSunoId.test(id)) {
