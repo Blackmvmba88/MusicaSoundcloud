@@ -115,11 +115,24 @@ async function safeFile(path, config) {
   } catch { return false; }
 }
 
-async function validateTrack(track, config) {
-  if (!track.local_path) return planRelease({ hasAudio: false });
-  const audioPath = mapMediaPath(track.local_path, config);
-  if (!await safeFile(audioPath, config)) return planRelease({
-    hasAudio: false, diagnostic: 'La ruta local no está montada o el WAV no es accesible en /music',
+async function validateTrack(db, track, config) {
+  let audioPath = track.local_path ? mapMediaPath(track.local_path, config) : null;
+  let readable = await safeFile(audioPath, config);
+  if (!readable && track.suno_id) {
+    // The catalog may preserve an original Mac path while the downloaded copy
+    // has a content-addressed filename. Use a verified alias, never rewrite history.
+    const aliases = db.prepare('SELECT media_path FROM release_worker_media_aliases WHERE suno_id = ? ORDER BY last_seen_at DESC, media_path').all(track.suno_id);
+    for (const alias of aliases) {
+      const candidate = mapMediaPath(alias.media_path, config);
+      if (await safeFile(candidate, config)) {
+        audioPath = candidate;
+        readable = true;
+        break;
+      }
+    }
+  }
+  if (!readable) return planRelease({
+    hasAudio: false, diagnostic: 'La ruta local no está montada ni hay WAV alternativo comprobado en /music',
   });
   let sidecar;
   try {
@@ -237,7 +250,7 @@ export async function scanOnce(db, config) {
   const totals = { examined: tracks.length, changed: 0, protected: 0, errors: 0, cursor, catalog, mediaScan, linkIntake };
   for (const track of tracks) {
     try {
-      const plan = await validateTrack(track, config);
+      const plan = await validateTrack(db, track, config);
       const result = persistReleasePlan(db, track, plan);
       if (result.changed) totals.changed++;
       if (result.protected) totals.protected++;
