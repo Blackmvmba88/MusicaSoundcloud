@@ -1,11 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { summarizeWorkerScan, checkWorkerHeartbeat } from '../automations/worker-health.mjs';
 import { openDatabase } from '../packages/database/src/db.mjs';
 import { scanOnce } from '../automations/release-worker.mjs';
+import { discoverLocalMedia } from '../automations/worker-media-discovery.mjs';
 
 test('escaneo normal mantiene salud ok', () => {
   assert.deepEqual(summarizeWorkerScan({ mediaScan: { status: 'scanned', failures: 0 } }), {
@@ -57,5 +58,27 @@ test('scanOnce marca volumen no montado y recupera último éxito en SQLite', as
     const runtime = db.prepare('SELECT last_success_at, last_error FROM release_worker_runtime WHERE id = 1').get();
     assert.ok(runtime.last_success_at);
     assert.equal(runtime.last_error, null);
+  } finally { db.close(); rmSync(root, { recursive: true, force: true }); }
+});
+
+test('ficha Suno corrupta provoca fallo visible sin crear una identidad engañosa', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'bm-worker-bad-sidecar-'));
+  const media = join(root, 'media'); mkdirSync(media);
+  const path = join(media, 'master.wav');
+  const wav = Buffer.alloc(60); wav.write('RIFF', 0); wav.write('WAVE', 8);
+  writeFileSync(path, wav);
+  writeFileSync(path + '.suno.json', '{id:malformed');
+  const db = openDatabase(join(root, 'music.sqlite'));
+  try {
+    const failed = await discoverLocalMedia(db, { media, batch: 10 });
+    assert.equal(failed.failures, 1);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks').get().n, 0);
+    writeFileSync(path + '.suno.json', JSON.stringify({
+      id: 'aabbccdd-1111-4444-8888-123456789abc', title: 'Reconciled',
+    }));
+    const repaired = await discoverLocalMedia(db, { media, batch: 10 });
+    assert.equal(repaired.failures, 0);
+    assert.equal(repaired.discovered, 1);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks').get().n, 1);
   } finally { db.close(); rmSync(root, { recursive: true, force: true }); }
 });

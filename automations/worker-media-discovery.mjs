@@ -37,7 +37,9 @@ export async function discoverLocalMedia(db, { media, batch }) {
       // Re-evaluate the sidecar on every pass: it may arrive AFTER the WAV.
       let sidecar = {};
       try { sidecar = JSON.parse(await readFile(file + '.suno.json', 'utf8')); }
-      catch { /* File exists without metadata. */ }
+      catch (error) {
+        if (error.code !== 'ENOENT') throw new Error(`Ficha Suno ilegible o inválida: ${error.message}`);
+      }
       const id = resolveSidecarSunoId(sidecar);
       const title = String(sidecar.title || basename(name, extname(name))).trim();
       const pathTrack = getPath.get(file);
