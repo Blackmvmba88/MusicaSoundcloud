@@ -23,6 +23,7 @@ jobs:
           tests/content-inbox.test.mjs
           tests/sidecar-identity.test.mjs
           tests/worker-health.test.mjs
+          tests/worker-health-pure.test.mjs
 
   test:
     runs-on: [self-hosted, macOS, ARM64, blackmamba-music]
