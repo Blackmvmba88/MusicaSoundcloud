@@ -34,3 +34,23 @@ test('invalid heartbeat intervals are rejected', () => {
 test('valid heartbeat interval preserves healthy result', () => {
   assert.equal(checkWorkerHeartbeat(heartbeat, 60, now).ok, true);
 });
+
+test('malformed counters never create a healthy scan', () => {
+  for (const failures of ['NaN', NaN, -1, Infinity, 1.25, null]) {
+    const outcome = summarizeWorkerScan({ mediaScan: { status: 'scanned', failures } });
+    assert.equal(outcome.status, 'partial');
+    assert.match(outcome.errorMessage, /contadores/);
+  }
+  for (const trackErrors of ['NaN', NaN, -1, Infinity, 1.25]) {
+    const outcome = summarizeWorkerScan({ mediaScan: { status: 'scanned' }, trackErrors });
+    assert.equal(outcome.status, 'partial');
+  }
+});
+
+test('valid error counters are preserved', () => {
+  const outcome = summarizeWorkerScan({ mediaScan: { status: 'scanned', failures: 2 }, trackErrors: 3 });
+  assert.equal(outcome.errors, 5);
+  assert.equal(outcome.trackErrors, 3);
+  assert.equal(outcome.mediaFailures, 2);
+  assert.equal(outcome.status, 'partial');
+});
