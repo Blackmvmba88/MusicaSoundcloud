@@ -31,3 +31,18 @@ export function checkWorkerHeartbeat(heartbeat, intervalSeconds, now = Date.now(
     throw new Error('heartbeat vencido');
   return { ok: true, at: heartbeat.at };
 }
+
+/** A failed track stays reachable on the following scan; never advance past it. */
+export function checkpointAfterScan({ startCursor, trackIds, firstFailedIndex = null }) {
+  if (!Number.isSafeInteger(startCursor) || startCursor < 0 || !Array.isArray(trackIds)
+    || trackIds.some(id => !Number.isSafeInteger(id) || id <= 0)
+    || trackIds.some((id, i) => i > 0 && id <= trackIds[i - 1])
+    || (trackIds.length && trackIds[0] <= startCursor)
+    || (firstFailedIndex !== null && (!Number.isInteger(firstFailedIndex)
+      || firstFailedIndex < 0 || firstFailedIndex >= trackIds.length))) {
+    throw new Error('checkpoint de escaneo inválido');
+  }
+  if (!trackIds.length) return 0;
+  if (firstFailedIndex === null) return trackIds[trackIds.length - 1];
+  return firstFailedIndex === 0 ? startCursor : trackIds[firstFailedIndex - 1];
+}
