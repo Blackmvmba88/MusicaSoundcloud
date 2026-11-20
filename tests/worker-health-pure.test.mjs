@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { summarizeWorkerScan, checkWorkerHeartbeat } from '../automations/worker-health.mjs';
+import { summarizeWorkerScan, checkWorkerHeartbeat, checkpointAfterScan } from '../automations/worker-health.mjs';
 
 const heartbeat = { status: 'ok', at: '2026-11-17T19:59:59.000Z' };
 const now = Date.parse('2026-11-17T20:00:00Z');
@@ -53,4 +53,17 @@ test('valid error counters are preserved', () => {
   assert.equal(outcome.trackErrors, 3);
   assert.equal(outcome.mediaFailures, 2);
   assert.equal(outcome.status, 'partial');
+});
+
+test('checkpoint retries first failed track without skipping it', () => {
+  assert.equal(checkpointAfterScan({ startCursor: 0, trackIds: [2, 4, 8], firstFailedIndex: 1 }), 2);
+  assert.equal(checkpointAfterScan({ startCursor: 3, trackIds: [4, 6, 9], firstFailedIndex: 0 }), 3);
+  assert.equal(checkpointAfterScan({ startCursor: 0, trackIds: [2, 4, 8] }), 8);
+  assert.equal(checkpointAfterScan({ startCursor: 8, trackIds: [] }), 0);
+});
+
+test('checkpoint rejects invalid index, unordered IDs and stale cursors', () => {
+  assert.throws(() => checkpointAfterScan({ startCursor: 4, trackIds: [4, 6] }), /inválido/);
+  assert.throws(() => checkpointAfterScan({ startCursor: 0, trackIds: [3, 3] }), /inválido/);
+  assert.throws(() => checkpointAfterScan({ startCursor: 0, trackIds: [3], firstFailedIndex: 2 }), /inválido/);
 });
