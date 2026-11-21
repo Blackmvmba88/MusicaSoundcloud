@@ -165,6 +165,8 @@ test('sidecar edit with unchanged size and mtime releases logical quarantine', a
   const fixed = '{"id":"aaaaaaaa-1111-4444-8888-123456789abc","sunoId":"aaaaaaaa-1111-4444-8888-123456789abc"}';
   assert.equal(Buffer.byteLength(original), Buffer.byteLength(fixed));
   writeFileSync(sidecar, original);
+  const fixedTime = new Date('2026-11-20T00:00:00.000Z');
+  utimesSync(sidecar, fixedTime, fixedTime);
   const db = openDatabase(join(root, 'music.sqlite'));
   try {
     for (let attempt = 1; attempt <= 3; attempt++) {
