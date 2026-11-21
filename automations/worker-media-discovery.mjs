@@ -81,6 +81,6 @@ export async function discoverLocalMedia(db, { media, batch }) {
   db.prepare('UPDATE release_worker_media_cursor SET last_name = ? WHERE id = 1').run(nextName);
   return {
     discovered, aliases, failures, examined: selected.length,
-    status: files.length ? 'scanned' : 'empty', lastName: selected.at(-1) || null,
+    status: files.length ? 'scanned' : 'empty', lastName: nextName || null,
   };
 }
