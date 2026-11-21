@@ -60,3 +60,18 @@ export function checkpointAfterMediaScan({ startName, fileNames, firstFailedInde
   if (firstFailedIndex === null) return fileNames.at(-1);
   return firstFailedIndex === 0 ? startName : fileNames[firstFailedIndex - 1];
 }
+
+/** Quarantine is logical only: retry when the WAV or sidecar changes. */
+export const MEDIA_RETRY_LIMIT = 3;
+export function mediaRetryDecision({ attempts = 0, lastFingerprint = null, fingerprint }) {
+  if (!Number.isSafeInteger(attempts) || attempts < 0 || typeof fingerprint !== 'string'
+    || !fingerprint || (lastFingerprint !== null && typeof lastFingerprint !== 'string')) {
+    throw new Error('estado de reintento de medios inválido');
+  }
+  const changed = lastFingerprint !== fingerprint;
+  return {
+    attempt: changed || attempts < MEDIA_RETRY_LIMIT,
+    nextAttempts: changed ? 1 : attempts + 1,
+    quarantined: !changed && attempts >= MEDIA_RETRY_LIMIT,
+  };
+}
