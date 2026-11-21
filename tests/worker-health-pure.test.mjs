@@ -67,3 +67,18 @@ test('checkpoint rejects invalid index, unordered IDs and stale cursors', () => 
   assert.throws(() => checkpointAfterScan({ startCursor: 0, trackIds: [3, 3] }), /inválido/);
   assert.throws(() => checkpointAfterScan({ startCursor: 0, trackIds: [3], firstFailedIndex: 2 }), /inválido/);
 });
+
+test('checkpoint keeps later failures reachable after retrying earliest failure', () => {
+  const ids = [4, 6, 9];
+  const firstPass = checkpointAfterScan({ startCursor: 3, trackIds: ids, firstFailedIndex: 2 });
+  assert.equal(firstPass, 6);
+  const retry = checkpointAfterScan({ startCursor: firstPass, trackIds: [9, 12], firstFailedIndex: 0 });
+  assert.equal(retry, 6);
+});
+
+test('checkpoint rejects negative, fractional and non-safe failure positions', () => {
+  for (const firstFailedIndex of [-1, 0.5, Number.MAX_SAFE_INTEGER + 1]) {
+    assert.throws(() => checkpointAfterScan({ startCursor: 0, trackIds: [2, 4], firstFailedIndex }), /inválido/);
+  }
+  assert.throws(() => checkpointAfterScan({ startCursor: -1, trackIds: [] }), /inválido/);
+});
