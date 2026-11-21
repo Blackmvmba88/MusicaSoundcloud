@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { summarizeWorkerScan, checkWorkerHeartbeat, checkpointAfterScan, checkpointAfterMediaScan } from '../automations/worker-health.mjs';
+import { summarizeWorkerScan, checkWorkerHeartbeat, checkpointAfterScan, checkpointAfterMediaScan, mediaRetryDecision, MEDIA_RETRY_LIMIT } from '../automations/worker-health.mjs';
 
 const heartbeat = { status: 'ok', at: '2026-11-17T19:59:59.000Z' };
 const now = Date.parse('2026-11-17T20:00:00Z');
@@ -108,4 +108,28 @@ test('media checkpoint rejects malformed batches and failure positions', () => {
   assert.throws(() => checkpointAfterMediaScan({
     startName: '', fileNames: ['a.wav', 'a.wav'],
   }), /inválido/);
+});
+
+test('bounded media retries quarantine only after the configured budget', () => {
+  assert.equal(MEDIA_RETRY_LIMIT, 3);
+  assert.deepEqual(mediaRetryDecision({ fingerprint: 'v1' }), {
+    attempt: true, nextAttempts: 1, quarantined: false,
+  });
+  assert.deepEqual(mediaRetryDecision({ attempts: 2, lastFingerprint: 'v1', fingerprint: 'v1' }), {
+    attempt: true, nextAttempts: 3, quarantined: false,
+  });
+  assert.deepEqual(mediaRetryDecision({ attempts: 3, lastFingerprint: 'v1', fingerprint: 'v1' }), {
+    attempt: false, nextAttempts: 4, quarantined: true,
+  });
+  assert.deepEqual(mediaRetryDecision({ attempts: 3, lastFingerprint: 'v1', fingerprint: 'v2' }), {
+    attempt: true, nextAttempts: 1, quarantined: false,
+  });
+});
+
+test('invalid media retry state is rejected rather than silently skipping a WAV', () => {
+  for (const attempts of [-1, NaN, Infinity, 1.5]) {
+    assert.throws(() => mediaRetryDecision({ attempts, fingerprint: 'v1' }), /inválido/);
+  }
+  assert.throws(() => mediaRetryDecision({ fingerprint: '' }), /inválido/);
+  assert.throws(() => mediaRetryDecision({ fingerprint: 'v1', lastFingerprint: 2 }), /inválido/);
 });
