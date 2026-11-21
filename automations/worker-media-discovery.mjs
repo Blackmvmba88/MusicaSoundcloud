@@ -48,7 +48,7 @@ export async function discoverLocalMedia(db, { media, batch }) {
       const sidecarPath = path + '.suno.json';
       const sidecarStat = await stat(sidecarPath);
       if (sidecarStat.size > MAX_SIDECAR_BYTES)
-        throw new Error('Ficha Suno excede el límite de 1 MiB');
+        return [wav.size, wav.mtimeMs, 'oversize', sidecarStat.size, sidecarStat.mtimeMs].join('|');
       const sidecar = await readFile(sidecarPath);
       if (sidecar.length > MAX_SIDECAR_BYTES)
         throw new Error('Ficha Suno excede el límite de 1 MiB');
@@ -84,8 +84,16 @@ export async function discoverLocalMedia(db, { media, batch }) {
       }
       // Re-evaluate the sidecar on every pass: it may arrive AFTER the WAV.
       let sidecar = {};
-      try { sidecar = JSON.parse(await readFile(file + '.suno.json', 'utf8')); }
-      catch (error) {
+      try {
+        const sidecarPath = file + '.suno.json';
+        const info = await stat(sidecarPath);
+        if (info.size > MAX_SIDECAR_BYTES)
+          throw new Error('Ficha Suno excede el límite de 1 MiB');
+        const bytes = await readFile(sidecarPath);
+        if (bytes.length > MAX_SIDECAR_BYTES)
+          throw new Error('Ficha Suno excede el límite de 1 MiB');
+        sidecar = JSON.parse(bytes.toString('utf8'));
+      } catch (error) {
         if (error.code !== 'ENOENT') throw new Error(`Ficha Suno ilegible o inválida: ${error.message}`);
       }
       const id = resolveSidecarSunoId(sidecar);
