@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { summarizeWorkerScan, checkWorkerHeartbeat, checkpointAfterScan } from '../automations/worker-health.mjs';
+import { summarizeWorkerScan, checkWorkerHeartbeat, checkpointAfterScan, checkpointAfterMediaScan } from '../automations/worker-health.mjs';
 
 const heartbeat = { status: 'ok', at: '2026-11-17T19:59:59.000Z' };
 const now = Date.parse('2026-11-17T20:00:00Z');
@@ -81,4 +81,31 @@ test('checkpoint rejects negative, fractional and non-safe failure positions', (
     assert.throws(() => checkpointAfterScan({ startCursor: 0, trackIds: [2, 4], firstFailedIndex }), /inválido/);
   }
   assert.throws(() => checkpointAfterScan({ startCursor: -1, trackIds: [] }), /inválido/);
+});
+
+test('media checkpoint retries the first failing WAV on the next scan', () => {
+  assert.equal(checkpointAfterMediaScan({
+    startName: '', fileNames: ['a.wav', 'b.wav', 'c.wav'], firstFailedIndex: 1,
+  }), 'a.wav');
+  assert.equal(checkpointAfterMediaScan({
+    startName: 'a.wav', fileNames: ['b.wav', 'c.wav'], firstFailedIndex: 0,
+  }), 'a.wav');
+  assert.equal(checkpointAfterMediaScan({
+    startName: '', fileNames: ['a.wav', 'b.wav'], firstFailedIndex: null,
+  }), 'b.wav');
+  assert.equal(checkpointAfterMediaScan({ startName: 'c.wav', fileNames: [] }), 'c.wav');
+});
+
+test('media checkpoint rejects malformed batches and failure positions', () => {
+  for (const firstFailedIndex of [-1, 1.5, 2, Number.MAX_SAFE_INTEGER + 1]) {
+    assert.throws(() => checkpointAfterMediaScan({
+      startName: '', fileNames: ['a.wav', 'b.wav'], firstFailedIndex,
+    }), /inválido/);
+  }
+  assert.throws(() => checkpointAfterMediaScan({
+    startName: '', fileNames: ['b.wav', 'a.wav'],
+  }), /inválido/);
+  assert.throws(() => checkpointAfterMediaScan({
+    startName: '', fileNames: ['a.wav', 'a.wav'],
+  }), /inválido/);
 });
