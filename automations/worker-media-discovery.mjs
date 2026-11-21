@@ -2,6 +2,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { join, basename, extname } from 'node:path';
 import { attachLocalPathToSunoTrack, upsertLocalTrack } from '../packages/database/src/db.mjs';
 import { resolveSidecarSunoId } from './sidecar-identity.mjs';
+import { checkpointAfterMediaScan } from './worker-health.mjs';
 
 const validSunoId = /^[a-zA-Z0-9_-]{6,128}$/;
 
@@ -25,13 +26,14 @@ export async function discoverLocalMedia(db, { media, batch }) {
   let selected = files.filter(name => name > last).slice(0, batch);
   if (!selected.length && last) selected = files.slice(0, batch);
   let discovered = 0, failures = 0, aliases = 0;
+  let firstFailedIndex = null;
   const getSuno = db.prepare('SELECT * FROM tracks WHERE suno_id = ?');
   const getPath = db.prepare('SELECT id, suno_id FROM tracks WHERE local_path = ?');
   const getAlias = db.prepare('SELECT suno_id FROM release_worker_media_aliases WHERE media_path = ?');
   const insertAlias = db.prepare("INSERT INTO release_worker_media_aliases(media_path, suno_id) VALUES (?, ?) " +
     "ON CONFLICT(media_path) DO UPDATE SET last_seen_at = CURRENT_TIMESTAMP " +
     "WHERE suno_id = excluded.suno_id");
-  for (const name of selected) {
+  for (const [index, name] of selected.entries()) {
     const file = join(media, name);
     try {
       // Re-evaluate the sidecar on every pass: it may arrive AFTER the WAV.
@@ -71,10 +73,12 @@ export async function discoverLocalMedia(db, { media, batch }) {
       }
     } catch (error) {
       failures++;
+      if (firstFailedIndex === null) firstFailedIndex = index;
       process.stderr.write(JSON.stringify({ event: 'media-discovery-error', file: name, message: error.message }) + '\n');
     }
-    db.prepare('UPDATE release_worker_media_cursor SET last_name = ? WHERE id = 1').run(name);
   }
+  const nextName = checkpointAfterMediaScan({ startName: last, fileNames: selected, firstFailedIndex });
+  db.prepare('UPDATE release_worker_media_cursor SET last_name = ? WHERE id = 1').run(nextName);
   return {
     discovered, aliases, failures, examined: selected.length,
     status: files.length ? 'scanned' : 'empty', lastName: selected.at(-1) || null,
