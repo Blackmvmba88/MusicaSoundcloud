@@ -6,6 +6,7 @@ import { resolveSidecarSunoId } from './sidecar-identity.mjs';
 import { checkpointAfterMediaScan, mediaRetryDecision } from './worker-health.mjs';
 
 const validSunoId = /^[a-zA-Z0-9_-]{6,128}$/;
+const MAX_SIDECAR_BYTES = 1024 * 1024;
 
 /** A media alias keeps the original catalog path untouched while providing the worker a usable copy. */
 export async function discoverLocalMedia(db, { media, batch }) {
@@ -44,7 +45,13 @@ export async function discoverLocalMedia(db, { media, batch }) {
     try {
       // Sidecars are small metadata documents; hash their bytes to detect repaired
       // JSON even if a synchronization tool preserves both file size and mtime.
-      const sidecar = await readFile(path + '.suno.json');
+      const sidecarPath = path + '.suno.json';
+      const sidecarStat = await stat(sidecarPath);
+      if (sidecarStat.size > MAX_SIDECAR_BYTES)
+        throw new Error('Ficha Suno excede el límite de 1 MiB');
+      const sidecar = await readFile(sidecarPath);
+      if (sidecar.length > MAX_SIDECAR_BYTES)
+        throw new Error('Ficha Suno excede el límite de 1 MiB');
       sidecarFingerprint = createHash('sha256').update(sidecar).digest('hex');
     } catch (error) {
       if (error.code !== 'ENOENT') throw error;
