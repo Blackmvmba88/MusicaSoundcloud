@@ -1,7 +1,8 @@
-import { readdir, readFile } from 'node:fs/promises';
+import { readdir, readFile, stat } from 'node:fs/promises';
 import { join, basename, extname } from 'node:path';
 import { attachLocalPathToSunoTrack, upsertLocalTrack } from '../packages/database/src/db.mjs';
 import { resolveSidecarSunoId } from './sidecar-identity.mjs';
+import { checkpointAfterMediaScan, mediaRetryDecision } from './worker-health.mjs';
 
 const validSunoId = /^[a-zA-Z0-9_-]{6,128}$/;
 
@@ -13,6 +14,9 @@ export async function discoverLocalMedia(db, { media, batch }) {
   db.exec("CREATE TABLE IF NOT EXISTS release_worker_media_aliases (" +
     "media_path TEXT PRIMARY KEY, suno_id TEXT NOT NULL, first_seen_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
     "last_seen_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)");
+  db.exec("CREATE TABLE IF NOT EXISTS release_worker_media_failures (" +
+    "media_name TEXT PRIMARY KEY, attempts INTEGER NOT NULL, fingerprint TEXT NOT NULL, " +
+    "last_error TEXT NOT NULL, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)");
   let entries;
   try { entries = await readdir(media, { withFileTypes: true }); }
   catch (error) {
@@ -24,16 +28,49 @@ export async function discoverLocalMedia(db, { media, batch }) {
   const last = db.prepare('SELECT last_name FROM release_worker_media_cursor WHERE id = 1').get().last_name;
   let selected = files.filter(name => name > last).slice(0, batch);
   if (!selected.length && last) selected = files.slice(0, batch);
-  let discovered = 0, failures = 0, aliases = 0;
+  let discovered = 0, failures = 0, aliases = 0, quarantined = 0;
+  let firstFailedIndex = null;
+  const getFailure = db.prepare('SELECT attempts, fingerprint FROM release_worker_media_failures WHERE media_name = ?');
+  const saveFailure = db.prepare(`INSERT INTO release_worker_media_failures
+    (media_name, attempts, fingerprint, last_error) VALUES (?, ?, ?, ?)
+    ON CONFLICT(media_name) DO UPDATE SET attempts=excluded.attempts,
+    fingerprint=excluded.fingerprint, last_error=excluded.last_error,
+    updated_at=CURRENT_TIMESTAMP`);
+  const clearFailure = db.prepare('DELETE FROM release_worker_media_failures WHERE media_name = ?');
+  const fingerprint = async (path) => {
+    const details = await Promise.all([path, path + '.suno.json'].map(async candidate => {
+      try {
+        const info = await stat(candidate);
+        return [info.size, info.mtimeMs].join(':');
+      } catch (error) {
+        if (error.code === 'ENOENT') return 'missing';
+        throw error;
+      }
+    }));
+    return details.join('|');
+  };
   const getSuno = db.prepare('SELECT * FROM tracks WHERE suno_id = ?');
   const getPath = db.prepare('SELECT id, suno_id FROM tracks WHERE local_path = ?');
   const getAlias = db.prepare('SELECT suno_id FROM release_worker_media_aliases WHERE media_path = ?');
   const insertAlias = db.prepare("INSERT INTO release_worker_media_aliases(media_path, suno_id) VALUES (?, ?) " +
     "ON CONFLICT(media_path) DO UPDATE SET last_seen_at = CURRENT_TIMESTAMP " +
     "WHERE suno_id = excluded.suno_id");
-  for (const name of selected) {
+  for (const [index, name] of selected.entries()) {
     const file = join(media, name);
+    const previous = getFailure.get(name);
+    let signature;
     try {
+      signature = await fingerprint(file);
+      const decision = mediaRetryDecision({
+        attempts: previous?.attempts || 0,
+        lastFingerprint: previous?.fingerprint || null,
+        fingerprint: signature,
+      });
+      if (decision.quarantined) {
+        quarantined++;
+        failures++;
+        continue;
+      }
       // Re-evaluate the sidecar on every pass: it may arrive AFTER the WAV.
       let sidecar = {};
       try { sidecar = JSON.parse(await readFile(file + '.suno.json', 'utf8')); }
@@ -69,14 +106,26 @@ export async function discoverLocalMedia(db, { media, batch }) {
         upsertLocalTrack(db, { localPath: file, title, artist: sidecar.artist || 'Iyari Gomez' });
         discovered++;
       }
+      if (previous) clearFailure.run(name);
     } catch (error) {
       failures++;
-      process.stderr.write(JSON.stringify({ event: 'media-discovery-error', file: name, message: error.message }) + '\n');
+      const retry = mediaRetryDecision({
+        attempts: previous?.attempts || 0,
+        lastFingerprint: previous?.fingerprint || null,
+        fingerprint: signature || 'unreadable',
+      });
+      saveFailure.run(name, retry.nextAttempts, signature || 'unreadable', error.message);
+      if (retry.nextAttempts < 3 && firstFailedIndex === null) firstFailedIndex = index;
+      process.stderr.write(JSON.stringify({
+        event: 'media-discovery-error', file: name, message: error.message,
+        attempts: retry.nextAttempts, quarantined: retry.nextAttempts >= 3,
+      }) + '\n');
     }
-    db.prepare('UPDATE release_worker_media_cursor SET last_name = ? WHERE id = 1').run(name);
   }
+  const nextName = checkpointAfterMediaScan({ startName: last, fileNames: selected, firstFailedIndex });
+  db.prepare('UPDATE release_worker_media_cursor SET last_name = ? WHERE id = 1').run(nextName);
   return {
-    discovered, aliases, failures, examined: selected.length,
-    status: files.length ? 'scanned' : 'empty', lastName: selected.at(-1) || null,
+    discovered, aliases, failures, quarantined, examined: selected.length,
+    status: files.length ? 'scanned' : 'empty', lastName: nextName || null,
   };
 }
