@@ -1,4 +1,5 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { join, basename, extname } from 'node:path';
 import { attachLocalPathToSunoTrack, upsertLocalTrack } from '../packages/database/src/db.mjs';
 import { resolveSidecarSunoId } from './sidecar-identity.mjs';
@@ -38,16 +39,19 @@ export async function discoverLocalMedia(db, { media, batch }) {
     updated_at=CURRENT_TIMESTAMP`);
   const clearFailure = db.prepare('DELETE FROM release_worker_media_failures WHERE media_name = ?');
   const fingerprint = async (path) => {
-    const details = await Promise.all([path, path + '.suno.json'].map(async candidate => {
-      try {
-        const info = await stat(candidate);
-        return [info.size, info.mtimeMs].join(':');
-      } catch (error) {
-        if (error.code === 'ENOENT') return 'missing';
-        throw error;
-      }
-    }));
-    return details.join('|');
+    const wav = await stat(path);
+    let sidecarFingerprint;
+    try {
+      // Sidecars are small metadata documents; hash their bytes to detect repaired
+      // JSON even if a synchronization tool preserves both file size and mtime.
+      const sidecar = await readFile(path + '.suno.json');
+      sidecarFingerprint = createHash('sha256').update(sidecar).digest('hex');
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      sidecarFingerprint = 'missing';
+    }
+    // Do not hash potentially large master WAVs on every worker cycle.
+    return [wav.size, wav.mtimeMs, sidecarFingerprint].join('|');
   };
   const getSuno = db.prepare('SELECT * FROM tracks WHERE suno_id = ?');
   const getPath = db.prepare('SELECT id, suno_id FROM tracks WHERE local_path = ?');
