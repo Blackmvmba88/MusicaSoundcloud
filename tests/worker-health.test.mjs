@@ -187,3 +187,27 @@ test('sidecar edit with unchanged size and mtime releases logical quarantine', a
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM release_worker_media_failures').get().n, 0);
   } finally { db.close(); rmSync(root, { recursive: true, force: true }); }
 });
+
+test('two WAV files with one canonical Suno ID remain one track after repeated scans', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'bm-suno-alias-idempotent-'));
+  const media = join(root, 'media'); mkdirSync(media);
+  const id = 'aabbccdd-1111-4444-8888-123456789abc';
+  for (const name of ['a-master.wav', 'b-copy.wav']) {
+    const file = join(media, name);
+    const wav = Buffer.alloc(60); wav.write('RIFF', 0); wav.write('WAVE', 8);
+    writeFileSync(file, wav);
+    writeFileSync(file + '.suno.json', JSON.stringify({ id, title: 'One canonical song' }));
+  }
+  const db = openDatabase(join(root, 'music.sqlite'));
+  try {
+    for (let pass = 0; pass < 3; pass++) {
+      const report = await discoverLocalMedia(db, { media, batch: 2 });
+      assert.equal(report.failures, 0);
+      assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks WHERE suno_id = ?').get(id).n, 1);
+      assert.equal(db.prepare('SELECT COUNT(*) AS n FROM release_worker_media_aliases WHERE suno_id = ?')
+        .get(id).n, 1);
+      assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks').get().n, 1);
+      assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
+    }
+  } finally { db.close(); rmSync(root, { recursive: true, force: true }); }
+});
