@@ -31,6 +31,6 @@ A repaired sidecar should be reconsidered once its content SHA-256 changes and t
 ## Limitations
 
 - WAV changes are detected via size and modification time, not a full audio hash. Changes to WAV bytes that preserve those attributes may go undetected; a manual safe retry or an optional streaming audio digest could address this later.
-- Sidecar content is hashed with SHA-256 on each inspected file, so metadata-only repairs with preserved size and mtime are detected. This adds a small read per sidecar.
+- Sidecar content is hashed with SHA-256 on each inspected file, so metadata-only repairs with preserved size and mtime are detected. Sidecars are bounded to 1 MiB before hashing and parsing; oversized files are recorded as failures and logically quarantined after the retry budget, without reading their complete contents or modifying the source WAV.
 - A continuously edited invalid WAV may repeatedly consume retries. A future iteration can add cooldown/backoff and retry prioritization.
 - Quarantined records remain visible until a successful scan; no automatic purge is performed.
