@@ -1,10 +1,12 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { join, basename, extname } from 'node:path';
 import { attachLocalPathToSunoTrack, upsertLocalTrack } from '../packages/database/src/db.mjs';
 import { resolveSidecarSunoId } from './sidecar-identity.mjs';
 import { checkpointAfterMediaScan, mediaRetryDecision } from './worker-health.mjs';
 
 const validSunoId = /^[a-zA-Z0-9_-]{6,128}$/;
+const MAX_SIDECAR_BYTES = 1024 * 1024;
 
 /** A media alias keeps the original catalog path untouched while providing the worker a usable copy. */
 export async function discoverLocalMedia(db, { media, batch }) {
@@ -38,16 +40,25 @@ export async function discoverLocalMedia(db, { media, batch }) {
     updated_at=CURRENT_TIMESTAMP`);
   const clearFailure = db.prepare('DELETE FROM release_worker_media_failures WHERE media_name = ?');
   const fingerprint = async (path) => {
-    const details = await Promise.all([path, path + '.suno.json'].map(async candidate => {
-      try {
-        const info = await stat(candidate);
-        return [info.size, info.mtimeMs].join(':');
-      } catch (error) {
-        if (error.code === 'ENOENT') return 'missing';
-        throw error;
-      }
-    }));
-    return details.join('|');
+    const wav = await stat(path);
+    let sidecarFingerprint;
+    try {
+      // Sidecars are small metadata documents; hash their bytes to detect repaired
+      // JSON even if a synchronization tool preserves both file size and mtime.
+      const sidecarPath = path + '.suno.json';
+      const sidecarStat = await stat(sidecarPath);
+      if (sidecarStat.size > MAX_SIDECAR_BYTES)
+        return [wav.size, wav.mtimeMs, 'oversize', sidecarStat.size, sidecarStat.mtimeMs].join('|');
+      const sidecar = await readFile(sidecarPath);
+      if (sidecar.length > MAX_SIDECAR_BYTES)
+        throw new Error('Ficha Suno excede el límite de 1 MiB');
+      sidecarFingerprint = createHash('sha256').update(sidecar).digest('hex');
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      sidecarFingerprint = 'missing';
+    }
+    // Do not hash potentially large master WAVs on every worker cycle.
+    return [wav.size, wav.mtimeMs, sidecarFingerprint].join('|');
   };
   const getSuno = db.prepare('SELECT * FROM tracks WHERE suno_id = ?');
   const getPath = db.prepare('SELECT id, suno_id FROM tracks WHERE local_path = ?');
@@ -73,8 +84,16 @@ export async function discoverLocalMedia(db, { media, batch }) {
       }
       // Re-evaluate the sidecar on every pass: it may arrive AFTER the WAV.
       let sidecar = {};
-      try { sidecar = JSON.parse(await readFile(file + '.suno.json', 'utf8')); }
-      catch (error) {
+      try {
+        const sidecarPath = file + '.suno.json';
+        const info = await stat(sidecarPath);
+        if (info.size > MAX_SIDECAR_BYTES)
+          throw new Error('Ficha Suno excede el límite de 1 MiB');
+        const bytes = await readFile(sidecarPath);
+        if (bytes.length > MAX_SIDECAR_BYTES)
+          throw new Error('Ficha Suno excede el límite de 1 MiB');
+        sidecar = JSON.parse(bytes.toString('utf8'));
+      } catch (error) {
         if (error.code !== 'ENOENT') throw new Error(`Ficha Suno ilegible o inválida: ${error.message}`);
       }
       const id = resolveSidecarSunoId(sidecar);
