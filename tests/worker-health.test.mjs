@@ -211,3 +211,32 @@ test('two WAV files with one canonical Suno ID remain one track after repeated s
     }
   } finally { db.close(); rmSync(root, { recursive: true, force: true }); }
 });
+
+test('oversized Suno sidecar is quarantined, then recovered after metadata repair', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'bm-sidecar-size-limit-'));
+  const media = join(root, 'media'); mkdirSync(media);
+  const wav = join(media, 'oversized.wav');
+  const audio = Buffer.alloc(60); audio.write('RIFF', 0); audio.write('WAVE', 8);
+  writeFileSync(wav, audio);
+  const sidecar = wav + '.suno.json';
+  writeFileSync(sidecar, 'X'.repeat(1024 * 1024 + 1));
+  const db = openDatabase(join(root, 'music.sqlite'));
+  try {
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const report = await discoverLocalMedia(db, { media, batch: 2 });
+      assert.equal(report.failures, 1);
+      assert.equal(db.prepare('SELECT attempts FROM release_worker_media_failures').get().attempts, attempt);
+    }
+    const skipped = await discoverLocalMedia(db, { media, batch: 2 });
+    assert.equal(skipped.quarantined, 1);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks').get().n, 0);
+    writeFileSync(sidecar, JSON.stringify({
+      id: 'aabbccdd-1111-4444-8888-123456789abc', title: 'Recovered',
+    }));
+    const restored = await discoverLocalMedia(db, { media, batch: 2 });
+    assert.equal(restored.failures, 0);
+    assert.equal(restored.discovered, 1);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM release_worker_media_failures').get().n, 0);
+    assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
+  } finally { db.close(); rmSync(root, { recursive: true, force: true }); }
+});
