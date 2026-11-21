@@ -6,7 +6,7 @@ on:
 
 jobs:
   database-regression:
-    name: SQLite bootstrap and migration regression
+    name: SQLite and Suno worker regressions
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -16,8 +16,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Verify SQLite bootstrap and legacy migration
-        run: node --test tests/database.test.mjs tests/content-inbox.test.mjs
+      - name: Verify SQLite bootstrap, Suno identity and worker health
+        run: >-
+          node --test
+          tests/database.test.mjs
+          tests/content-inbox.test.mjs
+          tests/sidecar-identity.test.mjs
+          tests/worker-health.test.mjs
+          tests/worker-health-pure.test.mjs
 
   test:
     runs-on: [self-hosted, macOS, ARM64, blackmamba-music]

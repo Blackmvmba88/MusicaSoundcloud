@@ -47,6 +47,8 @@ docker compose --env-file .env.worker -f compose.worker.yml run --rm release-wor
 - La importación por `suno_id`, las claves `job_key` y las transiciones son idempotentes.
 - Los fallos de una pista no detienen el resto del lote; aparecen en los logs.
 - El heartbeat se guarda en `storage/sync/release-worker-health.json` del volumen.
+- Si falta el volumen `/music` o falla alguna lectura/conciliación de WAV, el ciclo se reporta `partial`, conserva el último ciclo completo y expone `last_error`. El healthcheck falla en estado `partial` o con heartbeat vencido.
+- `--once` devuelve código de salida distinto de cero si el ciclo fue parcial; el proceso persistente sigue vigilando para recuperarse cuando llegue el medio correcto.
 - Un `docker compose down` normal conserva el volumen; respaldar SQLite con la
   API de backup de SQLite, no copiando una base activa sin su WAL.
 

@@ -12,6 +12,8 @@ import { openDatabase, upsertSunoTrack } from '../packages/database/src/db.mjs';
 import { validateTrackPackage } from '../packages/pipeline/src/validate-track-package.mjs';
 import { discoverLocalMedia } from './worker-media-discovery.mjs';
 import { importSunoLinks } from './suno-link-intake.mjs';
+import { resolveSidecarSunoId } from './sidecar-identity.mjs';
+import { summarizeWorkerScan, checkWorkerHeartbeat, checkpointAfterScan } from './worker-health.mjs';
 
 const PROJECT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const STORAGE = resolve(PROJECT, 'storage');
@@ -57,10 +59,8 @@ function healthcheck() {
   try {
     const heartbeat = JSON.parse(readFileSync(HEALTH_FILE, 'utf8'));
     const interval = numberEnv('WORKER_INTERVAL_SECONDS', 60, 10, 86400);
-    const age = Date.now() - Date.parse(heartbeat.at);
-    if (heartbeat.status === 'error') throw new Error('último ciclo falló');
-    if (!Number.isFinite(age) || age < 0 || age > interval * 3000 + 60000) throw new Error('heartbeat vencido');
-    process.stdout.write(JSON.stringify({ ok: true, at: heartbeat.at }) + '\n');
+    const result = checkWorkerHeartbeat(heartbeat, interval);
+    process.stdout.write(JSON.stringify(result) + '\n');
   } catch (error) {
     process.stderr.write(`worker unhealthy: ${error.message}\n`);
     process.exitCode = 1;
@@ -141,6 +141,17 @@ async function validateTrack(db, track, config) {
     return planRelease({
       hasAudio: true,
       validation: { ready: false, stage: 'waiting-metadata', errors: [`Ficha .wav.suno.json ausente o inválida: ${error.code || error.message}`] },
+    });
+  }
+  try {
+    resolveSidecarSunoId(sidecar, { expectedId: track.suno_id || null });
+  } catch (error) {
+    return planRelease({
+      hasAudio: true,
+      validation: {
+        ready: false, stage: 'waiting-metadata',
+        errors: [`Identidad Suno no verificable: ${error.message}`],
+      },
     });
   }
   let cover = null;
@@ -248,7 +259,8 @@ export async function scanOnce(db, config) {
   let tracks = query.all(cursor, config.batch);
   if (!tracks.length && cursor !== 0) { cursor = 0; tracks = query.all(cursor, config.batch); }
   const totals = { examined: tracks.length, changed: 0, protected: 0, errors: 0, cursor, catalog, mediaScan, linkIntake };
-  for (const track of tracks) {
+  let firstFailedIndex = null;
+  for (const [index, track] of tracks.entries()) {
     try {
       const plan = await validateTrack(db, track, config);
       const result = persistReleasePlan(db, track, plan);
@@ -256,15 +268,22 @@ export async function scanOnce(db, config) {
       if (result.protected) totals.protected++;
     } catch (error) {
       totals.errors++;
+      if (firstFailedIndex === null) firstFailedIndex = index;
       process.stderr.write(JSON.stringify({ event: 'track-error', trackId: track.id, message: error.message }) + '\n');
     }
   }
-  const nextCursor = tracks.length ? tracks[tracks.length - 1].id : 0;
+  // A failed track must not be skipped permanently by the next batch.
+  // Restart just before the earliest failed row, while preserving successful progress.
+  const nextCursor = checkpointAfterScan({ startCursor: cursor, trackIds: tracks.map(track => track.id), firstFailedIndex });
+  const outcome = summarizeWorkerScan({ mediaScan, trackErrors: totals.errors });
+  Object.assign(totals, outcome);
   db.prepare(`UPDATE release_worker_runtime SET
-    last_track_id = ?, last_success_at = CURRENT_TIMESTAMP, last_error = ?
-    WHERE id = 1`).run(nextCursor, totals.errors ? `${totals.errors} track(s) fallaron` : null);
+    last_track_id = ?,
+    last_success_at = CASE WHEN ? = 0 THEN CURRENT_TIMESTAMP ELSE last_success_at END,
+    last_error = ?
+    WHERE id = 1`).run(nextCursor, totals.errors, totals.errorMessage);
   totals.cursor = nextCursor;
-  setHealth({ status: totals.errors ? 'partial' : 'ok', ...totals });
+  setHealth(totals);
   return totals;
 }
 
@@ -281,6 +300,7 @@ async function main() {
       try {
         const report = await scanOnce(db, config);
         process.stdout.write(JSON.stringify({ event: 'release-scan', ...report }) + '\n');
+        if (process.argv.includes('--once') && report.status !== 'ok') process.exitCode = 1;
       } catch (error) {
         setHealth({ status: 'error', message: error.message });
         process.stderr.write(JSON.stringify({ event: 'cycle-error', message: error.message }) + '\n');
