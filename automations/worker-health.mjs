@@ -46,3 +46,17 @@ export function checkpointAfterScan({ startCursor, trackIds, firstFailedIndex = 
   if (firstFailedIndex === null) return trackIds[trackIds.length - 1];
   return firstFailedIndex === 0 ? startCursor : trackIds[firstFailedIndex - 1];
 }
+
+/** Retry the earliest failed WAV on the next scan instead of losing its position. */
+export function checkpointAfterMediaScan({ startName, fileNames, firstFailedIndex = null }) {
+  if (typeof startName !== 'string' || !Array.isArray(fileNames)
+    || fileNames.some(name => typeof name !== 'string' || !name)
+    || fileNames.some((name, index) => index > 0 && name <= fileNames[index - 1])
+    || (firstFailedIndex !== null && (!Number.isSafeInteger(firstFailedIndex)
+      || firstFailedIndex < 0 || firstFailedIndex >= fileNames.length))) {
+    throw new Error('checkpoint de medios inválido');
+  }
+  if (!fileNames.length) return startName;
+  if (firstFailedIndex === null) return fileNames.at(-1);
+  return firstFailedIndex === 0 ? startName : fileNames[firstFailedIndex - 1];
+}
