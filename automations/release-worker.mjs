@@ -13,7 +13,7 @@ import { validateTrackPackage } from '../packages/pipeline/src/validate-track-pa
 import { discoverLocalMedia } from './worker-media-discovery.mjs';
 import { importSunoLinks } from './suno-link-intake.mjs';
 import { resolveSidecarSunoId } from './sidecar-identity.mjs';
-import { summarizeWorkerScan, checkWorkerHeartbeat } from './worker-health.mjs';
+import { summarizeWorkerScan, checkWorkerHeartbeat, checkpointAfterScan } from './worker-health.mjs';
 
 const PROJECT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const STORAGE = resolve(PROJECT, 'storage');
@@ -259,7 +259,8 @@ export async function scanOnce(db, config) {
   let tracks = query.all(cursor, config.batch);
   if (!tracks.length && cursor !== 0) { cursor = 0; tracks = query.all(cursor, config.batch); }
   const totals = { examined: tracks.length, changed: 0, protected: 0, errors: 0, cursor, catalog, mediaScan, linkIntake };
-  for (const track of tracks) {
+  let firstFailedIndex = null;
+  for (const [index, track] of tracks.entries()) {
     try {
       const plan = await validateTrack(db, track, config);
       const result = persistReleasePlan(db, track, plan);
@@ -267,10 +268,13 @@ export async function scanOnce(db, config) {
       if (result.protected) totals.protected++;
     } catch (error) {
       totals.errors++;
+      if (firstFailedIndex === null) firstFailedIndex = index;
       process.stderr.write(JSON.stringify({ event: 'track-error', trackId: track.id, message: error.message }) + '\n');
     }
   }
-  const nextCursor = tracks.length ? tracks[tracks.length - 1].id : 0;
+  // A failed track must not be skipped permanently by the next batch.
+  // Restart just before the earliest failed row, while preserving successful progress.
+  const nextCursor = checkpointAfterScan({ startCursor: cursor, trackIds: tracks.map(track => track.id), firstFailedIndex });
   const outcome = summarizeWorkerScan({ mediaScan, trackErrors: totals.errors });
   Object.assign(totals, outcome);
   db.prepare(`UPDATE release_worker_runtime SET

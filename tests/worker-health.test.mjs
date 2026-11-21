@@ -82,3 +82,73 @@ test('ficha Suno corrupta provoca fallo visible sin crear una identidad engaños
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks').get().n, 1);
   } finally { db.close(); rmSync(root, { recursive: true, force: true }); }
 });
+
+test('media cursor retries earliest bad WAV and reports its persisted checkpoint', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'bm-media-checkpoint-'));
+  const media = join(root, 'media'); mkdirSync(media);
+  for (const name of ['a-bad.wav', 'z-good.wav']) {
+    const audio = join(media, name);
+    const wav = Buffer.alloc(60); wav.write('RIFF', 0); wav.write('WAVE', 8);
+    writeFileSync(audio, wav);
+  }
+  writeFileSync(join(media, 'a-bad.wav.suno.json'), '{broken-json');
+  writeFileSync(join(media, 'z-good.wav.suno.json'), JSON.stringify({
+    id: 'bbbbcccc-2222-4444-9999-123456789abc', title: 'Good',
+  }));
+  const db = openDatabase(join(root, 'music.sqlite'));
+  try {
+    const first = await discoverLocalMedia(db, { media, batch: 2 });
+    assert.equal(first.failures, 1);
+    assert.equal(first.discovered, 1);
+    assert.equal(first.lastName, null);
+    assert.equal(db.prepare('SELECT last_name FROM release_worker_media_cursor WHERE id = 1').get().last_name, '');
+    writeFileSync(join(media, 'a-bad.wav.suno.json'), JSON.stringify({
+      id: 'aabbccdd-1111-4444-8888-123456789abc', title: 'Repaired',
+    }));
+    const recovered = await discoverLocalMedia(db, { media, batch: 2 });
+    assert.equal(recovered.failures, 0);
+    assert.equal(recovered.discovered, 1);
+    assert.equal(recovered.lastName, 'z-good.wav');
+    assert.equal(db.prepare('SELECT last_name FROM release_worker_media_cursor WHERE id = 1').get().last_name, 'z-good.wav');
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks').get().n, 2);
+  } finally { db.close(); rmSync(root, { recursive: true, force: true }); }
+});
+
+test('persistent malformed WAV is quarantined without blocking good WAVs and is retried after repair', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'bm-media-quarantine-'));
+  const media = join(root, 'media'); mkdirSync(media);
+  const bad = join(media, 'a-bad.wav');
+  const good = join(media, 'z-good.wav');
+  for (const file of [bad, good]) {
+    const wav = Buffer.alloc(60); wav.write('RIFF', 0); wav.write('WAVE', 8);
+    writeFileSync(file, wav);
+  }
+  writeFileSync(bad + '.suno.json', '{broken');
+  writeFileSync(good + '.suno.json', JSON.stringify({
+    id: 'bbbbcccc-2222-4444-9999-123456789abc', title: 'Good',
+  }));
+  const db = openDatabase(join(root, 'music.sqlite'));
+  try {
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const report = await discoverLocalMedia(db, { media, batch: 2 });
+      assert.equal(report.failures, 1);
+      assert.equal(db.prepare('SELECT attempts FROM release_worker_media_failures WHERE media_name=?')
+        .get('a-bad.wav').attempts, attempt);
+    }
+    assert.equal(db.prepare('SELECT last_name FROM release_worker_media_cursor WHERE id=1').get().last_name,
+      'z-good.wav');
+    const skipped = await discoverLocalMedia(db, { media, batch: 2 });
+    assert.equal(skipped.quarantined, 1);
+    assert.equal(skipped.failures, 1);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks').get().n, 1);
+
+    writeFileSync(bad + '.suno.json', JSON.stringify({
+      id: 'aabbccdd-1111-4444-8888-123456789abc', title: 'Repaired',
+    }));
+    const recovered = await discoverLocalMedia(db, { media, batch: 2 });
+    assert.equal(recovered.failures, 0);
+    assert.equal(recovered.discovered, 1);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM release_worker_media_failures').get().n, 0);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM tracks').get().n, 2);
+  } finally { db.close(); rmSync(root, { recursive: true, force: true }); }
+});

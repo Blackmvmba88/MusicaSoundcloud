@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { summarizeWorkerScan, checkWorkerHeartbeat } from '../automations/worker-health.mjs';
+import { summarizeWorkerScan, checkWorkerHeartbeat, checkpointAfterScan, checkpointAfterMediaScan, mediaRetryDecision, MEDIA_RETRY_LIMIT } from '../automations/worker-health.mjs';
 
 const heartbeat = { status: 'ok', at: '2026-11-17T19:59:59.000Z' };
 const now = Date.parse('2026-11-17T20:00:00Z');
@@ -53,4 +53,83 @@ test('valid error counters are preserved', () => {
   assert.equal(outcome.trackErrors, 3);
   assert.equal(outcome.mediaFailures, 2);
   assert.equal(outcome.status, 'partial');
+});
+
+test('checkpoint retries first failed track without skipping it', () => {
+  assert.equal(checkpointAfterScan({ startCursor: 0, trackIds: [2, 4, 8], firstFailedIndex: 1 }), 2);
+  assert.equal(checkpointAfterScan({ startCursor: 3, trackIds: [4, 6, 9], firstFailedIndex: 0 }), 3);
+  assert.equal(checkpointAfterScan({ startCursor: 0, trackIds: [2, 4, 8] }), 8);
+  assert.equal(checkpointAfterScan({ startCursor: 8, trackIds: [] }), 0);
+});
+
+test('checkpoint rejects invalid index, unordered IDs and stale cursors', () => {
+  assert.throws(() => checkpointAfterScan({ startCursor: 4, trackIds: [4, 6] }), /inválido/);
+  assert.throws(() => checkpointAfterScan({ startCursor: 0, trackIds: [3, 3] }), /inválido/);
+  assert.throws(() => checkpointAfterScan({ startCursor: 0, trackIds: [3], firstFailedIndex: 2 }), /inválido/);
+});
+
+test('checkpoint keeps later failures reachable after retrying earliest failure', () => {
+  const ids = [4, 6, 9];
+  const firstPass = checkpointAfterScan({ startCursor: 3, trackIds: ids, firstFailedIndex: 2 });
+  assert.equal(firstPass, 6);
+  const retry = checkpointAfterScan({ startCursor: firstPass, trackIds: [9, 12], firstFailedIndex: 0 });
+  assert.equal(retry, 6);
+});
+
+test('checkpoint rejects negative, fractional and non-safe failure positions', () => {
+  for (const firstFailedIndex of [-1, 0.5, Number.MAX_SAFE_INTEGER + 1]) {
+    assert.throws(() => checkpointAfterScan({ startCursor: 0, trackIds: [2, 4], firstFailedIndex }), /inválido/);
+  }
+  assert.throws(() => checkpointAfterScan({ startCursor: -1, trackIds: [] }), /inválido/);
+});
+
+test('media checkpoint retries the first failing WAV on the next scan', () => {
+  assert.equal(checkpointAfterMediaScan({
+    startName: '', fileNames: ['a.wav', 'b.wav', 'c.wav'], firstFailedIndex: 1,
+  }), 'a.wav');
+  assert.equal(checkpointAfterMediaScan({
+    startName: 'a.wav', fileNames: ['b.wav', 'c.wav'], firstFailedIndex: 0,
+  }), 'a.wav');
+  assert.equal(checkpointAfterMediaScan({
+    startName: '', fileNames: ['a.wav', 'b.wav'], firstFailedIndex: null,
+  }), 'b.wav');
+  assert.equal(checkpointAfterMediaScan({ startName: 'c.wav', fileNames: [] }), 'c.wav');
+});
+
+test('media checkpoint rejects malformed batches and failure positions', () => {
+  for (const firstFailedIndex of [-1, 1.5, 2, Number.MAX_SAFE_INTEGER + 1]) {
+    assert.throws(() => checkpointAfterMediaScan({
+      startName: '', fileNames: ['a.wav', 'b.wav'], firstFailedIndex,
+    }), /inválido/);
+  }
+  assert.throws(() => checkpointAfterMediaScan({
+    startName: '', fileNames: ['b.wav', 'a.wav'],
+  }), /inválido/);
+  assert.throws(() => checkpointAfterMediaScan({
+    startName: '', fileNames: ['a.wav', 'a.wav'],
+  }), /inválido/);
+});
+
+test('bounded media retries quarantine only after the configured budget', () => {
+  assert.equal(MEDIA_RETRY_LIMIT, 3);
+  assert.deepEqual(mediaRetryDecision({ fingerprint: 'v1' }), {
+    attempt: true, nextAttempts: 1, quarantined: false,
+  });
+  assert.deepEqual(mediaRetryDecision({ attempts: 2, lastFingerprint: 'v1', fingerprint: 'v1' }), {
+    attempt: true, nextAttempts: 3, quarantined: false,
+  });
+  assert.deepEqual(mediaRetryDecision({ attempts: 3, lastFingerprint: 'v1', fingerprint: 'v1' }), {
+    attempt: false, nextAttempts: 4, quarantined: true,
+  });
+  assert.deepEqual(mediaRetryDecision({ attempts: 3, lastFingerprint: 'v1', fingerprint: 'v2' }), {
+    attempt: true, nextAttempts: 1, quarantined: false,
+  });
+});
+
+test('invalid media retry state is rejected rather than silently skipping a WAV', () => {
+  for (const attempts of [-1, NaN, Infinity, 1.5]) {
+    assert.throws(() => mediaRetryDecision({ attempts, fingerprint: 'v1' }), /inválido/);
+  }
+  assert.throws(() => mediaRetryDecision({ fingerprint: '' }), /inválido/);
+  assert.throws(() => mediaRetryDecision({ fingerprint: 'v1', lastFingerprint: 2 }), /inválido/);
 });
